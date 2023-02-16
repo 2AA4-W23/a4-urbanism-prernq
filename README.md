@@ -74,7 +74,7 @@ When you develop features and enrich the product, remember that you have first t
 | F07 | Assign segment colour and thicness | Lily |-------|-----|--------|
 | F08 | Assign centroid colour and thickness | Lily |-------|-----|--------|
 | F09 | Add centroid and segment data to MeshDump | Kiera |-------|-----|--------|
-| F10 |Create SVG canvas| Lily |-------|-----|--------|
+| F10 |Create SVG canvas| Kiera |-------|-----|--------|
 | F11 |Implement switching between debug and normal mode| Lily |-------|-----|--------|
 | F12 |Render vertices and centroids on canvas|------|-------|-----|--------|
 | F13 |Render segments on canvas|------|-------|-----|--------|
