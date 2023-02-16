@@ -69,13 +69,13 @@ When you develop features and enrich the product, remember that you have first t
 | F02 | Create list of segments | Prerna |-------|-----|--------|
 | F03 | Create list of Polygons | Prerna |-------|-----|--------|
 | F04 | Create list of centroids | Prerna |-------|-----|--------|
-| F05 | Reference neighbouring polygons |------|-------|-----|--------|
-| F06 | Assign vertex colour and thickness |------|-------|-----|--------|
-| F07 | Assign segment colour and thicness |------|-------|-----|--------|
-| F08 | Assign centroid colour and thickness |------|-------|-----|--------|
-| F09 | Add centroid and segment data to MeshDump |------|-------|-----|--------|
-| F10 |Create SVG canvas|------|-------|-----|--------|
-| F11 |Implement switching between debug and normal mode|------|-------|-----|--------|
+| F05 | Reference neighbouring polygons | Kiera |-------|-----|--------|
+| F06 | Assign vertex colour and thickness | Lily |-------|-----|--------|
+| F07 | Assign segment colour and thicness | Lily |-------|-----|--------|
+| F08 | Assign centroid colour and thickness | Lily |-------|-----|--------|
+| F09 | Add centroid and segment data to MeshDump | Kiera |-------|-----|--------|
+| F10 |Create SVG canvas| Lily |-------|-----|--------|
+| F11 |Implement switching between debug and normal mode| Lily |-------|-----|--------|
 | F12 |Render vertices and centroids on canvas|------|-------|-----|--------|
 | F13 |Render segments on canvas|------|-------|-----|--------|
 | F14 |Write SVG file|------|-------|-----|--------|
