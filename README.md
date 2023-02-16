@@ -1,8 +1,8 @@
 # Assignment A2: Mesh Generator
 
-  - Author #1 [email@mcmaster.ca]
-  - Author #2 [email@mcmaster.ca]
-  - Author #3 [email@mcmaster.ca]
+  - Keira Laskoski [laskoskk@mcmaster.ca]
+  - Lily Porter [portel7@mcmaster.ca]
+  - Prerna Prabhu [prabhp3@mcaskoskkmaster.ca]
 
 ## How to run the product
 
