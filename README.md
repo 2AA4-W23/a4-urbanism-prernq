@@ -73,7 +73,7 @@ When you develop features and enrich the product, remember that you have first t
 | F06 | Assign vertex colour and thickness |------|-------|-----|--------|
 | F07 | Assign segment colour and thicness |------|-------|-----|--------|
 | F08 | Assign centroid colour and thickness |------|-------|-----|--------|
-| F09 | Add centroid and data to MeshDump |------|-------|-----|--------|
+| F09 | Add centroid and segment data to MeshDump |------|-------|-----|--------|
 | F10 |       ---        |------|-------|-----|--------|
 | F11 |       ---        |------|-------|-----|--------|
 | F12 |       ---        |------|-------|-----|--------|
