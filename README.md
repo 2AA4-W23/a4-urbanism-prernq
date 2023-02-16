@@ -75,6 +75,7 @@ When you develop features and enrich the product, remember that you have first t
 | F08 | Assign centroid colour and thickness |------|-------|-----|--------|
 | F09 | Add centroid and segment data to MeshDump |------|-------|-----|--------|
 | F10 |Create SVG canvas|------|-------|-----|--------|
-| F11 |Render vertices and centroids on canvas|------|-------|-----|--------|
-| F12 |Render segments on canvas|------|-------|-----|--------|
-| F13 |Implement debug mode|------|-------|-----|--------|
+| F11 |Implement switching between debug and normal mode|------|-------|-----|--------|
+| F12 |Render vertices and centroids on canvas|------|-------|-----|--------|
+| F13 |Render segments on canvas|------|-------|-----|--------|
+| F14 |Write SVG file|------|-------|-----|--------|
