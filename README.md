@@ -64,7 +64,16 @@ When you develop features and enrich the product, remember that you have first t
 ### Product Backlog
 
 | Id | Feature title | Who? | Start | End | Status |
-|:--:|---------------|------|-------|-----|--------|
-|    |               |      |       |     |        |
-
-
+| F01|Create list of vertices|------|-------|-----|--------|
+| F02|Create list of segments|      |       |     |        |
+| F03|Create list of Polygons|      |       |     |        |
+| F04|Create list of centroids|      |       |     |        |
+| F05|Reference neighbouring polygons|      |       |     |        |
+| F06|Assign vertex colour and thickness|      |       |     |        |
+| F07|Assign segment colour and thicness|      |       |     |        |
+| F08|Assign centroid colour and thickness|      |       |     |        |
+| F09|Add centroid and data to MeshDump|      |       |     |        |
+| F10|               |      |       |     |        |
+| F11|               |      |       |     |        |
+| F12|               |      |       |     |        |
+| F13|               |      |       |     |        |
