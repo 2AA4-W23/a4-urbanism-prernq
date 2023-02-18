@@ -26,13 +26,14 @@ public class DotGen {
                 vertices.add(Vertex.newBuilder().setX((double) x).setY((double) y).build());
                 Double[] coordinates = {(double)x,(double) y};
                 vertex_coords.add(coordinates);
+                System.out.println(coordinates.toString());
                 vertices.add(Vertex.newBuilder().setX((double) x+square_size).setY((double) y).build());
                 vertices.add(Vertex.newBuilder().setX((double) x).setY((double) y+square_size).build());
                 vertices.add(Vertex.newBuilder().setX((double) x+square_size).setY((double) y+square_size).build());
             }
         }
-        System.out.println("This is here.");
-        System.out.print(vertex_coords.toString());
+        System.out.println("fThis is here.");
+        System.out.print(vertex_coords.toString().toString());
         // Distribute colors randomly. Vertices are immutable, need to enrich them
         Set<Vertex> verticesWithColors = new HashSet<>();
         Random bag = new Random();
