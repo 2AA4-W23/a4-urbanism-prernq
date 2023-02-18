@@ -32,7 +32,7 @@ public class DotGen {
             }
         }
         System.out.println("This is here.");
-        System.out.println(vertex_coords);
+        System.out.print(vertex_coords.toString());
         // Distribute colors randomly. Vertices are immutable, need to enrich them
         Set<Vertex> verticesWithColors = new HashSet<>();
         Random bag = new Random();
