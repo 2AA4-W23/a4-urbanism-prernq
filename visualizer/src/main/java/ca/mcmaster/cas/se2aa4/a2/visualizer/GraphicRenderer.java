@@ -45,7 +45,8 @@ public class GraphicRenderer {
             Color old = canvas.getColor();
             
             canvas.setColor(extractColor(s.getPropertiesList()));
-            canvas.drawLine((int) vertex1.getX(), (int) vertex1.getY(), (int) vertex2.getX(), (int) vertex2.getY());
+            if((int)vertex1.getX() == (int)vertex2.getX() || (int) vertex1.getY() == (int) vertex2.getY()){
+                canvas.drawLine((int) vertex1.getX(), (int) vertex1.getY(), (int) vertex2.getX(), (int) vertex2.getY());}
             canvas.setColor(old);
         }
 
