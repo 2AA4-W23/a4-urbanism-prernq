@@ -2,7 +2,7 @@
 
   - Keira Laskoski [laskoskk@mcmaster.ca]
   - Lily Porter [portel7@mcmaster.ca]
-  - Prerna Prabhu [prabhp3@mcaskoskkmaster.ca]
+  - Prerna Prabhu [prabhp3@mcmaster.ca]
 
 ## How to run the product
 
