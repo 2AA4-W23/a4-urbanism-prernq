@@ -20,6 +20,8 @@ public class GraphicRenderer {
         canvas.setColor(Color.BLACK);
         Stroke stroke = new BasicStroke(0.5f);
         canvas.setStroke(stroke);
+        
+        // draw vertices
         for (Vertex v: aMesh.getVerticesList()) {
             double centre_x = v.getX() - (THICKNESS/2.0d);
             double centre_y = v.getY() - (THICKNESS/2.0d);
@@ -30,12 +32,7 @@ public class GraphicRenderer {
             canvas.setColor(old);
         }
 
-        /*
-        for (Segment s: aMesh.getSegmentsList()){
-            Line2D line = new Line2D.Double(59.2d, 99.8d, 419.1d, 99.8d);
-            canvas.fill(line);
-        }
-        */
+        // draw segments
         for (Segment s : aMesh.getSegmentsList()) {
             int vertex1Idx = s.getV1Idx();
             int vertex2Idx = s.getV2Idx();
@@ -49,7 +46,6 @@ public class GraphicRenderer {
                 canvas.drawLine((int) vertex1.getX(), (int) vertex1.getY(), (int) vertex2.getX(), (int) vertex2.getY());}
             canvas.setColor(old);
         }
-
     }
 
     private Color extractColor(List<Property> properties) {

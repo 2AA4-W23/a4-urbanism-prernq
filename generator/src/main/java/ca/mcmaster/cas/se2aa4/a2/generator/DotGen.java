@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Random;
-import java.util.Iterator;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
@@ -25,35 +24,20 @@ public class DotGen {
         for(int x = 0; x < width; x += square_size) {
             for(int y = 0; y < height; y += square_size) {
                 vertices.add(Vertex.newBuilder().setX((double) x).setY((double) y).build());
-                Double[] coordinates = {(double)x,(double) y};
-                vertex_coords.add(coordinates);
-                System.out.println(coordinates.toString());
                 vertices.add(Vertex.newBuilder().setX((double) x+square_size).setY((double) y).build());
                 vertices.add(Vertex.newBuilder().setX((double) x).setY((double) y+square_size).build());
                 vertices.add(Vertex.newBuilder().setX((double) x+square_size).setY((double) y+square_size).build());
+
+                Double[] coordinates = {(double)x,(double) y};
+                vertex_coords.add(coordinates);
             }
         }
-       
-        /*
-        Segment[] segments = new Segment[100];
-        for(int x = 0 ; x < vertex_coords.size(); x++){
-            Double[] coordinate_set = vertex_coords.get(x);
-            double x_coord = coordinate_set[0];
-            double y_coord = coordinate_set[1]
-            Segment.newBuilder().
-            segments.add(Segment.newBuilder().setV1Idx(vertices[x]).setV2Idx((int) y_coord).build());
-        }
-        */
 
-        // Create all the edges
+        // Create segments
         ArrayList<Segment> segments = new ArrayList<>();
         for (int x = 0; x < vertices.size() - 1; x++) {
             segments.add(Segment.newBuilder().setV1Idx(x).setV2Idx(x + 1).build());
         }
-
-        //System.out.println("fThis is here.");
-        //System.out.print(vertex_coords.toString().toString());
-
 
         // Distribute colors randomly. Vertices are immutable, need to enrich them
         ArrayList<Vertex> verticesWithColors = new ArrayList<>();
@@ -66,7 +50,7 @@ public class DotGen {
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
             Vertex colored = Vertex.newBuilder(v).addProperties(color).build();
             verticesWithColors.add(colored);
-        }//return Mesh.newBuilder().addAllVertices(verticesWithColors).build();
+        }
         
         // Average colour segments
         ArrayList<Segment> segmentsWithColors = new ArrayList<>();
@@ -82,6 +66,7 @@ public class DotGen {
             Segment colored = Segment.newBuilder(s).addProperties(color).build();
             segmentsWithColors.add(colored);
         }
+        
         return Mesh.newBuilder().addAllVertices(verticesWithColors).addAllSegments(segmentsWithColors).build();
     }
 }
