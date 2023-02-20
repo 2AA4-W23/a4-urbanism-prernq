@@ -9,8 +9,10 @@ import java.util.List;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment.Builder;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
 public class DotGen {
 
@@ -34,7 +36,7 @@ public class DotGen {
             }
         }
 
-        // Create segments
+        // Create all the segments
         ArrayList<Segment> segments = new ArrayList<>();
         for (int x = 0; x < vertices.size() - 1; x++) {
             segments.add(Segment.newBuilder().setV1Idx(x).setV2Idx(x + 1).build());
@@ -53,7 +55,7 @@ public class DotGen {
             verticesWithColors.add(colored);
         }
         
-        // Average colour segments
+        // Distribute colors to segments based on average of its vertices
         ArrayList<Segment> segmentsWithColors = new ArrayList<>();
         for (Segment s : segments) {
 
@@ -77,10 +79,6 @@ public class DotGen {
                     color_code_v2 = p.getValue();
                 }
             }
-
-            
-            //String colour_code_v1 = vertex1.getProperties(vertex1Idx).getValue();
-            //String colour_code_v2 = vertex2.getProperties(vertex2Idx).getValue();
             String[] colors_v1 = color_code_v1.split(",");
             String[] colors_v2 = color_code_v2.split(",");
             
@@ -99,7 +97,55 @@ public class DotGen {
             Segment colored = Segment.newBuilder(s).addProperties(color).build();
             segmentsWithColors.add(colored);
         }
+
+        // Initialize Polygons List, a list of segments that make-up a polygon
+        ArrayList<ArrayList<Segment>> polygons_list = new ArrayList<>();
+        for(Segment s : segments){
+            Segment.getNeighborIdxs(s);
+            ArrayList<Segment> polygon = new ArrayList<>(); 
+            int seg1_vertex1Idx = s.getV1Idx();
+            int seg1_vertex2Idx = s.getV2Idx();
+            polygon.add(s);
+            for(Segment e : segments){
+                int seg2_vertex1Idx = e.getV1Idx();
+                int seg2_vertex2Idx = e.getV2Idx();
+                
+                if(seg1_vertex1Idx == seg2_vertex1Idx && seg1_vertex2Idx != seg2_vertex2Idx){
+                    //polygon.add(s);
+                    polygon.add(e);
+                }else if(seg1_vertex1Idx == seg2_vertex2Idx && seg1_vertex1Idx != seg2_vertex1Idx){
+                    //polygon.add(s);
+                    polygon.add(e);
+                }else if(seg1_vertex2Idx == seg2_vertex1Idx && seg1_vertex2Idx != seg2_vertex2Idx){
+                    //polygon.add(s);
+                    polygon.add(e);
+                }else if(seg1_vertex2Idx == seg2_vertex2Idx && seg1_vertex2Idx != seg2_vertex1Idx){
+                    //polygon.add(s);
+                    polygon.add(e);
+
+            }
+            int count = 0;
+            for(ArrayList<Segment> p : polygons_list){
+                for(Segment seg : p){
+                    if(seg == polygon[0]){
+
+                    }
+                }
+            }
+            polygons_list.add(polygon);
+
+        }
+
+        System.out.println("\n\nError check polygon list!!\n\n");
+        for(ArrayList<Segment> x : polygons_list){
+            for(Segment y : x){
+                System.out.println(y.toString());
+            }
+        }
+
+        // Create Centroids and list
+
         
-        return Mesh.newBuilder().addAllVertices(verticesWithColors).addAllSegments(segmentsWithColors).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithColors).addAllSegments(segmentsWithColors).add.build();
     }
 }
