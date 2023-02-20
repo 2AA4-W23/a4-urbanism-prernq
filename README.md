@@ -1,8 +1,8 @@
 # Assignment A2: Mesh Generator
 
-  - Author #1 [email@mcmaster.ca]
-  - Author #2 [email@mcmaster.ca]
-  - Author #3 [email@mcmaster.ca]
+  - Keira Laskoski [laskoskk@mcmaster.ca]
+  - Lily Porter [portel7@mcmaster.ca]
+  - Prerna Prabhu [prabhp3@mcmaster.ca]
 
 ## How to run the product
 
@@ -63,8 +63,19 @@ When you develop features and enrich the product, remember that you have first t
 
 ### Product Backlog
 
-| Id | Feature title | Who? | Start | End | Status |
-|:--:|---------------|------|-------|-----|--------|
-|    |               |      |       |     |        |
-
-
+| Id  | Feature title | Who? | Start | End | Status |
+| :-: |:-:            |---   | :-:   | :-: | :-:    |
+| F01 | Create list of vertices | Prerna |-------|-----|P|
+| F02 | Create list of segments | Prerna |-------|-----|B(F01)|
+| F03 | Create list of Polygons | Prerna |-------|-----|B(F02)|
+| F04 | Create list of centroids | Prerna |-------|-----|B(F03)|
+| F05 | Reference neighbouring polygons | Keira |-------|-----|B(F03)|
+| F06 | Assign vertex colour and thickness | Lily |-------|-----|P|
+| F07 | Assign segment colour and thickness | Lily |-------|-----|P|
+| F08 | Assign centroid colour and thickness | Lily |-------|-----|P|
+| F09 | Add centroid and segment data to MeshDump | Keira |-------|-----|P|
+| F10 |Create SVG canvas| Keira |-------|-----|P|
+| F11 |Implement switching between debug and normal mode| Lily |-------|-----|P|
+| F12 |Render vertices and centroids on canvas|Keira|-------|-----|P|
+| F13 |Render segments on canvas|Keira|-------|-----|P|
+| F14 |Write SVG file|Keira|-------|-----|B(F10-F13)|
