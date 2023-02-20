@@ -9,7 +9,6 @@ import java.util.List;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment.Builder;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
@@ -98,17 +97,52 @@ public class DotGen {
             segmentsWithColors.add(colored);
         }
 
-        // Initialize Polygons List, a list of segments that make-up a polygon
-        ArrayList<ArrayList<Segment>> polygons_list = new ArrayList<>();
+        //Create List of Polygons for squares
+        //Since the segments are added by the order of vertices, which are added by creating 4 at a time, the segments are pre ordered for each polygon
+        ArrayList<Polygon> polygons = new ArrayList<>();
+        for(int x = 0; x < segments.size(); x+= 4){
+            polygons.add(Polygon.newBuilder().addSegmentIdxs(x).addSegmentIdxs(x+1).addSegmentIdxs(x+2).addSegmentIdxs(x+3).build());
+        }
+
+        //the wrong way of making polygons list
+        /*
+        ArrayList<ArrayList<Segment>> shapes = new ArrayList<>();
+        ArrayList<Segment> one_polygon = new ArrayList<>();
+        int count = 0;
         for(Segment s : segments){
-            Segment.getNeighborIdxs(s);
+            if(count < 4){
+                one_polygon.add(s);
+                count += 1;
+                if(count == 4){
+                    shapes.add(one_polygon);
+                    one_polygon = null;
+                }
+            }
+        }
+        */
+
+
+        /*
+        // Initialize Polygons List, a list of segments that make-up a polygon --> not complete
+        // Please do not remove this as it can help with irregular polygon generation
+        ArrayList<Polygon> polygons_list = new ArrayList<>();
+        for(Segment s : segments){
             ArrayList<Segment> polygon = new ArrayList<>(); 
             int seg1_vertex1Idx = s.getV1Idx();
             int seg1_vertex2Idx = s.getV2Idx();
+
+            Vertex seg1_vertex1 = verticesWithColors.get(seg1_vertex1Idx);
+            Vertex seg1_vertex2 = verticesWithColors.get(seg1_vertex2Idx);
+            
             polygon.add(s);
+            int prev1;
+            int prev2;
             for(Segment e : segments){
                 int seg2_vertex1Idx = e.getV1Idx();
                 int seg2_vertex2Idx = e.getV2Idx();
+
+                Vertex seg2_vertex1 = verticesWithColors.get(seg1_vertex1Idx);
+                Vertex seg2_vertex2 = verticesWithColors.get(seg1_vertex2Idx);
                 
                 if(seg1_vertex1Idx == seg2_vertex1Idx && seg1_vertex2Idx != seg2_vertex2Idx){
                     //polygon.add(s);
@@ -122,12 +156,16 @@ public class DotGen {
                 }else if(seg1_vertex2Idx == seg2_vertex2Idx && seg1_vertex2Idx != seg2_vertex1Idx){
                     //polygon.add(s);
                     polygon.add(e);
+                }
+
+                prev1 = seg2_vertex1Idx;
+                prev2 = seg2_vertex2Idx;
 
             }
             int count = 0;
             for(ArrayList<Segment> p : polygons_list){
                 for(Segment seg : p){
-                    if(seg == polygon[0]){
+                    if(seg == polygon(0)){
 
                     }
                 }
@@ -135,17 +173,22 @@ public class DotGen {
             polygons_list.add(polygon);
 
         }
+        */
 
+        //Error check polygons list
+        /*
         System.out.println("\n\nError check polygon list!!\n\n");
         for(ArrayList<Segment> x : polygons_list){
             for(Segment y : x){
                 System.out.println(y.toString());
             }
         }
+        */
+
 
         // Create Centroids and list
-
         
-        return Mesh.newBuilder().addAllVertices(verticesWithColors).addAllSegments(segmentsWithColors).add.build();
+        
+        return Mesh.newBuilder().addAllVertices(verticesWithColors).addAllSegments(segmentsWithColors).addAllPolygons(polygons).build();
     }
 }
