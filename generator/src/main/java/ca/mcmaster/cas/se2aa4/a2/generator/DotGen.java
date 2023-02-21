@@ -41,19 +41,7 @@ public class DotGen {
             segments.add(Segment.newBuilder().setV1Idx(x).setV2Idx(x + 1).build());
         }
 
-        // Distribute colors randomly. Vertices are immutable, need to enrich them
-        /*ArrayList<Vertex> verticesWithColors = new ArrayList<>();
-        Random bag = new Random();
-        for(Vertex v: vertices){
-            int red = bag.nextInt(255);
-            int green = bag.nextInt(255);
-            int blue = bag.nextInt(255);
-            String colorCode = red + "," + green + "," + blue;
-            Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-            Vertex colored = Vertex.newBuilder(v).addProperties(color).build();
-            verticesWithColors.add(colored);
-        }*/
-
+        // Distribute colors and thicknesses randomly. Vertices are immutable, need to enrich them
         ArrayList<Vertex> verticesWithProperties = new ArrayList<>();
         Random bag = new Random();
         for(Vertex v: vertices){
@@ -66,20 +54,8 @@ public class DotGen {
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
             Property thickness = Property.newBuilder().setKey("thickness").setValue(thicknessValue).build();
             Vertex withProperties = Vertex.newBuilder(v).addProperties(color).addProperties(thickness).build();
-            //Vertex withProperties = Vertex.newBuilder(v).addProperties(thickness).build();
             verticesWithProperties.add(withProperties);
         }
-
-        // Distribute vertices thickness randomly
-        /*ArrayList<Vertex> verticesWithThickness = new ArrayList<>();
-        //Random bag2 = new Random();
-        for (Vertex v: vertices){
-            int value = bag.nextInt(11);
-            String thicknessValue = String.valueOf(value);
-            Property thickness = Property.newBuilder().setKey("thickness").setValue(thicknessValue).build();
-            Vertex withThickness = Vertex.newBuilder(v).addProperties(thickness).build();
-            verticesWithThickness.add(withThickness);
-        }*/
         
         // Distribute colors to segments based on average of its vertices
         ArrayList<Segment> segmentsWithColors = new ArrayList<>();
