@@ -71,8 +71,8 @@ When you develop features and enrich the product, remember that you have first t
 | F04 | Create list of centroids | Prerna |-------|-----|B(F03)|
 | F05 | Reference neighbouring polygons | Keira |-------|-----|B(F03)|
 | F06 | Assign vertex colour and thickness | Lily |02/20/2023|02/20/2023|D|
-| F07 | Assign segment colour and thickness | Lily |02/21/2023|-----|P|
-| F08 | Assign centroid colour and thickness | Lily |-------|-----|P|
+| F07 | Assign segment colour and thickness | Lily |02/21/2023|02/21/2023|P|
+| F08 | Assign polygon colour and thickness | Lily |-------|-----|P|
 | F09 | Add centroid and segment data to MeshDump | Keira |-------|-----|P|
 | F10 |Create SVG canvas| Keira |-------|-----|P|
 | F11 |Implement switching between debug and normal mode| Lily |-------|-----|P|

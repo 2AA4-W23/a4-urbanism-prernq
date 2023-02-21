@@ -20,7 +20,34 @@ public class GraphicRenderer {
         canvas.setColor(Color.BLACK);
         Stroke stroke = new BasicStroke(0.5f);
         canvas.setStroke(stroke);
-        
+
+        // draw segments
+        for (Segment s : aMesh.getSegmentsList()) {
+            int vertex1Idx = s.getV1Idx();
+            int vertex2Idx = s.getV2Idx();
+
+            Vertex vertex1 = aMesh.getVertices(vertex1Idx);
+            Vertex vertex2 = aMesh.getVertices(vertex2Idx);
+
+            double x1 = vertex1.getX();
+            double y1 = vertex1.getY();
+            double x2 = vertex2.getX();
+            double y2 = vertex2.getY();
+            int thickness = extractThickness(s.getPropertiesList());
+
+            // Line2D line = new Line2D.Double(x1, y1, x2, y2);
+
+            Color old = canvas.getColor();
+            canvas.setColor(extractColor(s.getPropertiesList()));
+            Stroke segstroke = new BasicStroke(thickness);
+            canvas.setStroke(segstroke);
+
+            if((int)vertex1.getX() == (int)vertex2.getX() || (int) vertex1.getY() == (int) vertex2.getY()){
+                canvas.drawLine((int) vertex1.getX(), (int) vertex1.getY(), (int) vertex2.getX(), (int) vertex2.getY());}
+            canvas.setColor(old);
+            canvas.setStroke(stroke);
+        }
+
         // draw vertices
         for (Vertex v: aMesh.getVerticesList()) {
             int thickness = extractThickness(v.getPropertiesList());
@@ -34,19 +61,31 @@ public class GraphicRenderer {
         }
 
         // draw segments
-        for (Segment s : aMesh.getSegmentsList()) {
+        /*for (Segment s : aMesh.getSegmentsList()) {
             int vertex1Idx = s.getV1Idx();
             int vertex2Idx = s.getV2Idx();
 
             Vertex vertex1 = aMesh.getVertices(vertex1Idx);
             Vertex vertex2 = aMesh.getVertices(vertex2Idx);
+
+            double x1 = vertex1.getX();
+            double y1 = vertex1.getY();
+            double x2 = vertex2.getX();
+            double y2 = vertex2.getY();
+            int thickness = extractThickness(s.getPropertiesList());
+
+           // Line2D line = new Line2D.Double(x1, y1, x2, y2);
+
             Color old = canvas.getColor();
-            
             canvas.setColor(extractColor(s.getPropertiesList()));
+            Stroke segstroke = new BasicStroke(thickness);
+            canvas.setStroke(segstroke);
+
             if((int)vertex1.getX() == (int)vertex2.getX() || (int) vertex1.getY() == (int) vertex2.getY()){
                 canvas.drawLine((int) vertex1.getX(), (int) vertex1.getY(), (int) vertex2.getX(), (int) vertex2.getY());}
             canvas.setColor(old);
-        }
+            canvas.setStroke(stroke);
+        }*/
     }
 
     private Color extractColor(List<Property> properties) {

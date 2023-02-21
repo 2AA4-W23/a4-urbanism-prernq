@@ -48,17 +48,18 @@ public class DotGen {
             int red = bag.nextInt(255);
             int green = bag.nextInt(255);
             int blue = bag.nextInt(255);
-            int number = bag.nextInt(11);
+            int vertThicknessNumber = bag.nextInt(11 - 3) + 3;
+            //int vertThicknessNumber = bag.nextInt(11);
             String colorCode = red + "," + green + "," + blue;
-            String thicknessValue = String.valueOf(number);
+            String vertThicknessValue = String.valueOf(vertThicknessNumber);
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-            Property thickness = Property.newBuilder().setKey("thickness").setValue(thicknessValue).build();
-            Vertex withProperties = Vertex.newBuilder(v).addProperties(color).addProperties(thickness).build();
+            Property vertThickness = Property.newBuilder().setKey("thickness").setValue(vertThicknessValue).build();
+            Vertex withProperties = Vertex.newBuilder(v).addProperties(color).addProperties(vertThickness).build();
             verticesWithProperties.add(withProperties);
         }
         
-        // Distribute colors to segments based on average of its vertices
-        ArrayList<Segment> segmentsWithColors = new ArrayList<>();
+        // Determine colors of segments based on average of its vertices
+        ArrayList<Segment> segmentsWithProperties = new ArrayList<>();
         for (Segment s : segments) {
 
             int vertex1Idx = s.getV1Idx();
@@ -96,8 +97,16 @@ public class DotGen {
             int BlueAverage = (blue_v1 + blue_v2) / 2;
             String colorCode = RedAverage + "," + GreenAverage + "," + BlueAverage;
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-            Segment colored = Segment.newBuilder(s).addProperties(color).build();
-            segmentsWithColors.add(colored);
+
+            //Determine thicknesses of segments randomly
+            int segThicknessNumber = bag.nextInt(5 - 1) + 1;
+            //int segThicknessNumber = bag.nextInt(5);
+            String segThicknessValue = String.valueOf(segThicknessNumber);
+            Property segThickness = Property.newBuilder().setKey("thickness").setValue(segThicknessValue).build();
+
+            //add colors and thickness values to segments
+            Segment withProperties = Segment.newBuilder(s).addProperties(color).addProperties(segThickness).build();
+            segmentsWithProperties.add(withProperties);
         }
 
         //Create List of Polygons for squares
@@ -192,6 +201,6 @@ public class DotGen {
         // Create Centroids and list
         
         
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithColors).addAllPolygons(polygons).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).build();
     }
 }
