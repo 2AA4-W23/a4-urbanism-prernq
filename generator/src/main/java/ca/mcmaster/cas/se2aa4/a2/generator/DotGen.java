@@ -42,7 +42,7 @@ public class DotGen {
         }
 
         // Distribute colors randomly. Vertices are immutable, need to enrich them
-        ArrayList<Vertex> verticesWithColors = new ArrayList<>();
+        /*ArrayList<Vertex> verticesWithColors = new ArrayList<>();
         Random bag = new Random();
         for(Vertex v: vertices){
             int red = bag.nextInt(255);
@@ -52,7 +52,34 @@ public class DotGen {
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
             Vertex colored = Vertex.newBuilder(v).addProperties(color).build();
             verticesWithColors.add(colored);
+        }*/
+
+        ArrayList<Vertex> verticesWithProperties = new ArrayList<>();
+        Random bag = new Random();
+        for(Vertex v: vertices){
+            int red = bag.nextInt(255);
+            int green = bag.nextInt(255);
+            int blue = bag.nextInt(255);
+            int number = bag.nextInt(11);
+            String colorCode = red + "," + green + "," + blue;
+            String thicknessValue = String.valueOf(number);
+            Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+            Property thickness = Property.newBuilder().setKey("thickness").setValue(thicknessValue).build();
+            Vertex withProperties = Vertex.newBuilder(v).addProperties(color).addProperties(thickness).build();
+            //Vertex withProperties = Vertex.newBuilder(v).addProperties(thickness).build();
+            verticesWithProperties.add(withProperties);
         }
+
+        // Distribute vertices thickness randomly
+        /*ArrayList<Vertex> verticesWithThickness = new ArrayList<>();
+        //Random bag2 = new Random();
+        for (Vertex v: vertices){
+            int value = bag.nextInt(11);
+            String thicknessValue = String.valueOf(value);
+            Property thickness = Property.newBuilder().setKey("thickness").setValue(thicknessValue).build();
+            Vertex withThickness = Vertex.newBuilder(v).addProperties(thickness).build();
+            verticesWithThickness.add(withThickness);
+        }*/
         
         // Distribute colors to segments based on average of its vertices
         ArrayList<Segment> segmentsWithColors = new ArrayList<>();
@@ -60,8 +87,8 @@ public class DotGen {
 
             int vertex1Idx = s.getV1Idx();
             int vertex2Idx = s.getV2Idx();
-            Vertex vertex1 = verticesWithColors.get(vertex1Idx);
-            Vertex vertex2 = verticesWithColors.get(vertex2Idx);
+            Vertex vertex1 = verticesWithProperties.get(vertex1Idx);
+            Vertex vertex2 = verticesWithProperties.get(vertex2Idx);
 
             List<Property> properties_v1 = vertex1.getPropertiesList();
             List<Property> properties_v2 = vertex2.getPropertiesList();
@@ -189,6 +216,6 @@ public class DotGen {
         // Create Centroids and list
         
         
-        return Mesh.newBuilder().addAllVertices(verticesWithColors).addAllSegments(segmentsWithColors).addAllPolygons(polygons).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithColors).addAllPolygons(polygons).build();
     }
 }

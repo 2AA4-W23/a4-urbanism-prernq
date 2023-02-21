@@ -15,7 +15,7 @@ import java.util.List;
 
 public class GraphicRenderer {
 
-    private static final int THICKNESS = 3;
+    //private static final int THICKNESS = 10;
     public void render(Mesh aMesh, Graphics2D canvas) {
         canvas.setColor(Color.BLACK);
         Stroke stroke = new BasicStroke(0.5f);
@@ -23,11 +23,12 @@ public class GraphicRenderer {
         
         // draw vertices
         for (Vertex v: aMesh.getVerticesList()) {
-            double centre_x = v.getX() - (THICKNESS/2.0d);
-            double centre_y = v.getY() - (THICKNESS/2.0d);
+            int thickness = extractThickness(v.getPropertiesList());
+            double centre_x = v.getX() - (thickness/2.0d);
+            double centre_y = v.getY() - (thickness/2.0d);
             Color old = canvas.getColor();
             canvas.setColor(extractColor(v.getPropertiesList()));
-            Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, THICKNESS, THICKNESS);
+            Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
             canvas.fill(point);
             canvas.setColor(old);
         }
@@ -65,4 +66,17 @@ public class GraphicRenderer {
         return new Color(red, green, blue);
     }
 
+    private int extractThickness(List<Property> properties) {
+        String val = null;
+        for (Property p: properties) {
+            if (p.getKey().equals("thickness")) {
+                System.out.println(p.getValue());
+                val = p.getValue();
+            }
+        }
+        if (val == null)
+            return 3;
+        int thickness = Integer.parseInt(val);
+        return thickness;
+    }
 }
