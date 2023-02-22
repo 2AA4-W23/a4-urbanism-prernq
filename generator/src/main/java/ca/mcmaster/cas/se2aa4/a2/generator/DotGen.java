@@ -1,9 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a2.generator;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Random;
 import java.util.List;
 
@@ -43,8 +40,9 @@ public class DotGen {
 
         // Distribute colors and thicknesses randomly. Vertices are immutable, need to enrich them
         ArrayList<Vertex> verticesWithProperties = new ArrayList<>();
-        int vertThicknessNumber = bag.nextInt(11 - 3) + 3;
+
         Random bag = new Random();
+        int vertThicknessNumber = bag.nextInt(11 - 3) + 3;
         for(Vertex v: vertices){
             int red = bag.nextInt(255);
             int green = bag.nextInt(255);
@@ -117,6 +115,29 @@ public class DotGen {
         for(int x = 0; x < segments.size(); x+= 4){
             polygons.add(Polygon.newBuilder().addSegmentIdxs(x).addSegmentIdxs(x+1).addSegmentIdxs(x+2).addSegmentIdxs(x+3).build());
         }
+
+        //add neighbouring polygons as references
+        for (Polygon p : polygons){
+            List<Integer> pSegList = p.getSegmentIdxsList();
+            for (int segp : pSegList){
+                for (Polygon q : polygons){
+                    List<Integer> qSegList = q.getSegmentIdxsList();
+                    for ( int segq : qSegList){
+                        if ((segp == segq) && (p.getCentroidIdx() != q.getCentroidIdx())){
+                            int neighbour = q.getCentroidIdx();
+                            polygons.add(Polygon.newBuilder().addNeighborIdxs(neighbour).build());
+                            //System.out.println("Added neighbour: " + neighbour);
+
+                        }
+                    }
+                }
+            }
+            //System.out.println("final : "+ p.getCentroidIdx() + " " + p.getNeighborIdxsList());
+        }
+
+
+
+
 
         //the wrong way of making polygons list
         /*

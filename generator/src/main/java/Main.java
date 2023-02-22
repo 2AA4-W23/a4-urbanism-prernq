@@ -10,7 +10,7 @@ public class Main {
         DotGen generator = new DotGen();
         Mesh myMesh = generator.generate();
         MeshFactory factory = new MeshFactory();
-        factory.write(myMesh, args[0]);
+        //factory.write(myMesh, args[0]);
     }
 
 }
