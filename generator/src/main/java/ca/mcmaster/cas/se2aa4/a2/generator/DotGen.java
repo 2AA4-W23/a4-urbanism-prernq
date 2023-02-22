@@ -235,13 +235,16 @@ public class DotGen {
         }
 
         //Distribute centroid colours
-        ArrayList<Vertex> centroidsWithColors = new ArrayList<>();
+        ArrayList<Vertex> centroidsWithProperties = new ArrayList<>();
+        int centThicknessNumber = bag.nextInt(11 - 3) + 3;
         for(Vertex c: centroids){
             Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
-            Vertex colored = Vertex.newBuilder(c).addProperties(color).build();
-            centroidsWithColors.add(colored);
+            String centThicknessValue = String.valueOf(centThicknessNumber);
+            Property centThickness = Property.newBuilder().setKey("thickness").setValue(centThicknessValue).build();
+            Vertex colored = Vertex.newBuilder(c).addProperties(color).addProperties(centThickness).build();
+            centroidsWithProperties.add(colored);
         }
         
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).addAllVertices(centroidsWithColors).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).addAllVertices(centroidsWithProperties).build();
     }
 }
