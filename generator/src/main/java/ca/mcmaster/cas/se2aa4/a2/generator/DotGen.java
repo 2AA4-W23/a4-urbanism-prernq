@@ -256,8 +256,8 @@ public class DotGen {
                 x_coord_total += vertex2.getX();
                 y_coord_total += vertex2.getY();
             }
-            x_coord_avg = x_coord_total/number_of_segments;
-            y_coord_avg = y_coord_total/number_of_segments;
+            x_coord_avg = x_coord_total/(number_of_segments*2);
+            y_coord_avg = y_coord_total/(number_of_segments*2);
             if ((x_coord_avg <= width) && (y_coord_avg <= height)) {
                 centroids.add(Vertex.newBuilder().setX((double) x_coord_avg).setY((double) y_coord_avg).build());
             }
