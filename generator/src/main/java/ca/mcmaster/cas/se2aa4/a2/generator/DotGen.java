@@ -37,8 +37,15 @@ public class DotGen {
 
         // Create all the segments
         ArrayList<Segment> segments = new ArrayList<>();
-        for (int x = 0; x < vertices.size() - 1; x++) {
-            segments.add(Segment.newBuilder().setV1Idx(x).setV2Idx(x + 1).build());
+        for (int x = 0; x < vertices.size() - 1; x+=4) {
+            //following line only works for squares
+            Vertex v = vertices.get(x);
+            if(v.getX() < width && v.getY() < height){
+                segments.add(Segment.newBuilder().setV1Idx(x).setV2Idx(x + 1).build());
+                segments.add(Segment.newBuilder().setV1Idx(x).setV2Idx(x + 2).build());
+                segments.add(Segment.newBuilder().setV1Idx(x + 1).setV2Idx(x + 3).build());
+                segments.add(Segment.newBuilder().setV1Idx(x + 2).setV2Idx(x + 3).build());
+            }
         }
 
         // Distribute colors and thicknesses randomly. Vertices are immutable, need to enrich them
@@ -115,7 +122,7 @@ public class DotGen {
         //Create List of Polygons for squares
         //Since the segments are added by the order of vertices, which are added by creating 4 at a time, the segments are pre ordered for each polygon
         ArrayList<Polygon> polygons = new ArrayList<>();
-        for(int x = 0; x < segments.size(); x+= 4){
+        for(int x = 0; x < segments.size()-1; x+= 4){
             polygons.add(Polygon.newBuilder().addSegmentIdxs(x).addSegmentIdxs(x+1).addSegmentIdxs(x+2).addSegmentIdxs(x+3).build());
         }
 
@@ -202,8 +209,39 @@ public class DotGen {
 
 
         // Create Centroids and list
+        ArrayList<Vertex> centroids = new ArrayList<>();
+        for(Polygon p : polygons){
+            List<Integer> polygon_segments = p.getSegmentIdxsList();
+            int number_of_segments = polygon_segments.size();
+            double x_coord_total = 0.0;
+            double y_coord_total = 0.0;
+            double x_coord_avg = 0.0;
+            double y_coord_avg = 0.0;
+
+            for(int x=0; x < number_of_segments; x++){
+                Segment s = segments.get((polygon_segments.get(x)));
+                int vertex1Idx = s.getV1Idx();
+                int vertex2Idx = s.getV2Idx();
+                Vertex vertex1 = vertices.get(vertex1Idx);
+                Vertex vertex2 = vertices.get(vertex2Idx);
+                x_coord_total += vertex1.getX();
+                y_coord_total += vertex1.getY();
+                x_coord_total += vertex2.getX();
+                y_coord_total += vertex2.getY();
+            }
+            x_coord_avg = x_coord_total/number_of_segments;
+            y_coord_avg = y_coord_total/number_of_segments;
+            centroids.add(Vertex.newBuilder().setX((double) x_coord_avg).setY((double) y_coord_avg).build());
+        }
+
+        //Distribute centroid colours
+        ArrayList<Vertex> centroidsWithColors = new ArrayList<>();
+        for(Vertex c: centroids){
+            Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
+            Vertex colored = Vertex.newBuilder(c).addProperties(color).build();
+            centroidsWithColors.add(colored);
+        }
         
-        
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).addAllVertices(centroidsWithColors).build();
     }
 }
