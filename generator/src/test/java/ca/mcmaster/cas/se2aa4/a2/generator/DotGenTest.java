@@ -9,7 +9,7 @@ public class DotGenTest {
 
     @Test
     public void meshIsNotNull() {
-        DotGen generator = new DotGen();
+        DotGen generator = new DotGen("normal");
         Structs.Mesh aMesh = generator.generate();
         assertNotNull(aMesh);
     }
