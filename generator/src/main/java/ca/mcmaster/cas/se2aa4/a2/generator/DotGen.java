@@ -43,12 +43,13 @@ public class DotGen {
 
         // Distribute colors and thicknesses randomly. Vertices are immutable, need to enrich them
         ArrayList<Vertex> verticesWithProperties = new ArrayList<>();
+        int vertThicknessNumber = bag.nextInt(11 - 3) + 3;
         Random bag = new Random();
         for(Vertex v: vertices){
             int red = bag.nextInt(255);
             int green = bag.nextInt(255);
             int blue = bag.nextInt(255);
-            int vertThicknessNumber = bag.nextInt(11 - 3) + 3;
+
             //int vertThicknessNumber = bag.nextInt(11);
             String colorCode = red + "," + green + "," + blue;
             String vertThicknessValue = String.valueOf(vertThicknessNumber);
@@ -60,6 +61,7 @@ public class DotGen {
         
         // Determine colors of segments based on average of its vertices
         ArrayList<Segment> segmentsWithProperties = new ArrayList<>();
+        int segThicknessNumber = bag.nextInt(5 - 1) + 1;
         for (Segment s : segments) {
 
             int vertex1Idx = s.getV1Idx();
@@ -99,7 +101,7 @@ public class DotGen {
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
 
             //Determine thicknesses of segments randomly
-            int segThicknessNumber = bag.nextInt(5 - 1) + 1;
+
             //int segThicknessNumber = bag.nextInt(5);
             String segThicknessValue = String.valueOf(segThicknessNumber);
             Property segThickness = Property.newBuilder().setKey("thickness").setValue(segThicknessValue).build();
