@@ -79,3 +79,11 @@ When you develop features and enrich the product, remember that you have first t
 | F12 |Render vertices and centroids on canvas|Keira|-------|-----|P|
 | F13 |Render segments on canvas|Keira|-------|-----|P|
 | F14 |Write SVG file|Keira|-------|-----|B(F10-F13)|
+| F15 |Generate 20 random points| | | |P|
+| F16 |Compute Voronoi diagram| | | |P|
+| F17 |Apply Lloyd relaxation 5 times| | | |P|
+| F18 |Crop the mesh to appropriate size| | | |P|
+| F19 |Delaunay's triangle| | | |P|
+| F20 |Reorder segments| | | |P|
+| F21 |Generate user requested number of points & relaxation level| | | |P|
+| F22 |Command line arguments for type of mesh| | | |P|
