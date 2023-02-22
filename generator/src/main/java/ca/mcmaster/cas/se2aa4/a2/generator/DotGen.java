@@ -265,7 +265,7 @@ public class DotGen {
 
         //Distribute centroid colours
         ArrayList<Vertex> centroidsWithProperties = new ArrayList<>();
-        int centThicknessNumber = bag.nextInt(11 - 3) + 3;
+        int centThicknessNumber = 3;
         for(Vertex c: centroids){
             Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
             String centThicknessValue = String.valueOf(centThicknessNumber);
