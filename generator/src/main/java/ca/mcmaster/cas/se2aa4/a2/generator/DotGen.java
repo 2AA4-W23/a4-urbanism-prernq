@@ -43,8 +43,9 @@ public class DotGen {
 
         // Distribute colors and thicknesses randomly. Vertices are immutable, need to enrich them
         ArrayList<Vertex> verticesWithProperties = new ArrayList<>();
-        int vertThicknessNumber = bag.nextInt(11 - 3) + 3;
+
         Random bag = new Random();
+        int vertThicknessNumber = bag.nextInt(11 - 3) + 3;
         for(Vertex v: vertices){
             int red = bag.nextInt(255);
             int green = bag.nextInt(255);
