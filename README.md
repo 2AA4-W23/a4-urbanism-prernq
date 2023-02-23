@@ -71,7 +71,7 @@ When you develop features and enrich the product, remember that you have first t
 | F02 | Create list of segments | Prerna |02/17/2023|02/20/2023|D|
 | F03 | Create list of Polygons | Prerna |02/19/2023|02/20/2023|D|
 | F04 | Create list of centroids | Prerna |02/19/2023|02/21/2023|D|
-| F05 | Reference neighbouring polygons | Keira |-------|-----|P|
+| F05 | Reference neighbouring polygons | Keira |02/22/22|02/23/22|D|
 | F06 | Assign vertex colour and thickness | Lily |02/20/2023|02/20/2023|D|
 | F07 | Assign segment colour and thickness | Lily |02/21/2023|02/21/2023|D|
 | F08 | Assign centroid colour and thickness | Lily |02/21/2023|02/21/2023|D|
