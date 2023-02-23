@@ -80,7 +80,7 @@ When you develop features and enrich the product, remember that you have first t
 | F12 |Render vertices and centroids on canvas|Lily|02/20/2023|02/22/2023|D|
 | F13 |Render segments on canvas|Lily|02/21/2023|02/21/2023|D|
 | F14 |Write SVG file|Keira|-------|-----|B(F10-F13)|
-	*Irregular mode:
+	|Irregular mode|
 | F15 |Generate 40 random points| Lily |02/22/2023|02/22/2023|D|
 | F16 |Compute Voronoi diagram| | | |P|
 | F17 |Apply Lloyd relaxation 5 times| | | |P|
