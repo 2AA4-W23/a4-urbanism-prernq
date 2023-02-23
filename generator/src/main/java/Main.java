@@ -9,13 +9,11 @@ public class Main {
     public static String arg1;
 
     public static void main(String[] args) throws IOException {
-
-        DotGen generator = new DotGen();
+        DotGen generator = new DotGen(arg1);
         Mesh myMesh = generator.generate();
         MeshFactory factory = new MeshFactory();
         //factory.write(myMesh, args[0]);
-
-
+/*
         try {
             if (args.length > 1) {
                 if ((args[1].equals("debug")) || (args[1].equals("Debug")) || (args[1].equals("DEBUG"))) {
@@ -36,14 +34,14 @@ public class Main {
             DotGen generator = new DotGen(arg1);
             Mesh myMesh = generator.generate();
             MeshFactory factory = new MeshFactory();
-            factory.write(myMesh, args[0]);
+            //factory.write(myMesh, args[0]);
 
         }
         catch(Exception e) {
             System.out.println("Something went wrong! Please enter the mode correctly! Don't enter an argument for normal mode and \"Debug\" for debug mode.");
         }
 
-
+*/
     }
 
 }
