@@ -19,9 +19,9 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
 public class DotGen {
 
-    private final int width = 3;//was 500
-    private final int height = 3;//was 500
-    private final int square_size = 1;//was 500
+    private final int width = 500;
+    private final int height = 500;
+    private final int square_size = 20;
     public String mode;
     private ArrayList<Double[]> vertex_coords = new ArrayList<Double[]>();
 
@@ -272,13 +272,6 @@ public class DotGen {
                             System.out.println(p.getCentroidIdx()+"should be adding " + ref.getCentroidIdx());
                             neighbours.add(ref.getCentroidIdx());
                             System.out.println(neighbours);
-                            //Polygon.newBuilder(p).addNeighborIdxs(1).build();
-                            //Polygon withNeighbours = Polygon.newBuilder(p).addNeighborIdxs(ref.getCentroidIdx())..build();
-                            //polygonsWithNeighbours.add(withNeighbours);
-
-
-                            //p.toBuilder().addNeighborIdxs(ref.getCentroidIdx()).build();
-                            //polygons.add(Polygon.newBuilder().addNeighborIdxs(ref.getCentroidIdx()).build());
                         }
                     }
                 }
@@ -288,35 +281,6 @@ public class DotGen {
 
         }
 
-        for (Polygon p : polygonsWithNeighbours){
-            System.out.println(p.getCentroidIdx()+": "+p.getNeighborIdxsList());
-        }
-
-        /*
-        //add neighbouring polygons as references
-        for (Polygon p : polygons) {
-            List<Integer> pSegList = p.getSegmentIdxsList();
-            //System.out.println("Centroid: " + p.getCentroidIdx()+ "\tSegment list: "+pSegList);
-            //System.out.println(p.getCentroidIdx());
-            for (int segp : pSegList) {
-                //System.out.println(segp);
-
-                for (Polygon q : polygons) {
-                    List<Integer> qSegList = q.getSegmentIdxsList();
-                    for (int segq : qSegList) {
-                        if ((segp == segq) && (p.getCentroidIdx() != q.getCentroidIdx())) {
-                            int neighbour = q.getCentroidIdx();
-                            polygons.add(Polygon.newBuilder().addNeighborIdxs(neighbour).build());
-                            System.out.println("Added neighbour: " + neighbour);
-
-                        }
-                    }
-                }
-            }
-            //System.out.println("final : "+ p.getCentroidIdx() + " " + p.getNeighborIdxsList());
-        }
-
-         */
 
 
         //the wrong way of making polygons list
@@ -400,7 +364,7 @@ public class DotGen {
         }
         */
 
-/*delete this commented out not the actual code just dont have it commented out
+
         // Create Centroids and list
         ArrayList<Vertex> centroids = new ArrayList<>();
         for (Polygon p : polygons) {
@@ -439,9 +403,8 @@ public class DotGen {
             Vertex colored = Vertex.newBuilder(c).addProperties(color).addProperties(centThickness).build();
             centroidsWithProperties.add(colored);
         }
-                return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).addAllVertices(centroidsWithProperties).build();
-*/
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).build();
+                return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithNeighbours).addAllVertices(centroidsWithProperties).build();
+
 
     }
 }
