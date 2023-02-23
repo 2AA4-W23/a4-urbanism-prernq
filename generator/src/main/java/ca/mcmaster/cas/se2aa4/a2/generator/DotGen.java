@@ -234,6 +234,8 @@ public class DotGen {
 
 
 */
+        /*
+        //testing output for vertices, segments, and polygons
         System.out.println("Vertices:");
         for (int i = 0; i < vertices.size(); i++){
             Vertex v = vertices.get(i);
@@ -247,7 +249,50 @@ public class DotGen {
         for(Polygon p: polygons){
             System.out.println(p.getCentroidIdx() + ": "+p.getSegmentIdxsList());
         }
-/*
+
+         */
+
+
+        //Adding neighbouring polygons as references
+        ArrayList<Polygon> polygonsWithNeighbours = new ArrayList<>();
+
+        for (Polygon p : polygons){
+            List<Integer> pSegs = p.getSegmentIdxsList();
+            ArrayList<Integer> neighbours = new ArrayList<>();
+            //System.out.println("\n\npsegs: "+pSegs);
+
+
+            for (int i = 0; i < pSegs.size(); i++){
+                for (Polygon ref: polygons) {
+                    List<Integer> refSegs = ref.getSegmentIdxsList();
+                    //System.out.println("refsegs "+refSegs);
+
+                    for (int j = 0; j < refSegs.size(); j++) {
+                        if ((refSegs.get(j) == pSegs.get(i)) && (ref.getCentroidIdx() != p.getCentroidIdx())) {
+                            System.out.println(p.getCentroidIdx()+"should be adding " + ref.getCentroidIdx());
+                            neighbours.add(ref.getCentroidIdx());
+                            System.out.println(neighbours);
+                            //Polygon.newBuilder(p).addNeighborIdxs(1).build();
+                            //Polygon withNeighbours = Polygon.newBuilder(p).addNeighborIdxs(ref.getCentroidIdx())..build();
+                            //polygonsWithNeighbours.add(withNeighbours);
+
+
+                            //p.toBuilder().addNeighborIdxs(ref.getCentroidIdx()).build();
+                            //polygons.add(Polygon.newBuilder().addNeighborIdxs(ref.getCentroidIdx()).build());
+                        }
+                    }
+                }
+            }
+            Polygon withNeighbours = Polygon.newBuilder(p).addAllNeighborIdxs(neighbours).build();
+            polygonsWithNeighbours.add(withNeighbours);
+
+        }
+
+        for (Polygon p : polygonsWithNeighbours){
+            System.out.println(p.getCentroidIdx()+": "+p.getNeighborIdxsList());
+        }
+
+        /*
         //add neighbouring polygons as references
         for (Polygon p : polygons) {
             List<Integer> pSegList = p.getSegmentIdxsList();
@@ -259,10 +304,6 @@ public class DotGen {
                 for (Polygon q : polygons) {
                     List<Integer> qSegList = q.getSegmentIdxsList();
                     for (int segq : qSegList) {
-                        if(segp==segq) {
-                            //System.out.println("segp: " + segp + "\tsegq: " + segq);
-                            //System.out.println("pcent " + p.getCentroidIdx() + "\tqcent: " + q.getCentroidIdx());
-                        }
                         if ((segp == segq) && (p.getCentroidIdx() != q.getCentroidIdx())) {
                             int neighbour = q.getCentroidIdx();
                             polygons.add(Polygon.newBuilder().addNeighborIdxs(neighbour).build());
@@ -275,7 +316,9 @@ public class DotGen {
             //System.out.println("final : "+ p.getCentroidIdx() + " " + p.getNeighborIdxsList());
         }
 
-*/
+         */
+
+
         //the wrong way of making polygons list
         /*
         ArrayList<ArrayList<Segment>> shapes = new ArrayList<>();
