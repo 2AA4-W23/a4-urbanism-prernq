@@ -19,8 +19,8 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
 public class DotGen {
 
-    private final int width = 2;//was 500
-    private final int height = 2;//was 500
+    private final int width = 3;//was 500
+    private final int height = 3;//was 500
     private final int square_size = 1;//was 500
     public String mode;
     private ArrayList<Double[]> vertex_coords = new ArrayList<Double[]>();
@@ -48,45 +48,30 @@ public class DotGen {
         for (int i = 0; i < vertices.size(); i++){
             Vertex v1 = vertices.get(i);
             Double v1XCoord = v1.getX();
-
             Double v1YCoord = v1.getY();
-            System.out.println("\n\nVertex1:\nX: " +v1XCoord+"\tY: " + v1YCoord);
+
             for (int j = 0; j < vertices.size(); j++){
                 Vertex v2 = vertices.get(j);
                 Double v2XCoord = v2.getX();
                 Double v2YCoord = v2.getY();
-                System.out.println("\n\nVertex2:\nX: "+v2XCoord+"\tY: "+v2YCoord);
 
                 if (compare(v2XCoord,v1XCoord) == 0){
                     Double diff = v2YCoord - v1YCoord;
-                    System.out.println(diff);
-
                     if (diff == square_size){
                         segments.add(Segment.newBuilder().setV1Idx(i).setV2Idx(j).build());
-                        System.out.println("Segment made");
-
                     }
-
                 }
                 if (compare(v1YCoord,v2YCoord) == 0){
                     Double diff = v2XCoord - v1XCoord;
-                    System.out.println(diff);
-
                     if (diff == square_size){
                         segments.add(Segment.newBuilder().setV1Idx(i).setV2Idx(j).build());
-                        System.out.println("Segment made");
-
                     }
-
                 }
             }
         }
-        int temp=0;
-        for (Segment s: segments){
-            System.out.println("Index " +temp+": \tV1: "+s.getV1Idx()+"\tV2: "+s.getV2Idx());
-            temp++;
-        }
+
         /*
+        //usable segment generator but creates repeating segments
         for (int x = 0; x < vertices.size() - 1; x += 4) {
             //following line only works for squares
             Vertex v = vertices.get(x);
@@ -208,13 +193,61 @@ public class DotGen {
         //Create List of Polygons for squares
         //Since the segments are added by the order of vertices, which are added by creating 4 at a time, the segments are pre ordered for each polygon
         ArrayList<Polygon> polygons = new ArrayList<>();
-        int centIdx = 0;
-        for (int x = 0; x < segments.size() - 1; x += 4) {
-            polygons.add(Polygon.newBuilder().setCentroidIdx(centIdx).addSegmentIdxs(x).addSegmentIdxs(x + 1).addSegmentIdxs(x + 2).addSegmentIdxs(x + 3).build());
-            centIdx++;
 
+        int centIdx = 0;
+        for (int i = 0; i < segments.size(); i+=2){
+            Segment s1 = segments.get(i);
+            int s1v1 = s1.getV1Idx();
+            int s1v2 = s1.getV2Idx();
+            for (int j = 0; j < segments.size(); j++){
+                Segment s2 = segments.get(j);
+                int s2v1 = s2.getV1Idx();
+                int s2v2 = s2.getV2Idx();
+
+                if ((s1v2 == s2v1) && (i != j)){
+                    for (int k = 0; k < segments.size(); k++){
+                        Segment s3 = segments.get(k);
+                        int s3v1 = s3.getV1Idx();
+                        int s3v2 = s3.getV2Idx();
+
+                        if ((s2v2 == s3v2) && (i != k) && (j != k)){
+                            for (int l = 0; l < segments.size(); l++){
+                                Segment s4 = segments.get(l);
+                                int s4v1 = s4.getV1Idx();
+                                int s4v2 = s4.getV2Idx();
+
+                                if ((s3v1 == s4v2) && (s4v1 == s1v1) && (i != l) && (j != l) && (k != l)){
+                                    polygons.add(Polygon.newBuilder().setCentroidIdx(centIdx).addSegmentIdxs(i).addSegmentIdxs(j).addSegmentIdxs(k).addSegmentIdxs(l).build());
+                                    centIdx++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
+        /* old version doesnt work with no repeating segments
+        for (int x = 0; x < segments.size() - 1; x += 4) {
+            polygons.add(Polygon.newBuilder().addSegmentIdxs(x).addSegmentIdxs(x + 1).addSegmentIdxs(x + 2).addSegmentIdxs(x + 3).build());
+        }
+
+
+*/
+        System.out.println("Vertices:");
+        for (int i = 0; i < vertices.size(); i++){
+            Vertex v = vertices.get(i);
+            System.out.println("Vertex"+i+":\t X: "+v.getX()+"\tY: "+v.getY());
+        }
+        int c = 0;
+        for (Segment s : segments){
+            System.out.println("Segment"+c+": V1:"+s.getV1Idx()+"\tV2: "+s.getV2Idx());
+            c++;
+        }
+        for(Polygon p: polygons){
+            System.out.println(p.getCentroidIdx() + ": "+p.getSegmentIdxsList());
+        }
+/*
         //add neighbouring polygons as references
         for (Polygon p : polygons) {
             List<Integer> pSegList = p.getSegmentIdxsList();
@@ -242,7 +275,7 @@ public class DotGen {
             //System.out.println("final : "+ p.getCentroidIdx() + " " + p.getNeighborIdxsList());
         }
 
-
+*/
         //the wrong way of making polygons list
         /*
         ArrayList<ArrayList<Segment>> shapes = new ArrayList<>();
