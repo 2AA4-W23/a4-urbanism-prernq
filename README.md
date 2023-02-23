@@ -66,6 +66,7 @@ When you develop features and enrich the product, remember that you have first t
 
 | Id  | Feature title | Who? | Start | End | Status |
 | :-: |:-:            |---   | :-:   | :-: | :-:    |
+| |---GRID MODE---| | | | | |
 | F01 | Create list of vertices | Prerna |02/17/2023|02/20/2023|D|
 | F02 | Create list of segments | Prerna |02/17/2023|02/20/2023|D|
 | F03 | Create list of Polygons | Prerna |02/19/2023|02/20/2023|D|
