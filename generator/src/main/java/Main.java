@@ -28,7 +28,7 @@ public class Main {
             }
 
             DotGen generator = new DotGen(arg1);
-            Mesh myMesh = generator.generate();
+            Mesh myMesh = generator.generategrid();
             MeshFactory factory = new MeshFactory();
             factory.write(myMesh, args[0]);
 
