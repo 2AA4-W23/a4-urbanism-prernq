@@ -403,9 +403,7 @@ public class DotGen {
             Vertex withProperties = Vertex.newBuilder(c).addProperties(color).addProperties(centThickness).build();
             centroidsWithProperties.add(withProperties);
         }
-                return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithNeighbours).addAllVertices(centroidsWithProperties).build();
-
-
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithNeighbours).addAllVertices(centroidsWithProperties).build();
     }
 
     public Mesh generateirregular() {
