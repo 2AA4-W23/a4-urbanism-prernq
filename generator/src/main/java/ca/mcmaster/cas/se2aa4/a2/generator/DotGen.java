@@ -15,7 +15,12 @@ public class DotGen {
     private final int width = 500;
     private final int height = 500;
     private final int square_size = 20;
+    public String mode;
     private ArrayList<Double[]> vertex_coords = new ArrayList<Double[]>();
+
+    public DotGen(String arg1) {
+        mode = arg1;
+    }
 
     public Mesh generate() {
         ArrayList<Vertex> vertices = new ArrayList<>();
@@ -34,8 +39,15 @@ public class DotGen {
 
         // Create all the segments
         ArrayList<Segment> segments = new ArrayList<>();
-        for (int x = 0; x < vertices.size() - 1; x++) {
-            segments.add(Segment.newBuilder().setV1Idx(x).setV2Idx(x + 1).build());
+        for (int x = 0; x < vertices.size() - 1; x+=4) {
+            //following line only works for squares
+            Vertex v = vertices.get(x);
+            if(v.getX() < width && v.getY() < height){
+                segments.add(Segment.newBuilder().setV1Idx(x).setV2Idx(x + 1).build());
+                segments.add(Segment.newBuilder().setV1Idx(x).setV2Idx(x + 2).build());
+                segments.add(Segment.newBuilder().setV1Idx(x + 1).setV2Idx(x + 3).build());
+                segments.add(Segment.newBuilder().setV1Idx(x + 2).setV2Idx(x + 3).build());
+            }
         }
 
         // Distribute colors and thicknesses randomly. Vertices are immutable, need to enrich them
@@ -43,10 +55,26 @@ public class DotGen {
 
         Random bag = new Random();
         int vertThicknessNumber = bag.nextInt(11 - 3) + 3;
+
         for(Vertex v: vertices){
             int red = bag.nextInt(255);
             int green = bag.nextInt(255);
             int blue = bag.nextInt(255);
+
+        for(Vertex v: vertices) {
+            int blue;
+            int green;
+            int red;
+            if (mode == "debug") {
+                red = 0;
+                green = 0;
+                blue = 0;
+            } else {
+                red = bag.nextInt(255);
+                green = bag.nextInt(255);
+                blue = bag.nextInt(255);
+            }
+
 
             //int vertThicknessNumber = bag.nextInt(11);
             String colorCode = red + "," + green + "," + blue;
@@ -62,39 +90,52 @@ public class DotGen {
         int segThicknessNumber = bag.nextInt(5 - 1) + 1;
         for (Segment s : segments) {
 
-            int vertex1Idx = s.getV1Idx();
-            int vertex2Idx = s.getV2Idx();
-            Vertex vertex1 = verticesWithProperties.get(vertex1Idx);
-            Vertex vertex2 = verticesWithProperties.get(vertex2Idx);
+            int RedAverage;
+            int GreenAverage;
+            int BlueAverage;
 
-            List<Property> properties_v1 = vertex1.getPropertiesList();
-            List<Property> properties_v2 = vertex2.getPropertiesList();
-            String color_code_v1 = null;
-            String color_code_v2 = null;
-            
-            for(Property p: properties_v1){
-                if(p.getKey().equals("rgb_color")){
-                    color_code_v1 = p.getValue();
-                }
+            if (mode == "debug") {
+                RedAverage = 0;
+                GreenAverage = 0;
+                BlueAverage = 0;
             }
-            for(Property p: properties_v2){
-                if(p.getKey().equals("rgb_color")){
-                    color_code_v2 = p.getValue();
-                }
-            }
-            String[] colors_v1 = color_code_v1.split(",");
-            String[] colors_v2 = color_code_v2.split(",");
-            
-            int red_v1 = Integer.parseInt(colors_v1[0]);
-            int green_v1 = Integer.parseInt(colors_v1[1]);
-            int blue_v1 = Integer.parseInt(colors_v1[2]);
-            int red_v2 = Integer.parseInt(colors_v2[0]);
-            int green_v2 = Integer.parseInt(colors_v2[1]);
-            int blue_v2 = Integer.parseInt(colors_v2[2]);
+            else {
+                int vertex1Idx = s.getV1Idx();
+                int vertex2Idx = s.getV2Idx();
+                Vertex vertex1 = verticesWithProperties.get(vertex1Idx);
+                Vertex vertex2 = verticesWithProperties.get(vertex2Idx);
 
-            int RedAverage = (red_v1 + red_v2) / 2;
-            int GreenAverage = (green_v1 + green_v2) / 2;
-            int BlueAverage = (blue_v1 + blue_v2) / 2;
+                List<Property> properties_v1 = vertex1.getPropertiesList();
+                List<Property> properties_v2 = vertex2.getPropertiesList();
+                String color_code_v1 = null;
+                String color_code_v2 = null;
+
+                for(Property p: properties_v1){
+                    if(p.getKey().equals("rgb_color")){
+                        color_code_v1 = p.getValue();
+                    }
+                }
+                for(Property p: properties_v2){
+                    if(p.getKey().equals("rgb_color")){
+                        color_code_v2 = p.getValue();
+                    }
+                }
+                String[] colors_v1 = color_code_v1.split(",");
+                String[] colors_v2 = color_code_v2.split(",");
+
+                int red_v1 = Integer.parseInt(colors_v1[0]);
+                int green_v1 = Integer.parseInt(colors_v1[1]);
+                int blue_v1 = Integer.parseInt(colors_v1[2]);
+                int red_v2 = Integer.parseInt(colors_v2[0]);
+                int green_v2 = Integer.parseInt(colors_v2[1]);
+                int blue_v2 = Integer.parseInt(colors_v2[2]);
+
+                RedAverage = (red_v1 + red_v2) / 2;
+                GreenAverage = (green_v1 + green_v2) / 2;
+                BlueAverage = (blue_v1 + blue_v2) / 2;
+
+            }
+
             String colorCode = RedAverage + "," + GreenAverage + "," + BlueAverage;
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
 
@@ -112,7 +153,7 @@ public class DotGen {
         //Create List of Polygons for squares
         //Since the segments are added by the order of vertices, which are added by creating 4 at a time, the segments are pre ordered for each polygon
         ArrayList<Polygon> polygons = new ArrayList<>();
-        for(int x = 0; x < segments.size(); x+= 4){
+        for(int x = 0; x < segments.size()-1; x+= 4){
             polygons.add(Polygon.newBuilder().addSegmentIdxs(x).addSegmentIdxs(x+1).addSegmentIdxs(x+2).addSegmentIdxs(x+3).build());
         }
 
@@ -222,8 +263,44 @@ public class DotGen {
 
 
         // Create Centroids and list
+        ArrayList<Vertex> centroids = new ArrayList<>();
+        for(Polygon p : polygons){
+            List<Integer> polygon_segments = p.getSegmentIdxsList();
+            int number_of_segments = polygon_segments.size();
+            double x_coord_total = 0.0;
+            double y_coord_total = 0.0;
+            double x_coord_avg = 0.0;
+            double y_coord_avg = 0.0;
+
+            for(int x=0; x < number_of_segments; x++){
+                Segment s = segments.get((polygon_segments.get(x)));
+                int vertex1Idx = s.getV1Idx();
+                int vertex2Idx = s.getV2Idx();
+                Vertex vertex1 = vertices.get(vertex1Idx);
+                Vertex vertex2 = vertices.get(vertex2Idx);
+                x_coord_total += vertex1.getX();
+                y_coord_total += vertex1.getY();
+                x_coord_total += vertex2.getX();
+                y_coord_total += vertex2.getY();
+            }
+            x_coord_avg = x_coord_total/(number_of_segments*2);
+            y_coord_avg = y_coord_total/(number_of_segments*2);
+            if ((x_coord_avg <= width) && (y_coord_avg <= height)) {
+                centroids.add(Vertex.newBuilder().setX((double) x_coord_avg).setY((double) y_coord_avg).build());
+            }
+        }
+
+        //Distribute centroid colours
+        ArrayList<Vertex> centroidsWithProperties = new ArrayList<>();
+        int centThicknessNumber = 3;
+        for(Vertex c: centroids){
+            Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
+            String centThicknessValue = String.valueOf(centThicknessNumber);
+            Property centThickness = Property.newBuilder().setKey("thickness").setValue(centThicknessValue).build();
+            Vertex colored = Vertex.newBuilder(c).addProperties(color).addProperties(centThickness).build();
+            centroidsWithProperties.add(colored);
+        }
         
-        
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).addAllVertices(centroidsWithProperties).build();
     }
 }

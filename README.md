@@ -22,11 +22,11 @@ After installation, you'll find an application named `generator.jar` in the `gen
 
 ### Generator
 
-To run the generator, go to the `generator` directory, and use `java -jar` to run the product. The product takes one single argument (so far), the name of the file where the generated mesh will be stored as binary.
+To run the generator, go to the `generator` directory, and use `java -jar` to run the product. The product can take one or two arguments (so far), the name of the file where the generated mesh will be stored as binary, and the mode you would like the mesh to be in (enter "debug" as the second argument for debug mode or nothing as the second argument for normal mode).
 
 ```
 mosser@azrael A2 % cd generator 
-mosser@azrael generator % java -jar generator.jar sample.mesh
+mosser@azrael generator % java -jar generator.jar sample.mesh debug
 mosser@azrael generator % ls -lh sample.mesh
 -rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 sample.mesh
 mosser@azrael generator % 
@@ -65,21 +65,21 @@ When you develop features and enrich the product, remember that you have first t
 
 | Id  | Feature title | Who? | Start | End | Status |
 | :-: |:-:            |---   | :-:   | :-: | :-:    |
-| F01 | Create list of vertices | Prerna |-------|-----|P|
-| F02 | Create list of segments | Prerna |-------|-----|B(F01)|
-| F03 | Create list of Polygons | Prerna |-------|-----|B(F02)|
-| F04 | Create list of centroids | Prerna |-------|-----|B(F03)|
-| F05 | Reference neighbouring polygons | Keira |-------|-----|B(F03)|
+| F01 | Create list of vertices | Prerna |02/17/2023|02/20/2023|D|
+| F02 | Create list of segments | Prerna |02/17/2023|02/20/2023|D|
+| F03 | Create list of Polygons | Prerna |02/19/2023|02/20/2023|D|
+| F04 | Create list of centroids | Prerna |02/19/2023|02/21/2023|D|
+| F05 | Reference neighbouring polygons | Keira |-------|-----|P|
 | F06 | Assign vertex colour and thickness | Lily |02/20/2023|02/20/2023|D|
-| F07 | Assign segment colour and thickness | Lily |02/21/2023|02/21/2023|P|
-| F08 | Assign polygon colour and thickness | Lily |-------|-----|P|
+| F07 | Assign segment colour and thickness | Lily |02/21/2023|02/21/2023|D|
+| F08 | Assign centroid colour and thickness | Lily |02/21/2023|02/21/2023|D|
 | F09 | Add centroid and segment data to MeshDump | Keira |-------|-----|P|
 | F10 |Create SVG canvas| Keira |-------|-----|P|
-| F11 |Implement switching between debug and normal mode| Lily |-------|-----|P|
-| F12 |Render vertices and centroids on canvas|Keira|-------|-----|P|
-| F13 |Render segments on canvas|Keira|-------|-----|P|
+| F11 |Implement switching between debug and normal mode| Lily |02/21/2023|02/22/2023|P|
+| F12 |Render vertices and centroids on canvas|Lily|02/20/2023|-----|P|
+| F13 |Render segments on canvas|Lily|02/21/2023|02/21/2023|D|
 | F14 |Write SVG file|Keira|-------|-----|B(F10-F13)|
-| F15 |Generate 20 random points| | | |P|
+| F15 |Generate 20 random points| Lily |02/22/2023| |P|
 | F16 |Compute Voronoi diagram| | | |P|
 | F17 |Apply Lloyd relaxation 5 times| | | |P|
 | F18 |Crop the mesh to appropriate size| | | |P|
