@@ -29,7 +29,7 @@ public class DotGen {
         mode = arg1;
     }
 
-    public Mesh generate() {
+    public Mesh generategrid() {
         ArrayList<Vertex> vertices = new ArrayList<>();
         // Create all the vertices
         for (int x = 0; x <= width; x += square_size) {
@@ -429,19 +429,56 @@ public class DotGen {
             }
         }
 
-        //Distribute centroid colours
+        //Distribute centroid colours and thickness
         ArrayList<Vertex> centroidsWithProperties = new ArrayList<>();
         int centThicknessNumber = 3;
         for (Vertex c : centroids) {
             Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
             String centThicknessValue = String.valueOf(centThicknessNumber);
             Property centThickness = Property.newBuilder().setKey("thickness").setValue(centThicknessValue).build();
-            Vertex colored = Vertex.newBuilder(c).addProperties(color).addProperties(centThickness).build();
-            centroidsWithProperties.add(colored);
+            Vertex withProperties = Vertex.newBuilder(c).addProperties(color).addProperties(centThickness).build();
+            centroidsWithProperties.add(withProperties);
         }
                 return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).addAllVertices(centroidsWithProperties).build();
 */
         return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).build();
 
+    }
+
+    public Mesh generateirregular() {
+
+        //create random points
+        Random bag = new Random();
+        ArrayList<Vertex> points = new ArrayList<>();
+        int number = 40;
+        for (int i = 0; i < number; i++) {
+            int x = 0;
+            int y = 0;
+            boolean contains = true;
+            while (contains == true) {
+                contains = false;
+                x = bag.nextInt((width + 1) - 0) + 0;
+                y = bag.nextInt((height + 1) - 0) + 0;
+                for (Vertex p : points) {
+                    if ((p.getX() == x) && (p.getY() == y)) {
+                        contains = true;
+                    }
+                }
+            }
+            points.add(Vertex.newBuilder().setX(x).setY(y).build());
+        }
+
+        //Distribute points colours and thickness (red, 3).
+        ArrayList<Vertex> pointsWithProperties = new ArrayList<>();
+        int pointThicknessNumber = 3;
+        for(Vertex p: points) {
+            Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
+            String pointThicknessValue = String.valueOf(pointThicknessNumber);
+            Property pointThickness = Property.newBuilder().setKey("thickness").setValue(pointThicknessValue).build();
+            Vertex withProperties = Vertex.newBuilder(p).addProperties(color).addProperties(pointThickness).build();
+            pointsWithProperties.add(withProperties);
+        }
+
+        return Mesh.newBuilder().addAllVertices(pointsWithProperties).build();
     }
 }
