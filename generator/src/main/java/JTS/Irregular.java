@@ -22,11 +22,6 @@ public class Irregular {
     public ArrayList<ArrayList<ArrayList<Double>>> voronoiDiagram() {
 
 
-
-        GeometryFactory geomFact = new GeometryFactory();
-        VoronoiDiagramBuilder voronoi = new VoronoiDiagramBuilder();
-
-
         int numPoints = 40;
         Random bag = new Random();
         ArrayList<ArrayList<ArrayList<Double>>> polyCoords = new ArrayList<>(numPoints);
@@ -40,8 +35,12 @@ public class Irregular {
 
         //System.out.println("coords \n\n"+coords); //outputs list of coords: [(169.0, 354.0, 0.0), (413.0, 376.0, 0.0),...,]
 
+
+        GeometryFactory geomFact = new GeometryFactory();
+        VoronoiDiagramBuilder voronoi = new VoronoiDiagramBuilder();
         voronoi.setSites(randCoords);
-        voronoi.setTolerance(0.01);
+        Envelope clipEnv = new Envelope((double) 0.0, (double) width, (double) 0.0, (double) height);
+        voronoi.setClipEnvelope(clipEnv);
 
         Geometry diagram = voronoi.getDiagram(geomFact);
         //System.out.println("polygon collection: \n\n"+polygonCollection);
@@ -71,7 +70,7 @@ public class Irregular {
                     polyCoords.get(i).get(j).add(0,x);
                     polyCoords.get(i).get(j).add(1,y);
 
-                    //System.out.println("\n\nshell: "+shell[j]+"\tpolycoords: ("+polyCoords.get(i).get(j).get(0)+","+polyCoords.get(i).get(j).get(1)+")");
+                    System.out.println("\n\nshell: "+shell[j]+"\tpolycoords: ("+polyCoords.get(i).get(j).get(0)+","+polyCoords.get(i).get(j).get(1)+")");
                 }
 
 
