@@ -429,6 +429,8 @@ public class DotGen {
             points.add(Vertex.newBuilder().setX(x).setY(y).build());
         }
 
+        //ArrayList<ArrayList<ArrayList<Double>>> polygonsJTS = libJTS.
+
         //Distribute points colours and thickness (red, 3).
         ArrayList<Vertex> pointsWithProperties = new ArrayList<>();
         int pointThicknessNumber = 3;
@@ -439,6 +441,10 @@ public class DotGen {
             Vertex withProperties = Vertex.newBuilder(p).addProperties(color).addProperties(pointThickness).build();
             pointsWithProperties.add(withProperties);
         }
+
+
+
+
 
         return Mesh.newBuilder().addAllVertices(pointsWithProperties).build();
     }
