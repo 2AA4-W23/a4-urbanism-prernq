@@ -1,3 +1,5 @@
+package JTS;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
@@ -32,7 +34,7 @@ public class Irregular {
         for (int i = 0; i < numPoints; i++){
             int randX = bag.nextInt((width + 1) - 0) + 0;
             int randY = bag.nextInt((height + 1) - 0) + 0;
-            System.out.println("Adding vertex: ("+randX+","+randY+")");
+            //System.out.println("Adding vertex: ("+randX+","+randY+")");
             randCoords.add(new Coordinate(randX,randY));
         }
 
@@ -59,7 +61,7 @@ public class Irregular {
                 Coordinate[] shell = p.getCoordinates();
                 polyCoords.add(new ArrayList<ArrayList<Double>>(shell.length));
 
-                System.out.println("Vertices "+i);
+
                 for (int j=0; j<shell.length; j++){
                     polyCoords.get(i).add(new ArrayList<Double>(2));
                     Double x = shell[j].getX();

@@ -1,3 +1,4 @@
+import JTS.Irregular;
 import ca.mcmaster.cas.se2aa4.a2.generator.DotGen;
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
@@ -33,11 +34,6 @@ public class Main {
                 Mesh myMesh = generator.generateirregular();
                 MeshFactory factory = new MeshFactory();
                 factory.write(myMesh, args[0]);
-
-                //DELETE THIS
-                Irregular test = new Irregular();
-                test.voronoiDiagram();
-
             }
             else if (args[1].equals("GR")) {
                 arg2 = "grid";

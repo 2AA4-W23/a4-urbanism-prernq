@@ -15,6 +15,8 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
+import JTS.Irregular;
+
 
 
 public class DotGen {
@@ -408,6 +410,32 @@ public class DotGen {
 
     public Mesh generateirregular() {
 
+        Irregular libJTS = new Irregular();
+        ArrayList<ArrayList<ArrayList<Double>>> voronoiPoly = libJTS.voronoiDiagram();
+        ArrayList<Vertex> points = new ArrayList<>();
+
+        points.add(Vertex.newBuilder().setX(voronoiPoly.get(0).get(0).get(0)).setY(voronoiPoly.get(0).get(0).get(1)).build());
+
+        for (int i = 0; i < voronoiPoly.size(); i++){
+            System.out.println("i: "+i);
+
+            for (int j = 0; j < voronoiPoly.get(i).size(); j++){
+                //System.out.println(voronoiPoly.get(i).get(j).get(0));
+
+                //System.out.println(voronoiPoly.get(i).get(j).get(1));
+
+                points.add(Vertex.newBuilder().setX(voronoiPoly.get(i).get(j).get(0)).setY(voronoiPoly.get(i).get(j).get(1)).build());
+
+                //for (Vertex v : points){
+                    //System.out.println(v.getX());
+                   // System.out.println(v.getY());
+                    points.add(Vertex.newBuilder().setX(voronoiPoly.get(i).get(j).get(0)).setY(voronoiPoly.get(i).get(j).get(1)).build());
+
+
+                //}
+            }
+        }
+/*
         //create random points
         Random bag = new Random();
         ArrayList<Vertex> points = new ArrayList<>();
@@ -429,7 +457,8 @@ public class DotGen {
             points.add(Vertex.newBuilder().setX(x).setY(y).build());
         }
 
-        //ArrayList<ArrayList<ArrayList<Double>>> polygonsJTS = libJTS.
+ */
+
 
         //Distribute points colours and thickness (red, 3).
         ArrayList<Vertex> pointsWithProperties = new ArrayList<>();
@@ -442,8 +471,9 @@ public class DotGen {
             pointsWithProperties.add(withProperties);
         }
 
-
-
+        for (Vertex v: points){
+            System.out.println(v.getX()+ " "+v.getY());
+        }
 
 
         return Mesh.newBuilder().addAllVertices(pointsWithProperties).build();
