@@ -25,15 +25,16 @@ After installation, you'll find an application named `generator.jar` in the `gen
 To run the generator, go to the `generator` directory, and use `java -jar` to run the product. The product can take two or three arguments (so far), the name of the file where the generated mesh will be stored as binary, the type of mesh you want (either grid or irregular) and the mode you would like the mesh to be in (either normal or debug). The first argument must be 'sample.mesh', the second must either be 'GR' for a grid or 'IR' for irregular, and the third should be 'debug' if debug mode is desired (nothing for normal mode).
 
 ```
-mosser@azrael A2 % cd generator 
-4 options below to generate a mesh:
+mosser@azrael A2 % cd generator
+
+	* 4 options below to generate a mesh:
 mosser@azrael generator % java -jar generator.jar sample.mesh GR debug
 	* (this will produce a grid in debug mode)
 mosser@azrael generator % java -jar generator.jar sample.mesh GR
 	* (this will produce a grid in normal mode)
 mosser@azrael generator % java -jar generator.jar sample.mesh IR
 	* (this will produce an irregular mesh in normal mode)
-osser@azrael generator % java -jar generator.jar sample.mesh IR debug
+mosser@azrael generator % java -jar generator.jar sample.mesh IR debug
 	* (this will produce an irregular mesh in debug mode) to be created?
 
 mosser@azrael generator % ls -lh sample.mesh
