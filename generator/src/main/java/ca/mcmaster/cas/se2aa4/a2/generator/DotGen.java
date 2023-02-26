@@ -485,6 +485,19 @@ public class DotGen {
         }
         */
 
+        //another crop method? - doesnt work either
+        /*
+        for(int x = 0; x < vertices.size(); x++){
+            Vertex v = vertices.get(x);
+            double x_coord = v.getX();
+            double y_coord = v.getY();
+            if(0 > x_coord || x_coord > width || 0 > y_coord || y_coord > height){
+                vertices.remove(x);
+            }
+        }
+        */
+        
+
         //list of segments
         for (int i = 0; i < voronoiPoly.size(); i++){
             System.out.println("Starting");
