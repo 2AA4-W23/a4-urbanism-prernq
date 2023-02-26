@@ -22,7 +22,7 @@ public class Irregular {
     public ArrayList<ArrayList<ArrayList<Double>>> voronoiDiagram() {
 
 
-        int numPoints = 40;
+        int numPoints = 120;
         Random bag = new Random();
         ArrayList<ArrayList<ArrayList<Double>>> polyCoords = new ArrayList<>(numPoints);
 

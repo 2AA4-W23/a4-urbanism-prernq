@@ -42,8 +42,13 @@ public class GraphicRenderer {
             Stroke segstroke = new BasicStroke(thickness);
             canvas.setStroke(segstroke);
 
+            canvas.drawLine((int) vertex1.getX(), (int) vertex1.getY(), (int) vertex2.getX(), (int) vertex2.getY());
+
+            // previous way to draw segments, when multiple vertices and segments were being created
+            /*
             if((int)vertex1.getX() == (int)vertex2.getX() || (int) vertex1.getY() == (int) vertex2.getY()){
-                canvas.drawLine((int) vertex1.getX(), (int) vertex1.getY(), (int) vertex2.getX(), (int) vertex2.getY());}
+                canvas.drawLine((int) vertex1.getX(), (int) vertex1.getY(), (int) vertex2.getX(), (int) vertex2.getY());}*/
+                
             canvas.setColor(old);
             canvas.setStroke(stroke);
         }
