@@ -397,7 +397,7 @@ public class DotGen {
                 centroid_coords.add(coordinates);
             }
         }
-/*
+
         //Distribute centroid colours and thickness
         ArrayList<Vertex> centroidsWithProperties = new ArrayList<>();
         int centThicknessNumber = 3;
@@ -409,26 +409,9 @@ public class DotGen {
             centroidsWithProperties.add(withProperties);
         }
 
- */
-        //set polygon properties
-        ArrayList<Polygon> polygonsWithProperties = new ArrayList<>();
-        int polygonThicknessNumber = 3;
-        for(Polygon p: polygonsWithNeighbours) {
-            Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
-            String polygonThicknessValue = String.valueOf(polygonThicknessNumber);
-            Property polygonThickness = Property.newBuilder().setKey("thickness").setValue(polygonThicknessValue).build();
-            Double[] coordinates = centroid_coords.get(p.getCentroidIdx());
-            String xCentroidValue = String.valueOf(coordinates[0]);
-            Property xCentroid = Property.newBuilder().setKey("x-coordinate").setValue(xCentroidValue).build();
-            String yCentroidValue = String.valueOf(coordinates[1]);
-            Property yCentroid = Property.newBuilder().setKey("y-coordinate").setValue(yCentroidValue).build();
-            Polygon withProperties = Polygon.newBuilder(p).addProperties(color).addProperties(polygonThickness).addProperties(xCentroid).addProperties(yCentroid).build();
-            polygonsWithProperties.add(withProperties);
-        }
 
 
-
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithNeighbours).addAllPolygons(polygonsWithProperties).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithNeighbours).addAllVertices(centroidsWithProperties).build();
     }
 
     public Mesh generateirregular() {
@@ -664,15 +647,20 @@ public class DotGen {
             polygons.add(Polygon.newBuilder().setCentroidIdx(i).addAllSegmentIdxs(segIdxs).build());
         }
 
+        ArrayList<Vertex> centroids = new ArrayList<>();
+        for (Double[] c : centroid_coords){
+            centroids.add(Vertex.newBuilder().setX(c[0]).setY(c[1]).build());
+        }
+
         //Distribute points colours and thickness (red, 3).
-        ArrayList<Vertex> pointsWithProperties = new ArrayList<>();
-        int pointThicknessNumber = 3;
-        for(Vertex p: points) {
+        ArrayList<Vertex> centroidsWithProperties = new ArrayList<>();
+        int centroidThicknessNumber = 3;
+        for(Vertex c: centroids) {
             Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
-            String pointThicknessValue = String.valueOf(pointThicknessNumber);
-            Property pointThickness = Property.newBuilder().setKey("thickness").setValue(pointThicknessValue).build();
-            Vertex withProperties = Vertex.newBuilder(p).addProperties(color).addProperties(pointThickness).build();
-            pointsWithProperties.add(withProperties);
+            String centroidThicknessValue = String.valueOf(centroidThicknessNumber);
+            Property centroidThickness = Property.newBuilder().setKey("thickness").setValue(centroidThicknessValue).build();
+            Vertex withProperties = Vertex.newBuilder(c).addProperties(color).addProperties(centroidThickness).build();
+            centroidsWithProperties.add(withProperties);
         }
 
         //Distribute points colours and thickness (red, 3).
@@ -766,17 +754,15 @@ public class DotGen {
             Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
             String polygonThicknessValue = String.valueOf(polygonThicknessNumber);
             Property polygonThickness = Property.newBuilder().setKey("thickness").setValue(polygonThicknessValue).build();
-            Double[] coordinates = centroid_coords.get(p.getCentroidIdx());
-            String xCentroidValue = String.valueOf(coordinates[0]);
-            Property xCentroid = Property.newBuilder().setKey("x-coordinate").setValue(xCentroidValue).build();
-            String yCentroidValue = String.valueOf(coordinates[1]);
-            Property yCentroid = Property.newBuilder().setKey("y-coordinate").setValue(yCentroidValue).build();
-            Polygon withProperties = Polygon.newBuilder(p).addProperties(color).addProperties(polygonThickness).addProperties(xCentroid).addProperties(yCentroid).build();
+            //Double[] coordinates = centroid_coords.get(p.getCentroidIdx());
+           // String xCentroidValue = String.valueOf(coordinates[0]);
+            //Property xCentroid = Property.newBuilder().setKey("x-coordinate").setValue(xCentroidValue).build();
+            //String yCentroidValue = String.valueOf(coordinates[1]);
+            //Property yCentroid = Property.newBuilder().setKey("y-coordinate").setValue(yCentroidValue).build();
+            //Polygon withProperties = Polygon.newBuilder(p).addProperties(color).addProperties(polygonThickness).addProperties(xCentroid).addProperties(yCentroid).build();
+            Polygon withProperties = Polygon.newBuilder(p).addProperties(color).addProperties(polygonThickness).build();
             polygonsWithProperties.add(withProperties);
         }
-
-
-
 
         System.out.println("Vertices: "+vertices.size());
         for (Vertex v: vertices){
@@ -793,6 +779,6 @@ public class DotGen {
             System.out.println(p.getCentroidIdx()+": "+p.getSegmentIdxsList());
         }
 
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithProperties).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllVertices(centroidsWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithProperties).build();
     }
 }
