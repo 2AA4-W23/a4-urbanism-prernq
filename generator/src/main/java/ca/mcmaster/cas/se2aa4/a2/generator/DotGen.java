@@ -466,6 +466,8 @@ public class DotGen {
             }
         }
 
+        //trying to crop mesh by changing vertex coords outside of width/height
+        /*
         for(int x = 0; x < vertices.size(); x++){
             Vertex v = vertices.get(x);
             double x_coord = v.getX();
@@ -481,6 +483,7 @@ public class DotGen {
             }
 
         }
+        */
 
         //list of segments
         for (int i = 0; i < voronoiPoly.size(); i++){
@@ -551,7 +554,7 @@ public class DotGen {
                     }
                 }
 
-                //trying to crop segments
+                //trying to crop mesh by changing segment vertex coords
                 /* 
                 for (Segment s : segments){
                     int sv1idx = s.getV1Idx();
