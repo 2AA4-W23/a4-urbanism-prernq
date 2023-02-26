@@ -734,7 +734,12 @@ public class DotGen {
             Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
             String polygonThicknessValue = String.valueOf(polygonThicknessNumber);
             Property polygonThickness = Property.newBuilder().setKey("thickness").setValue(polygonThicknessValue).build();
-            Polygon withProperties = Polygon.newBuilder(p).addProperties(color).addProperties(polygonThickness).build();
+            Double[] coordinates = centroid_coords.get(p.getCentroidIdx());
+            String xCentroidValue = String.valueOf(coordinates[0]);
+            Property xCentroid = Property.newBuilder().setKey("x-coordinate").setValue(xCentroidValue).build();
+            String yCentroidValue = String.valueOf(coordinates[1]);
+            Property yCentroid = Property.newBuilder().setKey("y-coordinate").setValue(yCentroidValue).build();
+            Polygon withProperties = Polygon.newBuilder(p).addProperties(color).addProperties(polygonThickness).addProperties(xCentroid).addProperties(yCentroid).build();
             polygonsWithProperties.add(withProperties);
         }
 
@@ -756,6 +761,6 @@ public class DotGen {
             System.out.println(p.getCentroidIdx()+": "+p.getSegmentIdxsList());
         }
 
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithProperties).build();
     }
 }
