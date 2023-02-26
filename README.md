@@ -26,8 +26,16 @@ To run the generator, go to the `generator` directory, and use `java -jar` to ru
 
 ```
 mosser@azrael A2 % cd generator 
+4 options below to generate a mesh:
 mosser@azrael generator % java -jar generator.jar sample.mesh GR debug
 	* (this will produce a grid in debug mode)
+mosser@azrael generator % java -jar generator.jar sample.mesh GR
+	* (this will produce a grid in normal mode)
+mosser@azrael generator % java -jar generator.jar sample.mesh IR
+	* (this will produce an irregular mesh in normal mode)
+osser@azrael generator % java -jar generator.jar sample.mesh IR debug
+	* (this will produce an irregular mesh in debug mode) to be created?
+
 mosser@azrael generator % ls -lh sample.mesh
 -rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 sample.mesh
 mosser@azrael generator % 
