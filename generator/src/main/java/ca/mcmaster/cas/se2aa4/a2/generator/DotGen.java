@@ -26,6 +26,7 @@ public class DotGen {
     private final int square_size = 20;
     public String mode;
     private ArrayList<Double[]> vertex_coords = new ArrayList<Double[]>();
+    private ArrayList<Double[]> centroid_coords = new ArrayList<Double[]>();
 
     public DotGen(String arg1) {
         mode = arg1;
@@ -411,10 +412,39 @@ public class DotGen {
     public Mesh generateirregular() {
 
         Irregular libJTS = new Irregular();
-        ArrayList<ArrayList<ArrayList<Double>>> voronoiPoly = libJTS.voronoiDiagram();
         ArrayList<Vertex> vertices = new ArrayList<>();
         ArrayList<Segment> segments = new ArrayList<>();
         ArrayList<Polygon> polygons = new ArrayList<>();
+
+        //create random points
+        Random bag = new Random();
+        ArrayList<Vertex> points = new ArrayList<>();
+        int number = 40;
+        for (int i = 0; i < number; i++) {
+            int x = 0;
+            int y = 0;
+            boolean contains = true;
+            while (contains == true) {
+                contains = false;
+                x = bag.nextInt((width + 1) - 0) + 0;
+                y = bag.nextInt((height + 1) - 0) + 0;
+                for (Vertex p : points) {
+                    if ((p.getX() == x) && (p.getY() == y)) {
+                        contains = true;
+                    }
+                }
+            }
+            points.add(Vertex.newBuilder().setX(x).setY(y).build());
+            Double[] coordinates = {(double) x, (double) y};
+            centroid_coords.add(coordinates);
+            //System.out.println(coordinates);
+        }
+
+
+        libJTS.setCentroids(centroid_coords);
+        libJTS.voronoiDiagram();
+        ArrayList<ArrayList<ArrayList<Double>>> voronoiPoly = libJTS.getPolygonCoords();
+        ArrayList<Double[]> voronoiCentroids = libJTS.getCentroids();
 
 
 
@@ -496,7 +526,7 @@ public class DotGen {
             }
         }
         */
-        
+
 
         //list of segments
         for (int i = 0; i < voronoiPoly.size(); i++){
@@ -568,7 +598,7 @@ public class DotGen {
                 }
 
                 //trying to crop mesh by changing segment vertex coords
-                /* 
+                /*
                 for (Segment s : segments){
                     int sv1idx = s.getV1Idx();
                     int sv2idx = s.getV2Idx();
@@ -579,7 +609,7 @@ public class DotGen {
                     double sv1_y = sv1.getY();
                     double sv2_x = sv2.getX();
                     double sv2_y = sv2.getY();
-                    
+
                     if(sv1_x > width){
                         sv1_x = width;
                         vertices.set(sv1idx, Vertex.newBuilder().setX((double) sv1_x).setY((double) sv1_y).build());
@@ -608,88 +638,9 @@ public class DotGen {
                     System.out.println(s.getV1Idx() +" "+ s.getV2Idx());
                 }
             }
-            //System.out.println("stil ending");
+            //System.out.println("still ending");
             polygons.add(Polygon.newBuilder().setCentroidIdx(i).addAllSegmentIdxs(segIdxs).build());
         }
-
-/*
-        //list of segments
-        for (int i = 0; i < voronoiPoly.size(); i++){
-            System.out.println("Segments");
-            for (int j = 0; j < voronoiPoly.get(i).size(); j++) {
-
-                Double x1 = 0.0;
-                Double y1 = 0.0;
-                Double x2 = 0.0;
-                Double y2 = 0.0;
-
-                int v1 = 0;
-                int v2 = 0;
-
-                boolean contains = true;
-                while (contains == true) {
-                    contains = false;
-
-                    x1 = voronoiPoly.get(i).get(j).get(0);
-                    y1 = voronoiPoly.get(i).get(j).get(1);
-                    x1 = voronoiPoly.get(i).get(j+1).get(0);
-                    y1 = voronoiPoly.get(i).get(j+1).get(1);
-
-                    int vIdx = 0;
-                    for (Vertex v : vertices){
-                        if ((compare(x1,v.getX()) == 0) && (compare(y1,v.getY()) == 0)){
-                            v1 = vIdx;
-                        }
-                        if ((compare(x2,v.getX()) == 0) && (compare(y2,v.getY()) == 0)){
-                            v2 = vIdx;
-                        }
-                    }
-
-                    for (Segment s : segments) {
-                        if ((s.getV1Idx() == v1) && (s.getV2Idx() == v2)) {
-                            contains = true;
-                        }
-                    }
-                }
-                segments.add(Segment.newBuilder().setV1Idx(v1).setV2Idx(v2).build());
-
-
-
-            }
-        }
-
- */
-
-
-        //list of polygons
-        //polygons.add(Polygon.newBuilder().setCentroidIdx(0).build());
-
-
-        /*
-        //create random points
-        Random bag = new Random();
-        ArrayList<Vertex> points = new ArrayList<>();
-        int number = 40;
-        for (int i = 0; i < number; i++) {
-            int x = 0;
-            int y = 0;
-            boolean contains = true;
-            while (contains == true) {
-                contains = false;
-                x = bag.nextInt((width + 1) - 0) + 0;
-                y = bag.nextInt((height + 1) - 0) + 0;
-                for (Vertex p : points) {
-                    if ((p.getX() == x) && (p.getY() == y)) {
-                        contains = true;
-                    }
-                }
-            }
-            points.add(Vertex.newBuilder().setX(x).setY(y).build());
-        }
-
- */
-        Random bag = new Random();
-        ArrayList<Vertex> points = new ArrayList<>();
 
         //Distribute points colours and thickness (red, 3).
         ArrayList<Vertex> pointsWithProperties = new ArrayList<>();
@@ -775,6 +726,20 @@ public class DotGen {
             Segment withProperties = Segment.newBuilder(s).addProperties(color).addProperties(segThickness).build();
             segmentsWithProperties.add(withProperties);
         }
+
+        //set polygon properties
+        ArrayList<Polygon> polygonsWithProperties = new ArrayList<>();
+        int polygonThicknessNumber = 3;
+        for(Polygon p: polygons) {
+            Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
+            String polygonThicknessValue = String.valueOf(polygonThicknessNumber);
+            Property polygonThickness = Property.newBuilder().setKey("thickness").setValue(polygonThicknessValue).build();
+            Polygon withProperties = Polygon.newBuilder(p).addProperties(color).addProperties(polygonThickness).build();
+            polygonsWithProperties.add(withProperties);
+        }
+
+
+
 
         System.out.println("Vertices: "+vertices.size());
         for (Vertex v: vertices){
