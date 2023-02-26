@@ -448,11 +448,12 @@ public class DotGen {
 
                 if (vertices.size() == 0){
                     vertices.add(Vertex.newBuilder().setX(x).setY(y).build());
+                    contains = true;
                 }
                 else{
                     for (Vertex v : vertices){
                         if ((compare(x,v.getX()) == 0) && (compare(y,v.getY()) == 0)){
-                            contains = true;
+
                             //System.out.println("already exists");
                         }
                     }
@@ -462,27 +463,91 @@ public class DotGen {
                     }
                 }
                 //System.out.println(vertices.size());
+            }
+        }
+
+        //list of segments
+        for (int i = 0; i < voronoiPoly.size(); i++){
+            System.out.println("Starting");
+            System.out.println(voronoiPoly.size());
+            System.out.println("\n\nPolygon "+i);
+            ArrayList<Integer> segIdxs = new ArrayList<Integer>(voronoiPoly.get(i).size());
+
+            for (int j = 0; j < (voronoiPoly.get(i).size() - 1); j++){
+
+                Double x1 = voronoiPoly.get(i).get(j).get(0);
+                Double y1 = voronoiPoly.get(i).get(j).get(1);
+                Double x2 = voronoiPoly.get(i).get(j+1).get(0);
+                Double y2 = voronoiPoly.get(i).get(j+1).get(1);
 
 
-/*
-                Double x = 0.0;
-                Double y = 0.0;
+                int v1Idx = 0;
+                int v2Idx = 0;
 
-                boolean contains = true;
-                while (contains == true) {
-                    contains = false;
-                    x = voronoiPoly.get(i).get(j).get(0);
-                    y = voronoiPoly.get(i).get(j).get(1);
-                    for (Vertex v : vertices) {
-                        if ((v.getX() == x) && (v.getY() == y)) {
-                            contains = true;
-                        }
+                int segIdx = 0;
+
+
+                System.out.println("SEGMENT");
+                for (int a = 0; a < vertices.size(); a++){
+                    Vertex vert = vertices.get(a);
+                    Double vertX = vert.getX();
+                    Double vertY = vert.getY();
+
+                    if ((compare((double) vertX, (double) x1) == 0) && (compare((double) vertY, (double) y1) == 0)){
+                        v1Idx = a;
+                        //System.out.println("\n\nvert: ("+ vert.getX()+","+vert.getY()+")");
+                        //System.out.println("v1: "+x1+","+y1);
+                        //System.out.println("working v1");
+                    }
+                    if ((compare(vertX,x2) == 0) && (compare(vertY,y2) == 0)){
+                        v2Idx = a;
+                        //System.out.println("\n\nvert: ("+ vert.getX()+","+vert.getY()+")");
+                        //System.out.println("v2: "+x2+","+y2);
+                        //System.out.println("working v2");
                     }
                 }
 
- */
+                boolean contains = false;
+                if (segments.size() == 0){
+                    segments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).build());
+                    segIdx = 0;
+                    segIdxs.add(segIdx);
+                }
+                else{
+                    for (int k = 0; k < segments.size(); k++){
+                        Segment seg = segments.get(k);
+                        if (((seg.getV1Idx() == v1Idx) && (seg.getV2Idx() == v2Idx)) || ((seg.getV2Idx() == v1Idx) && (seg.getV1Idx()) == v2Idx)){
+                            contains = true;
+                            segIdx = k;
+                            //System.out.println("segidx" +segIdx);
+                            segIdxs.add(segIdx);
+                            //System.out.println("contains");
+                        }
+                    }
+                    if (contains == false) {
+
+                        //vertices.add(Vertex.newBuilder().setX((double) x).setY((double) y).build());
+                        segIdx = segments.size();
+                        //System.out.println("segidx" +segIdx);
+                        segIdxs.add(segIdx);
+                        segments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).build());
+
+                    }
+                }
+
+                //add polygons segments
+                //polygons.add(Polygon.newBuilder(polygons.get(i)).addSegmentIdxs(segIdx).build());
+
+                //System.out.println("ENDING");
+                //System.out.println(segments.size());
+                for (Segment s : segments){
+                    System.out.println(s.getV1Idx() +" "+ s.getV2Idx());
+                }
             }
+            //System.out.println("stil ending");
+            polygons.add(Polygon.newBuilder().setCentroidIdx(i).addAllSegmentIdxs(segIdxs).build());
         }
+
 /*
         //list of segments
         for (int i = 0; i < voronoiPoly.size(); i++){
@@ -559,7 +624,7 @@ public class DotGen {
         }
 
  */
-
+        Random bag = new Random();
         ArrayList<Vertex> points = new ArrayList<>();
 
         //Distribute points colours and thickness (red, 3).
@@ -585,15 +650,83 @@ public class DotGen {
         }
 
 
-        System.out.println("Vrtices: "+vertices.size());
+        // Determine colors of segments based on average of its vertices
+        ArrayList<Segment> segmentsWithProperties = new ArrayList<>();
+        int segThicknessNumber = bag.nextInt(5 - 1) + 1;
+        for (Segment s : segments) {
+
+            int RedAverage;
+            int GreenAverage;
+            int BlueAverage;
+
+            if (mode == "debug") {
+                RedAverage = 0;
+                GreenAverage = 0;
+                BlueAverage = 0;
+            } else {
+                int vertex1Idx = s.getV1Idx();
+                int vertex2Idx = s.getV2Idx();
+                Vertex vertex1 = verticesWithProperties.get(vertex1Idx);
+                Vertex vertex2 = verticesWithProperties.get(vertex2Idx);
+
+                List<Property> properties_v1 = vertex1.getPropertiesList();
+                List<Property> properties_v2 = vertex2.getPropertiesList();
+                String color_code_v1 = null;
+                String color_code_v2 = null;
+
+                for (Property p : properties_v1) {
+                    if (p.getKey().equals("rgb_color")) {
+                        color_code_v1 = p.getValue();
+                    }
+                }
+                for (Property p : properties_v2) {
+                    if (p.getKey().equals("rgb_color")) {
+                        color_code_v2 = p.getValue();
+                    }
+                }
+                String[] colors_v1 = color_code_v1.split(",");
+                String[] colors_v2 = color_code_v2.split(",");
+
+                int red_v1 = Integer.parseInt(colors_v1[0]);
+                int green_v1 = Integer.parseInt(colors_v1[1]);
+                int blue_v1 = Integer.parseInt(colors_v1[2]);
+                int red_v2 = Integer.parseInt(colors_v2[0]);
+                int green_v2 = Integer.parseInt(colors_v2[1]);
+                int blue_v2 = Integer.parseInt(colors_v2[2]);
+
+                RedAverage = (red_v1 + red_v2) / 2;
+                GreenAverage = (green_v1 + green_v2) / 2;
+                BlueAverage = (blue_v1 + blue_v2) / 2;
+
+            }
+
+            String colorCode = RedAverage + "," + GreenAverage + "," + BlueAverage;
+            Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+
+            //int segThicknessNumber = bag.nextInt(5);
+            String segThicknessValue = String.valueOf(segThicknessNumber);
+            Property segThickness = Property.newBuilder().setKey("thickness").setValue(segThicknessValue).build();
+
+            //add colors and thickness values to segments
+            Segment withProperties = Segment.newBuilder(s).addProperties(color).addProperties(segThickness).build();
+            segmentsWithProperties.add(withProperties);
+        }
+
+        System.out.println("Vertices: "+vertices.size());
         for (Vertex v: vertices){
             System.out.println("Vertex: " +v.getX()+","+v.getY());
         }
 
+        System.out.println("segments");
+        for (Segment s : segments){
+            System.out.println("Segment: "+s.getV1Idx()+"("+vertices.get(s.getV1Idx()).getX()+","+vertices.get(s.getV1Idx()).getY()+")\t,"+s.getV2Idx()+"("+vertices.get(s.getV2Idx()).getX()+","+vertices.get(s.getV2Idx()).getY()+")");
+        }
 
+        System.out.println("Polygons");
+        for (Polygon p: polygons){
+            System.out.println(p.getCentroidIdx()+": "+p.getSegmentIdxsList());
+        }
 
-
-
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).build();
     }
 }
