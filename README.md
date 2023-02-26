@@ -92,8 +92,8 @@ When you develop features and enrich the product, remember that you have first t
 | F14 |Write SVG file|Keira|-------|-----|B(F10-F13)|
 | |---IRREGULAR MODE---| | | | |
 | F15 |Generate 40 random points| Lily |02/22/2023|02/22/2023|D|
-| F16 |Compute Voronoi diagram| | | |P|
-| F17 |Apply Lloyd relaxation 5 times| | | |P|
+| F16 |Compute Voronoi diagram| Keira|02/24/2023 | 02/26/2023|P|
+| F17 |Apply Lloyd relaxation 5 times|02/26/2023 | | |P|
 | F18 |Crop the mesh to appropriate size| | | |P|
 | F19 |Delaunay's triangle| | | |P|
 | F20 |Reorder segments| | | |P|

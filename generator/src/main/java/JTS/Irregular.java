@@ -12,7 +12,6 @@ import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
 public class Irregular {
     private final int width = 500;
     private final int height = 500;
-    private final int square_size = 20;
     public String mode;
     public List<Coordinate> centroids = new ArrayList<>();
     public List<Polygon> polygons = new ArrayList<>();
@@ -23,7 +22,7 @@ public class Irregular {
         for (Double[] coord : centroid_coords){
             centroids.add(new Coordinate(coord[0],coord[1]));
         }
-        System.out.println("set"+centroids);
+        //System.out.println("set"+centroids);
     }
 
     public void resetCentroids(){
@@ -35,7 +34,7 @@ public class Irregular {
             centroids.add(centroidPoint.getCoordinate());
         }
 
-        System.out.println("reset"+ centroids);
+        //System.out.println("reset"+ centroids);
     }
 
     public ArrayList<Double[]> getCentroids(){
@@ -77,6 +76,8 @@ public class Irregular {
         //System.out.println("coords \n\n"+coords); //outputs list of coords: [(169.0, 354.0, 0.0), (413.0, 376.0, 0.0),...,]
 */
         polyCoords.clear();
+        polygons.clear();
+
         GeometryFactory geomFact = new GeometryFactory();
         VoronoiDiagramBuilder voronoi = new VoronoiDiagramBuilder();
         voronoi.setSites(centroids);

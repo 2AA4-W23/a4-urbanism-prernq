@@ -420,11 +420,12 @@ public class DotGen {
         ArrayList<Vertex> vertices = new ArrayList<>();
         ArrayList<Segment> segments = new ArrayList<>();
         ArrayList<Polygon> polygons = new ArrayList<>();
+        int relax = 5;
 
         //create random points
         Random bag = new Random();
         ArrayList<Vertex> points = new ArrayList<>();
-        int number = 40;
+        int number = 120;
         for (int i = 0; i < number; i++) {
             int x = 0;
             int y = 0;
@@ -448,6 +449,13 @@ public class DotGen {
 
         libJTS.setCentroids(centroid_coords);
         libJTS.voronoiDiagram();
+        libJTS.resetCentroids();
+
+        for (int i = 0; i < relax; i++){
+            libJTS.voronoiDiagram();
+            libJTS.resetCentroids();
+        }
+
         ArrayList<ArrayList<ArrayList<Double>>> voronoiPoly = libJTS.getPolygonCoords();
         ArrayList<Double[]> voronoiCentroids = libJTS.getCentroids();
 
@@ -535,9 +543,9 @@ public class DotGen {
 
         //list of segments
         for (int i = 0; i < voronoiPoly.size(); i++){
-            System.out.println("Starting");
-            System.out.println(voronoiPoly.size());
-            System.out.println("\n\nPolygon "+i);
+            //System.out.println("Starting");
+            //System.out.println(voronoiPoly.size());
+            //System.out.println("\n\nPolygon "+i);
             ArrayList<Integer> segIdxs = new ArrayList<Integer>(voronoiPoly.get(i).size());
 
             for (int j = 0; j < (voronoiPoly.get(i).size() - 1); j++){
@@ -554,7 +562,7 @@ public class DotGen {
                 int segIdx = 0;
 
 
-                System.out.println("SEGMENT");
+                //System.out.println("SEGMENT");
                 for (int a = 0; a < vertices.size(); a++){
                     Vertex vert = vertices.get(a);
                     Double vertX = vert.getX();
@@ -639,16 +647,13 @@ public class DotGen {
 
                 //System.out.println("ENDING");
                 //System.out.println(segments.size());
-                for (Segment s : segments){
-                    System.out.println(s.getV1Idx() +" "+ s.getV2Idx());
-                }
             }
             //System.out.println("still ending");
             polygons.add(Polygon.newBuilder().setCentroidIdx(i).addAllSegmentIdxs(segIdxs).build());
         }
 
         ArrayList<Vertex> centroids = new ArrayList<>();
-        for (Double[] c : centroid_coords){
+        for (Double[] c : voronoiCentroids){
             centroids.add(Vertex.newBuilder().setX(c[0]).setY(c[1]).build());
         }
 
@@ -763,7 +768,7 @@ public class DotGen {
             Polygon withProperties = Polygon.newBuilder(p).addProperties(color).addProperties(polygonThickness).build();
             polygonsWithProperties.add(withProperties);
         }
-
+/*
         System.out.println("Vertices: "+vertices.size());
         for (Vertex v: vertices){
             System.out.println("Vertex: " +v.getX()+","+v.getY());
@@ -778,6 +783,8 @@ public class DotGen {
         for (Polygon p: polygons){
             System.out.println(p.getCentroidIdx()+": "+p.getSegmentIdxsList());
         }
+
+ */
 
         return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllVertices(centroidsWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithProperties).build();
     }
