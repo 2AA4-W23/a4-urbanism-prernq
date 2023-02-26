@@ -392,10 +392,12 @@ public class DotGen {
             x_coord_avg = x_coord_total / (number_of_segments * 2);
             y_coord_avg = y_coord_total / (number_of_segments * 2);
             if ((x_coord_avg <= width) && (y_coord_avg <= height)) {
-                centroids.add(Vertex.newBuilder().setX((double) x_coord_avg).setY((double) y_coord_avg).build());
+                //centroids.add(Vertex.newBuilder().setX((double) x_coord_avg).setY((double) y_coord_avg).build());
+                Double[] coordinates = {(double) x_coord_avg, (double) y_coord_avg};
+                centroid_coords.add(coordinates);
             }
         }
-
+/*
         //Distribute centroid colours and thickness
         ArrayList<Vertex> centroidsWithProperties = new ArrayList<>();
         int centThicknessNumber = 3;
@@ -406,7 +408,27 @@ public class DotGen {
             Vertex withProperties = Vertex.newBuilder(c).addProperties(color).addProperties(centThickness).build();
             centroidsWithProperties.add(withProperties);
         }
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithNeighbours).addAllVertices(centroidsWithProperties).build();
+
+ */
+        //set polygon properties
+        ArrayList<Polygon> polygonsWithProperties = new ArrayList<>();
+        int polygonThicknessNumber = 3;
+        for(Polygon p: polygonsWithNeighbours) {
+            Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
+            String polygonThicknessValue = String.valueOf(polygonThicknessNumber);
+            Property polygonThickness = Property.newBuilder().setKey("thickness").setValue(polygonThicknessValue).build();
+            Double[] coordinates = centroid_coords.get(p.getCentroidIdx());
+            String xCentroidValue = String.valueOf(coordinates[0]);
+            Property xCentroid = Property.newBuilder().setKey("x-coordinate").setValue(xCentroidValue).build();
+            String yCentroidValue = String.valueOf(coordinates[1]);
+            Property yCentroid = Property.newBuilder().setKey("y-coordinate").setValue(yCentroidValue).build();
+            Polygon withProperties = Polygon.newBuilder(p).addProperties(color).addProperties(polygonThickness).addProperties(xCentroid).addProperties(yCentroid).build();
+            polygonsWithProperties.add(withProperties);
+        }
+
+
+
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithNeighbours).addAllPolygons(polygonsWithProperties).build();
     }
 
     public Mesh generateirregular() {
