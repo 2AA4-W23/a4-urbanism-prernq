@@ -664,7 +664,16 @@ public class DotGen {
             verticesWithProperties.add(withProperties);
         }
 
-
+        ArrayList<Segment> segmentsWithProperties = new ArrayList<>();
+        int segmentThicknessNumber = 3;
+        for(Segment s: segments) {
+            Property color = Property.newBuilder().setKey("rgb_color").setValue("0,0,0,").build();
+            String segmentThicknessValue = String.valueOf(segmentThicknessNumber);
+            Property segmentThickness = Property.newBuilder().setKey("thickness").setValue(segmentThicknessValue).build();
+            Segment withProperties = Segment.newBuilder(s).addProperties(color).addProperties(segmentThickness).build();
+            segmentsWithProperties.add(withProperties);
+        }
+/*
         // Determine colors of segments based on average of its vertices
         ArrayList<Segment> segmentsWithProperties = new ArrayList<>();
         int segThicknessNumber = bag.nextInt(5 - 1) + 1;
@@ -726,6 +735,7 @@ public class DotGen {
             Segment withProperties = Segment.newBuilder(s).addProperties(color).addProperties(segThickness).build();
             segmentsWithProperties.add(withProperties);
         }
+        */
 
         //set polygon properties
         ArrayList<Polygon> polygonsWithProperties = new ArrayList<>();
