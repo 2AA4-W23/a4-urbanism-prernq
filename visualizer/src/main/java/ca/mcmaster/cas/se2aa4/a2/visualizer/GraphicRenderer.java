@@ -33,6 +33,19 @@ public class GraphicRenderer {
             double y1 = vertex1.getY();
             double x2 = vertex2.getX();
             double y2 = vertex2.getY();
+
+            //another crop attempt for irregular - seems like an incorrect method (wont work for different widths and heights)
+
+            if(x1 > 500){
+                x1 = 500;
+            }if(y1 > 500){
+                y1 = 500;
+            }if(x2 > 500){
+                x2 = 500;
+            }if(y2 > 500){
+                y2 = 500;
+            }
+
             int thickness = extractThickness(s.getPropertiesList());
 
             // Line2D line = new Line2D.Double(x1, y1, x2, y2);
@@ -42,8 +55,8 @@ public class GraphicRenderer {
             Stroke segstroke = new BasicStroke(thickness);
             canvas.setStroke(segstroke);
 
-            
-            canvas.drawLine((int) vertex1.getX(), (int) vertex1.getY(), (int) vertex2.getX(), (int) vertex2.getY());
+            canvas.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+            //canvas.drawLine((int) vertex1.getX(), (int) vertex1.getY(), (int) vertex2.getX(), (int) vertex2.getY());
 
             // previous way to draw segments, when multiple vertices and segments were being created
             /*
