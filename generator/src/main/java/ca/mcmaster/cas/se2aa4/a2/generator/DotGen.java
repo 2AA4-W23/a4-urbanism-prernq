@@ -466,6 +466,22 @@ public class DotGen {
             }
         }
 
+        for(int x = 0; x < vertices.size(); x++){
+            Vertex v = vertices.get(x);
+            double x_coord = v.getX();
+            double y_coord = v.getY();
+            if(x_coord > width || y_coord > height){
+                if(x_coord > width){
+                    x_coord = (double) width;
+                }
+                if(y_coord > height){
+                    y_coord = (double) height;
+                }
+                vertices.set(x, Vertex.newBuilder().setX((double) x_coord).setY((double) y_coord).build());
+            }
+
+        }
+
         //list of segments
         for (int i = 0; i < voronoiPoly.size(); i++){
             System.out.println("Starting");
@@ -534,6 +550,38 @@ public class DotGen {
 
                     }
                 }
+
+                //trying to crop segments
+                /* 
+                for (Segment s : segments){
+                    int sv1idx = s.getV1Idx();
+                    int sv2idx = s.getV2Idx();
+                    Vertex sv1 = vertices.get(sv1idx);
+                    Vertex sv2 = vertices.get(sv2idx);
+
+                    double sv1_x = sv1.getX();
+                    double sv1_y = sv1.getY();
+                    double sv2_x = sv2.getX();
+                    double sv2_y = sv2.getY();
+                    
+                    if(sv1_x > width){
+                        sv1_x = width;
+                        vertices.set(sv1idx, Vertex.newBuilder().setX((double) sv1_x).setY((double) sv1_y).build());
+                    }
+                    if(sv1_y > height){
+                        sv1_y = height;
+                        vertices.set(sv1idx, Vertex.newBuilder().setX((double) sv1_x).setY((double) sv1_y).build());
+                    }
+                    if(sv2_x > width){
+                        sv2_x = width;
+                        vertices.set(sv2idx, Vertex.newBuilder().setX((double) sv2_x).setY((double) sv2_y).build());
+                    }
+                    if(sv2_y > height){
+                        sv2_y = height;
+                        vertices.set(sv2idx, Vertex.newBuilder().setX((double) sv2_x).setY((double) sv2_y).build());
+                    }
+                }
+                */
 
                 //add polygons segments
                 //polygons.add(Polygon.newBuilder(polygons.get(i)).addSegmentIdxs(segIdx).build());

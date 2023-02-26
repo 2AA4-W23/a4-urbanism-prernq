@@ -27,10 +27,11 @@ public class Irregular {
         ArrayList<ArrayList<ArrayList<Double>>> polyCoords = new ArrayList<>(numPoints);
 
         for (int i = 0; i < numPoints; i++){
-            int randX = bag.nextInt((width + 1) - 0) + 0;
-            int randY = bag.nextInt((height + 1) - 0) + 0;
+            int randX = bag.nextInt(width + 1);
+            int randY = bag.nextInt(height + 1);
             //System.out.println("Adding vertex: ("+randX+","+randY+")");
-            randCoords.add(new Coordinate(randX,randY));
+            if(randX <= width && randY <= height){
+                randCoords.add(new Coordinate(randX,randY));}
         }
 
         //System.out.println("coords \n\n"+coords); //outputs list of coords: [(169.0, 354.0, 0.0), (413.0, 376.0, 0.0),...,]
