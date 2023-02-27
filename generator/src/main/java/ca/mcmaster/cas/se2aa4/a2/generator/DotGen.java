@@ -297,7 +297,6 @@ public class DotGen {
         ArrayList<Polygon> polygons = new ArrayList<>();
         int relax = 5;
 
-
         libJTS.setCentroids(centroid_coords);
         libJTS.voronoiDiagram();
         libJTS.resetCentroids();
@@ -309,6 +308,10 @@ public class DotGen {
 
         ArrayList<ArrayList<ArrayList<Double>>> voronoiPoly = libJTS.getPolygonCoords();
         ArrayList<Double[]> voronoiCentroids = libJTS.getCentroids();
+        ArrayList<ArrayList<Integer>> voronoiNeighbours = libJTS.getPolyNeighbours();
+
+        libJTS.delaunayTriangulation();
+
 
         for (int i = 0; i < voronoiPoly.size(); i++){
             for (int j = 0; j < voronoiPoly.get(i).size(); j++){
@@ -341,7 +344,6 @@ public class DotGen {
 
                 int v1Idx = 0;
                 int v2Idx = 0;
-
                 int segIdx = 0;
 
                 //System.out.println("SEGMENT");
@@ -377,11 +379,11 @@ public class DotGen {
                         segIdx = segments.size();
                         segIdxs.add(segIdx);
                         segments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).build());
-
                     }
                 }
             }
-            polygons.add(Polygon.newBuilder().setCentroidIdx(i).addAllSegmentIdxs(segIdxs).build());
+            ArrayList<Integer> neighbourList = voronoiNeighbours.get(i);
+            polygons.add(Polygon.newBuilder().setCentroidIdx(i).addAllSegmentIdxs(segIdxs).addAllNeighborIdxs(neighbourList).build());
         }
 
         ArrayList<Vertex> centroids = new ArrayList<>();

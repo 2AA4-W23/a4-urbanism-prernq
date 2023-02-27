@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 
+import static java.lang.Double.compare;
 import static java.lang.Math.abs;
 
 import org.locationtech.jts.geom.*;
+import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
 import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
 
 public class Irregular {
@@ -16,25 +18,22 @@ public class Irregular {
     public List<Coordinate> centroids = new ArrayList<>();
     public List<Polygon> polygons = new ArrayList<>();
     public ArrayList<ArrayList<ArrayList<Double>>> polyCoords = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> polyNeighbours = new ArrayList<>(centroids.size());
 
     public void setCentroids(ArrayList<Double[]> centroid_coords){
-        ArrayList<ArrayList<ArrayList<Double>>> polyCoords = new ArrayList<>();
         for (Double[] coord : centroid_coords){
             centroids.add(new Coordinate(coord[0],coord[1]));
         }
-        //System.out.println("set"+centroids);
     }
 
     public void resetCentroids(){
-        centroids.clear();
+        centroids.clear();  //clear old list of centroids
 
-        //compute new centroid coordinates based on polygons
+        //compute new centroid coordinates based on polygons and add to class variable of list of centroids
         for (Polygon p: polygons){
             Point centroidPoint = p.getCentroid();
             centroids.add(centroidPoint.getCoordinate());
         }
-
-        //System.out.println("reset"+ centroids);
     }
 
     public ArrayList<Double[]> getCentroids(){
@@ -44,84 +43,88 @@ public class Irregular {
             Double[] coordinates = {(double) c.getX(), (double) c.getY()};
             centroidsList.add(coordinates);
         }
-
         return centroidsList;
     }
 
     public ArrayList<ArrayList<ArrayList<Double>>> getPolygonCoords(){
         return polyCoords;
     }
+    public ArrayList<ArrayList<Integer>> getPolyNeighbours(){
+        return polyNeighbours;
+    }
 
     public void voronoiDiagram() {
-/*
-        ArrayList<ArrayList<ArrayList<Double>>> polyCoords = new ArrayList<>();
-        for (Double[] coord : centroid_coords){
-            centroids.add(new Coordinate(coord[0],coord[1]));
-        }
-
- */
-/*
-        int numPoints = 120;
-        Random bag = new Random();
-
-
-        for (int i = 0; i < numPoints; i++){
-            int randX = bag.nextInt(width + 1);
-            int randY = bag.nextInt(height + 1);
-            //System.out.println("Adding vertex: ("+randX+","+randY+")");
-            if(randX <= width && randY <= height){
-                randCoords.add(new Coordinate(randX,randY));}
-        }
-
-        //System.out.println("coords \n\n"+coords); //outputs list of coords: [(169.0, 354.0, 0.0), (413.0, 376.0, 0.0),...,]
-*/
+        //clear old lists so we can append new updated values
         polyCoords.clear();
         polygons.clear();
 
         GeometryFactory geomFact = new GeometryFactory();
         VoronoiDiagramBuilder voronoi = new VoronoiDiagramBuilder();
         voronoi.setSites(centroids);
+
         Envelope clipEnv = new Envelope((double) 0.0, (double) width, (double) 0.0, (double) height);
         voronoi.setClipEnvelope(clipEnv);
 
-        Geometry diagram = voronoi.getDiagram(geomFact);
-        //System.out.println("polygon collection: \n\n"+polygonCollection);
+        Geometry diagram = voronoi.getDiagram(geomFact); //makes the voronoi diagram as a collection of polygons with their respective vertex coordinates
 
+        if(diagram instanceof GeometryCollection) { //checks that the diagram was generated correctly
 
-        if(diagram instanceof GeometryCollection) {
+            GeometryCollection diagramGeometries = (GeometryCollection) diagram;
 
-            GeometryCollection geometryCollection = (GeometryCollection) diagram;
+            //loop goes through all geometries (polygons) in the diagram
+            for (int i = 0; i < diagramGeometries.getNumGeometries(); i++) {
+                //create new polygon and add it to arraylist
+                Polygon p = (Polygon) diagramGeometries.getGeometryN(i);
+                polygons.add(p);
 
-            //loop makes 40 polygons and adds them to producePolygons, but i think they have holes
-            for (int i = 0; i < geometryCollection.getNumGeometries(); i++) {
-                //System.out.println("\n\n\n\n"+polygonCollection);
-                Polygon p = (Polygon) geometryCollection.getGeometryN(i);
-
-
-
+                //add all coordinates of each polygon to polyCoords in type double
                 Coordinate[] shell = p.getCoordinates();
                 polyCoords.add(new ArrayList<ArrayList<Double>>(shell.length));
-
-
                 for (int j=0; j<shell.length; j++){
                     polyCoords.get(i).add(new ArrayList<Double>(2));
                     Double x = shell[j].getX();
                     Double y = shell[j].getY();
-                    Double[] point = {(double) x, (double) y};
 
                     polyCoords.get(i).get(j).add(0,x);
                     polyCoords.get(i).get(j).add(1,y);
-
-                    //System.out.println("\n\nshell: "+shell[j]+"\tpolycoords: ("+polyCoords.get(i).get(j).get(0)+","+polyCoords.get(i).get(j).get(1)+")");
                 }
-                polygons.add(p);
-                //System.out.println("\n\nP"+i+"\t"+polygon); //Output: POLYGON ((956 51.185897435897466, 956 -100.27027027027027, 404 34, 495.17123287671234 155.56164383561645, 956 51.185897435897466))
-                // System.out.println(producedPolygons); //ouputs: POLYGON info like above, but all of it in one line
             }
         }
-
-
-        //return polyCoords;
     }
 
+    public void delaunayTriangulation(){
+        polyNeighbours.clear();
+        DelaunayTriangulationBuilder delaunay = new DelaunayTriangulationBuilder();
+        GeometryFactory geomFact = new GeometryFactory();
+        delaunay.setSites(centroids);
+
+        Geometry triangles = delaunay.getTriangles(geomFact);
+
+        for (Coordinate c: centroids){
+            ArrayList<Integer> neighbours = new ArrayList<>();
+
+            for (int i = 0; i < triangles.getNumGeometries(); i++){
+                Geometry triangle = triangles.getGeometryN(i);
+
+                for (Coordinate t : triangle.getCoordinates()){
+                    if (c.compareTo(t) == 0){
+
+                        for (Coordinate q : triangle.getCoordinates()){
+                            if (!(c.equals(q))){
+
+                                for (int j = 0; j < centroids.size(); j++){
+                                    if (centroids.get(j).equals(q)){
+                                        if (!(neighbours.contains(j))){
+                                            neighbours.add(j);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            polyNeighbours.add(neighbours);
+        }
+    }
 }
