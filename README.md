@@ -98,5 +98,5 @@ When you develop features and enrich the product, remember that you have first t
 | F19 |Delaunay's triangle| | | |P|
 | F20 |Reorder segments| | | |P|
 | F21 |Generate user requested number of points & relaxation level| | | |P|
-| F22 |Command line arguments for type of mesh| | | |P|
+| F22 |Command line arguments for type of mesh|Lily |02/23/23|02/23/23 |D|
 | F23 | not a feature - Adding Dependencies |Keira | 02/24/2023|02/24/2023 | D|
