@@ -1,0 +1,28 @@
+@startuml
+
+class DotGen {
+    - int width
+    - int height
+    - int square_size
+    + String mode
+    - ArrayList vertex_coords
+    - ArrayList centroid_coords
+    ~ ArrayList vertices
+    ~ ArrayList segments
+    ~ ArrayList verticesWithProperties
+    ~ ArrayList segmentsWithProperties
+    ~ ArrayList polygons
+    ~ ArrayList polygonsWithNeighbours
+    ~ ArrayList centroids
+    ~ ArrayList centroidsWithProperties
+}
+
+class Main {
+    + String arg1
+    + String arg2
+    + void main( String[] args )
+}
+
+DotGen <.. Main : _"uses"
+
+@enduml
