@@ -14,6 +14,8 @@ import java.awt.geom.Line2D;
 import java.util.List;
 
 public class GraphicRenderer {
+    private final int width = 500;
+    private final int height = 500;
 
     //private static final int THICKNESS = 10;
     public void render(Mesh aMesh, Graphics2D canvas) {
@@ -36,14 +38,14 @@ public class GraphicRenderer {
 
             //another crop attempt for irregular - seems like an incorrect method (wont work for different widths and heights)
 
-            if(x1 > 500){
-                x1 = 500;
-            }if(y1 > 500){
-                y1 = 500;
-            }if(x2 > 500){
-                x2 = 500;
-            }if(y2 > 500){
-                y2 = 500;
+            if(x1 > width){
+                x1 = width;
+            }if(y1 > height){
+                y1 = height;
+            }if(x2 > width){
+                x2 = width;
+            }if(y2 > height){
+                y2 = height;
             }
 
             int thickness = extractThickness(s.getPropertiesList());
@@ -70,13 +72,26 @@ public class GraphicRenderer {
         // draw vertices
         for (Vertex v: aMesh.getVerticesList()) {
             int thickness = extractThickness(v.getPropertiesList());
-            double centre_x = v.getX() - (thickness/2.0d);
-            double centre_y = v.getY() - (thickness/2.0d);
-            Color old = canvas.getColor();
-            canvas.setColor(extractColor(v.getPropertiesList()));
-            Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
-            canvas.fill(point);
-            canvas.setColor(old);
+            double v_xcoord = v.getX();
+            double v_ycoord = v.getY();
+            boolean draw_vertex = true;
+
+            // for cropping to dimensions
+            if(v_xcoord > width){
+                draw_vertex = false;
+            }
+            if(v_ycoord > height){
+                draw_vertex = false;
+            }
+            if(draw_vertex){
+                double centre_x = v_xcoord - (thickness/2.0d);
+                double centre_y = v_ycoord - (thickness/2.0d);
+                Color old = canvas.getColor();
+                canvas.setColor(extractColor(v.getPropertiesList()));
+                Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
+                canvas.fill(point);
+                canvas.setColor(old);
+            }
         }
     }
 
