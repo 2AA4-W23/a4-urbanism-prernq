@@ -3,6 +3,12 @@ package ca.mcmaster.cas.se2aa4.a2.generator;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Random;
+
+import org.locationtech.jts.algorithm.ConvexHull;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+
 import java.util.List;
 
 import static java.lang.Double.compare;
@@ -291,6 +297,7 @@ public class DotGen {
         }
 
         //initializing Irregular grid class
+        
         Irregular libJTS = new Irregular();
         ArrayList<Vertex> vertices = new ArrayList<>();
         ArrayList<Segment> segments = new ArrayList<>();
@@ -389,6 +396,22 @@ public class DotGen {
         ArrayList<Vertex> centroids = new ArrayList<>();
         for (Double[] c : voronoiCentroids){
             centroids.add(Vertex.newBuilder().setX(c[0]).setY(c[1]).build());
+        }
+
+        //compute convex hull
+        GeometryFactory geometryFactory = new GeometryFactory();
+        for(Polygon p : polygons){
+            List<Integer> polysegs = p.getSegmentIdxsList();
+            int num_of_segs = polysegs.size();
+            List<Coordinate> polypoints = new ArrayList<>();
+            for(int x = 0; x < num_of_segs; x++){
+                Segment s = segments.get((polysegs.get(x)));
+                polypoints.add(new Coordinate((vertices.get(s.getV1Idx())).getX(), (vertices.get(s.getV1Idx())).getY()));
+                polypoints.add(new Coordinate((vertices.get(s.getV2Idx())).getX(), (vertices.get(s.getV2Idx())).getY()));
+            }
+            Geometry pointsGeom = geometryFactory.createMultiPointFromCoords(polypoints.toArray(new Coordinate[0]));
+            ConvexHull convexHull = new ConvexHull(pointsGeom);
+            Geometry convexHullGeom = convexHull.getConvexHull();
         }
 
         //Distribute points colours and thickness (red, 3).

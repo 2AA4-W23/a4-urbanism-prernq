@@ -7,6 +7,7 @@ import java.util.List;
 import static java.lang.Double.compare;
 import static java.lang.Math.abs;
 
+import org.locationtech.jts.algorithm.ConvexHull;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
 import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
@@ -19,6 +20,8 @@ public class Irregular {
     public List<Polygon> polygons = new ArrayList<>();
     public ArrayList<ArrayList<ArrayList<Double>>> polyCoords = new ArrayList<>();
     public ArrayList<ArrayList<Integer>> polyNeighbours = new ArrayList<>(centroids.size());
+
+    
 
     public void setCentroids(ArrayList<Double[]> centroid_coords){
         for (Double[] coord : centroid_coords){
@@ -102,6 +105,7 @@ public class Irregular {
 
         for (Coordinate c: centroids){
             ArrayList<Integer> neighbours = new ArrayList<>();
+
 
             for (int i = 0; i < triangles.getNumGeometries(); i++){
                 Geometry triangle = triangles.getGeometryN(i);
