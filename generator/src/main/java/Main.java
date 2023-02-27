@@ -11,7 +11,6 @@ public class Main {
     public static String arg2;
 
     public static void main(String[] args) throws IOException {
-
         try {
             if (args.length > 2) {
                 if ((args[2].equals("debug")) || (args[2].equals("Debug")) || (args[2].equals("DEBUG"))) {
