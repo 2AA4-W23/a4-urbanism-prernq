@@ -94,7 +94,7 @@ When you develop features and enrich the product, remember that you have first t
 | F15 |Generate 40 random points| Lily |02/22/2023|02/22/2023|D|
 | F16 |Compute Voronoi diagram| Keira|02/24/2023 | 02/26/2023|D|
 | F17 |Apply Lloyd relaxation 5 times|Keira |02/26/2023 | 02/26/2023|D|
-| F18 |Crop the mesh to appropriate size| | | |P|
+| F18 |Crop the mesh to appropriate size| Prerna | 2023/02/25 | 2023/02/26 |D?|
 | F19 |Delaunay's triangle| | | |P|
 | F20 |Reorder segments| | | |P|
 | F21 |Generate user requested number of points & relaxation level| | | |P|
