@@ -85,17 +85,17 @@ When you develop features and enrich the product, remember that you have first t
 | F07 | Assign segment colour and thickness | Lily |02/21/2023|02/21/2023|D|
 | F08 | Assign centroid colour and thickness | Lily |02/21/2023|02/21/2023|D|
 | F09 | Add centroid and segment data to MeshDump | Keira |02/23/22|02/23/22|D|
-| F10 |Create SVG canvas| From original code |-------|-----|P|
+| F10 |Create SVG canvas| From original code |-------|-----|D|
 | F11 |Implement switching between debug and normal mode| Lily |02/21/2023|02/22/2023|P|
 | F12 |Render vertices and centroids on canvas|Lily|02/20/2023|02/22/2023|D|
 | F13 |Render segments on canvas|Lily|02/21/2023|02/21/2023|D|
-| F14 |Write SVG file|From original code|-------|-----|B(F10-F13)|
+| F14 |Write SVG file|From original code|-------|-----|D|
 | |---IRREGULAR MODE---| | | | |
 | F15 |Generate 40 random points| Lily |02/22/2023|02/22/2023|D|
 | F16 |Compute Voronoi diagram| Keira|02/24/2023 | 02/26/2023|D|
 | F17 |Apply Lloyd relaxation 5 times|Keira |02/26/2023 | 02/26/2023|D|
 | F18 |Crop the mesh to appropriate size| Prerna | 2023/02/25 | 2023/02/26 |D?|
-| F19 |Delaunay's triangle| | | |P|
+| F19 |Delaunay's triangle|Keira |02/27/2023 | 02/27/2023|D|
 | F20 |Compute ConvexHull to Reorder segments|Prerna|02/27/23 | |P|
 | F21 |Generate user requested number of points & relaxation level|Lily |02/27/23 | |P|
 | F22 |Command line arguments for type of mesh|Lily |02/23/23|02/23/23 |D|
