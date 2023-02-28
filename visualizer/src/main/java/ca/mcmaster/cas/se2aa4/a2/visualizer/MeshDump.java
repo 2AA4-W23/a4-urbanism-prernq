@@ -50,8 +50,9 @@ public class MeshDump {
         System.out.println("|Polygons| = " + segments.size());
         for (Polygon p : polygons){
             StringBuffer line = new StringBuffer();
-            line.append(String.format(p.getCentroidIdx() + ": " + p.getSegmentIdxsList()));
-            line.append(" [");
+            line.append(String.format(p.getCentroidIdx() + ":\tSegments: " + p.getSegmentIdxsList()));
+            line.append(String.format("\n\tNeighbours: " + p.getNeighborIdxsList()+"\n"));
+            line.append("\t[");
             for(Property prop: p.getPropertiesList()){
                 line.append(String.format("%s -> %s, ", prop.getKey(), prop.getValue()));
             }
