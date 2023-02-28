@@ -21,8 +21,6 @@ public class Irregular {
     public ArrayList<ArrayList<ArrayList<Double>>> polyCoords = new ArrayList<>();
     public ArrayList<ArrayList<Integer>> polyNeighbours = new ArrayList<>(centroids.size());
 
-    
-
     public void setCentroids(ArrayList<Double[]> centroid_coords){
         for (Double[] coord : centroid_coords){
             centroids.add(new Coordinate(coord[0],coord[1]));

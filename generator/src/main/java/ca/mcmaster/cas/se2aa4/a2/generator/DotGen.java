@@ -14,7 +14,6 @@ import java.util.List;
 import static java.lang.Double.compare;
 import static java.lang.Math.abs;
 
-
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
@@ -23,19 +22,13 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
 import JTS.Irregular;
 
-
-
 public class DotGen {
 
     private final int width = 500;
     private final int height = 500;
     private final int square_size = 20;
-    public String mode;
-    private ArrayList<Double[]> vertex_coords = new ArrayList<Double[]>();
-    private ArrayList<Double[]> centroid_coords = new ArrayList<Double[]>();
 
-    public DotGen(String arg1) {
-        mode = arg1;
+    public DotGen() {
     }
 
     public Mesh generategrid() {
@@ -43,10 +36,7 @@ public class DotGen {
         // Create all the vertices
         for (int x = 0; x <= width; x += square_size) {
             for (int y = 0; y <= height; y += square_size) {
-                vertices.add(Vertex.newBuilder().setX((double) x).setY((double) y).build());
-
-                Double[] coordinates = {(double) x, (double) y};
-                vertex_coords.add(coordinates);
+                vertices.add(Vertex.newBuilder().setX(x).setY(y).build());
             }
         }
 
@@ -84,24 +74,23 @@ public class DotGen {
         int vertThicknessNumber = bag.nextInt(11 - 3) + 3;
 
         for (Vertex v : vertices) {
-            int blue;
-            int green;
-            int red;
-            if (mode == "debug") {
-                red = 0;
-                green = 0;
-                blue = 0;
-            } else {
-                red = bag.nextInt(255);
-                green = bag.nextInt(255);
-                blue = bag.nextInt(255);
-            }
+            int blue = bag.nextInt(255);
+            int green = bag.nextInt(255);
+            int red = bag.nextInt(255);
 
+            //Determine color values of vertices
             String colorCode = red + "," + green + "," + blue;
-            String vertThicknessValue = String.valueOf(vertThicknessNumber);
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+
+            //Determine thickness value of vertices
+            String vertThicknessValue = String.valueOf(vertThicknessNumber);
             Property vertThickness = Property.newBuilder().setKey("thickness").setValue(vertThicknessValue).build();
-            Vertex withProperties = Vertex.newBuilder(v).addProperties(color).addProperties(vertThickness).build();
+
+            //Property for whether vertex is a centroid.
+            Property isCentroid = Property.newBuilder().setKey("centroid").setValue("no").build();
+
+            //Add color and thickness values to vertices
+            Vertex withProperties = Vertex.newBuilder(v).addProperties(color).addProperties(vertThickness).addProperties(isCentroid).build();
             verticesWithProperties.add(withProperties);
         }
 
@@ -114,46 +103,39 @@ public class DotGen {
             int GreenAverage;
             int BlueAverage;
 
-            if (mode == "debug") {
-                RedAverage = 0;
-                GreenAverage = 0;
-                BlueAverage = 0;
-            } else {
-                int vertex1Idx = s.getV1Idx();
-                int vertex2Idx = s.getV2Idx();
-                Vertex vertex1 = verticesWithProperties.get(vertex1Idx);
-                Vertex vertex2 = verticesWithProperties.get(vertex2Idx);
+            int vertex1Idx = s.getV1Idx();
+            int vertex2Idx = s.getV2Idx();
+            Vertex vertex1 = verticesWithProperties.get(vertex1Idx);
+            Vertex vertex2 = verticesWithProperties.get(vertex2Idx);
 
-                List<Property> properties_v1 = vertex1.getPropertiesList();
-                List<Property> properties_v2 = vertex2.getPropertiesList();
-                String color_code_v1 = null;
-                String color_code_v2 = null;
+            List<Property> properties_v1 = vertex1.getPropertiesList();
+            List<Property> properties_v2 = vertex2.getPropertiesList();
+            String color_code_v1 = null;
+            String color_code_v2 = null;
 
-                for (Property p : properties_v1) {
-                    if (p.getKey().equals("rgb_color")) {
-                        color_code_v1 = p.getValue();
-                    }
+            for (Property p : properties_v1) {
+                if (p.getKey().equals("rgb_color")) {
+                    color_code_v1 = p.getValue();
                 }
-                for (Property p : properties_v2) {
-                    if (p.getKey().equals("rgb_color")) {
-                        color_code_v2 = p.getValue();
-                    }
-                }
-                String[] colors_v1 = color_code_v1.split(",");
-                String[] colors_v2 = color_code_v2.split(",");
-
-                int red_v1 = Integer.parseInt(colors_v1[0]);
-                int green_v1 = Integer.parseInt(colors_v1[1]);
-                int blue_v1 = Integer.parseInt(colors_v1[2]);
-                int red_v2 = Integer.parseInt(colors_v2[0]);
-                int green_v2 = Integer.parseInt(colors_v2[1]);
-                int blue_v2 = Integer.parseInt(colors_v2[2]);
-
-                RedAverage = (red_v1 + red_v2) / 2;
-                GreenAverage = (green_v1 + green_v2) / 2;
-                BlueAverage = (blue_v1 + blue_v2) / 2;
-
             }
+            for (Property p : properties_v2) {
+                if (p.getKey().equals("rgb_color")) {
+                    color_code_v2 = p.getValue();
+                }
+            }
+            String[] colors_v1 = color_code_v1.split(",");
+            String[] colors_v2 = color_code_v2.split(",");
+
+            int red_v1 = Integer.parseInt(colors_v1[0]);
+            int green_v1 = Integer.parseInt(colors_v1[1]);
+            int blue_v1 = Integer.parseInt(colors_v1[2]);
+            int red_v2 = Integer.parseInt(colors_v2[0]);
+            int green_v2 = Integer.parseInt(colors_v2[1]);
+            int blue_v2 = Integer.parseInt(colors_v2[2]);
+
+            RedAverage = (red_v1 + red_v2) / 2;
+            GreenAverage = (green_v1 + green_v2) / 2;
+            BlueAverage = (blue_v1 + blue_v2) / 2;
 
             String colorCode = RedAverage + "," + GreenAverage + "," + BlueAverage;
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
@@ -252,8 +234,7 @@ public class DotGen {
             x_coord_avg = x_coord_total / (number_of_segments * 2);
             y_coord_avg = y_coord_total / (number_of_segments * 2);
             if ((x_coord_avg <= width) && (y_coord_avg <= height)) {
-                Double[] coordinates = {x_coord_avg, y_coord_avg};
-                centroid_coords.add(coordinates);
+                centroids.add(Vertex.newBuilder().setX(x_coord_avg).setY(y_coord_avg).build());
             }
         }
 
@@ -261,50 +242,64 @@ public class DotGen {
         ArrayList<Vertex> centroidsWithProperties = new ArrayList<>();
         int centThicknessNumber = 3;
         for (Vertex c : centroids) {
-            Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
+            int red = 255;
+            int green = 0;
+            int blue = 0;
+
+            //Determine color values of centroids
+            String colorCode = red + "," + green + "," + blue;
+            Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+
+            //Determine thickness value of centroids
             String centThicknessValue = String.valueOf(centThicknessNumber);
             Property centThickness = Property.newBuilder().setKey("thickness").setValue(centThicknessValue).build();
-            Vertex withProperties = Vertex.newBuilder(c).addProperties(color).addProperties(centThickness).build();
+
+            //Property for whether vertex is a centroid.
+            Property isCentroid = Property.newBuilder().setKey("centroid").setValue("yes").build();
+
+            //Add color and thickness values to centroids
+            Vertex withProperties = Vertex.newBuilder(c).addProperties(color).addProperties(centThickness).addProperties(isCentroid).build();
             centroidsWithProperties.add(withProperties);
         }
 
         return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithNeighbours).addAllVertices(centroidsWithProperties).build();
     }
 
-    public Mesh generateirregular() {
+    public Mesh generateirregular(int arg3, int arg4) {
 
-        //create random points
-        Random bag = new Random();
-        ArrayList<Vertex> points = new ArrayList<>();
-        int number = 120;
-        for (int i = 0; i < number; i++) {
-            int x = 0;
-            int y = 0;
-            boolean contains = true;
-            while (contains == true) {
-                contains = false;
-                x = bag.nextInt((width + 1) - 0) + 0;
-                y = bag.nextInt((height + 1) - 0) + 0;
-                for (Vertex p : points) {
-                    if ((p.getX() == x) && (p.getY() == y)) {
-                        contains = true;
-                    }
-                }
-            }
-            points.add(Vertex.newBuilder().setX(x).setY(y).build());
-            Double[] coordinates = {(double) x, (double) y};
-            centroid_coords.add(coordinates);
-        }
+        ArrayList <Double[]> centroidcoordinates = new ArrayList<>();
 
         //initializing Irregular grid class
-        
         Irregular libJTS = new Irregular();
         ArrayList<Vertex> vertices = new ArrayList<>();
         ArrayList<Segment> segments = new ArrayList<>();
         ArrayList<Polygon> polygons = new ArrayList<>();
-        int relax = 5;
+        int relax = arg4;
 
-        libJTS.setCentroids(centroid_coords);
+        //create random points : completed by Lily Porter
+        Random bag = new Random();
+        ArrayList<Vertex> points = new ArrayList<>();
+        int number = arg3;
+        for (int i = 0; i < number; i++) {
+            int x = 0;
+            int y = 0;
+            boolean containspoint = true;
+            while (containspoint) {
+                containspoint = false;
+                x = bag.nextInt((width + 1) - 0) + 0;
+                y = bag.nextInt((height + 1) - 0) + 0;
+                for (Vertex p : points) {
+                    if ((p.getX() == x) && (p.getY() == y)) {
+                        containspoint = true;
+                    }
+                }
+            }
+            Double[] XandY = {(double) x, (double) y};
+            centroidcoordinates.add(XandY);
+        }
+
+        //calculations using the Irregular grid class
+        libJTS.setCentroids(centroidcoordinates);
         libJTS.voronoiDiagram();
         libJTS.resetCentroids();
 
@@ -332,7 +327,7 @@ public class DotGen {
                 }
                 else{
                     if (contains == false) {
-                        vertices.add(Vertex.newBuilder().setX((double) x).setY((double) y).build());
+                        vertices.add(Vertex.newBuilder().setX(x).setY(y).build());
                     }
                 }
             }
@@ -359,7 +354,7 @@ public class DotGen {
                     Double vertX = vert.getX();
                     Double vertY = vert.getY();
 
-                    if ((compare((double) vertX, (double) x1) == 0) && (compare((double) vertY, (double) y1) == 0)){
+                    if ((compare(vertX, x1) == 0) && (compare(vertY, y1) == 0)){
                         v1Idx = a;
                     }
                     if ((compare(vertX,x2) == 0) && (compare(vertY,y2) == 0)){
@@ -368,13 +363,13 @@ public class DotGen {
                 }
 
                 boolean contains = false;
-                if (segments.size() == 0){
+                if (segments.size() == 0) {
                     segments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).build());
                     segIdx = 0;
                     segIdxs.add(segIdx);
                 }
                 else{
-                    for (int k = 0; k < segments.size(); k++){
+                    for (int k = 0; k < segments.size(); k++) {
                         Segment seg = segments.get(k);
                         if (((seg.getV1Idx() == v1Idx) && (seg.getV2Idx() == v2Idx)) || ((seg.getV2Idx() == v1Idx) && (seg.getV1Idx()) == v2Idx)){
                             contains = true;
@@ -414,49 +409,110 @@ public class DotGen {
             Geometry convexHullGeom = convexHull.getConvexHull();
         }
 
-        //Distribute points colours and thickness (red, 3).
+        //Distribute colours and thicknesses of centroids.
         ArrayList<Vertex> centroidsWithProperties = new ArrayList<>();
-        int centroidThicknessNumber = 3;
-        for(Vertex c: centroids) {
-            Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
-            String centroidThicknessValue = String.valueOf(centroidThicknessNumber);
-            Property centroidThickness = Property.newBuilder().setKey("thickness").setValue(centroidThicknessValue).build();
-            Vertex withProperties = Vertex.newBuilder(c).addProperties(color).addProperties(centroidThickness).build();
+
+        int centThicknessNumber = 3;
+        for (Vertex c : centroids) {
+            int red = 255;
+            int green = 0;
+            int blue = 0;
+
+            //Determine color values of centroids
+            String colorCode = red + "," + green + "," + blue;
+            Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+
+            //Determine thickness value of centroids
+            String centThicknessValue = String.valueOf(centThicknessNumber);
+            Property centThickness = Property.newBuilder().setKey("thickness").setValue(centThicknessValue).build();
+
+            //Property for whether vertex is a centroid.
+            Property isCentroid = Property.newBuilder().setKey("centroid").setValue("yes").build();
+
+            //Add color and thickness values to centroids
+            Vertex withProperties = Vertex.newBuilder(c).addProperties(color).addProperties(centThickness).addProperties(isCentroid).build();
             centroidsWithProperties.add(withProperties);
         }
 
-        //Distribute points colours and thickness (red, 3).
+        //Distribute colours and thicknesses of vertices randomly.
         ArrayList<Vertex> verticesWithProperties = new ArrayList<>();
-        int vertexThicknessNumber = 3;
-        for(Vertex v: vertices) {
-            Property color = Property.newBuilder().setKey("rgb_color").setValue("0,0,0,").build();
-            String vertexThicknessValue = String.valueOf(vertexThicknessNumber);
-            Property vertexThickness = Property.newBuilder().setKey("thickness").setValue(vertexThicknessValue).build();
-            Vertex withProperties = Vertex.newBuilder(v).addProperties(color).addProperties(vertexThickness).build();
+
+        int vertThicknessNumber = bag.nextInt(11 - 3) + 3;
+        for (Vertex v: vertices) {
+            int red = bag.nextInt(255);
+            int green = bag.nextInt(255);
+            int blue = bag.nextInt(255);
+
+            //Determine color values of vertices
+            String colorCode = red + "," + green + "," + blue;
+            Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+
+            //Determine thickness value of vertices
+            String vertThicknessValue = String.valueOf(vertThicknessNumber);
+            Property vertThickness = Property.newBuilder().setKey("thickness").setValue(vertThicknessValue).build();
+
+            //Property for whether vertex is a centroid.
+            Property isCentroid = Property.newBuilder().setKey("centroid").setValue("no").build();
+
+            //Add color and thickness values to vertices
+            Vertex withProperties = Vertex.newBuilder(v).addProperties(color).addProperties(vertThickness).addProperties(isCentroid).build();
             verticesWithProperties.add(withProperties);
         }
 
+        //Distribute colours and thicknesses of segments based on vertices.
         ArrayList<Segment> segmentsWithProperties = new ArrayList<>();
-        int segmentThicknessNumber = 3;
-        for(Segment s: segments) {
-            Property color = Property.newBuilder().setKey("rgb_color").setValue("0,0,0,").build();
-            String segmentThicknessValue = String.valueOf(segmentThicknessNumber);
-            Property segmentThickness = Property.newBuilder().setKey("thickness").setValue(segmentThicknessValue).build();
-            Segment withProperties = Segment.newBuilder(s).addProperties(color).addProperties(segmentThickness).build();
+        int segThicknessNumber = bag.nextInt(5 - 1) + 1;
+        for (Segment s : segments) {
+            int RedAverage;
+            int GreenAverage;
+            int BlueAverage;
+
+            int vertex1Idx = s.getV1Idx();
+            int vertex2Idx = s.getV2Idx();
+            Vertex vertex1 = verticesWithProperties.get(vertex1Idx);
+            Vertex vertex2 = verticesWithProperties.get(vertex2Idx);
+
+            List<Property> properties_v1 = vertex1.getPropertiesList();
+            List<Property> properties_v2 = vertex2.getPropertiesList();
+            String color_code_v1 = null;
+            String color_code_v2 = null;
+
+            for (Property p : properties_v1) {
+                if (p.getKey().equals("rgb_color")) {
+                    color_code_v1 = p.getValue();
+                }
+            }
+            for (Property p : properties_v2) {
+                if (p.getKey().equals("rgb_color")) {
+                    color_code_v2 = p.getValue();
+                }
+            }
+            String[] colors_v1 = color_code_v1.split(",");
+            String[] colors_v2 = color_code_v2.split(",");
+
+            int red_v1 = Integer.parseInt(colors_v1[0]);
+            int green_v1 = Integer.parseInt(colors_v1[1]);
+            int blue_v1 = Integer.parseInt(colors_v1[2]);
+            int red_v2 = Integer.parseInt(colors_v2[0]);
+            int green_v2 = Integer.parseInt(colors_v2[1]);
+            int blue_v2 = Integer.parseInt(colors_v2[2]);
+
+            RedAverage = (red_v1 + red_v2) / 2;
+            GreenAverage = (green_v1 + green_v2) / 2;
+            BlueAverage = (blue_v1 + blue_v2) / 2;
+
+            //Determine color value of segments
+            String colorCode = RedAverage + "," + GreenAverage + "," + BlueAverage;
+            Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+
+            //Determine thickness value of segments
+            String segThicknessValue = String.valueOf(segThicknessNumber);
+            Property segThickness = Property.newBuilder().setKey("thickness").setValue(segThicknessValue).build();
+
+            //add colors and thickness values to segments
+            Segment withProperties = Segment.newBuilder(s).addProperties(color).addProperties(segThickness).build();
             segmentsWithProperties.add(withProperties);
         }
-
-        //set polygon properties
-        ArrayList<Polygon> polygonsWithProperties = new ArrayList<>();
-        int polygonThicknessNumber = 3;
-        for(Polygon p: polygons) {
-            Property color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0,").build();
-            String polygonThicknessValue = String.valueOf(polygonThicknessNumber);
-            Property polygonThickness = Property.newBuilder().setKey("thickness").setValue(polygonThicknessValue).build();
-            Polygon withProperties = Polygon.newBuilder(p).addProperties(color).addProperties(polygonThickness).build();
-            polygonsWithProperties.add(withProperties);
-        }
-
-        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllVertices(centroidsWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygonsWithProperties).build();
+        return Mesh.newBuilder().addAllVertices(verticesWithProperties).addAllVertices(centroidsWithProperties).addAllSegments(segmentsWithProperties).addAllPolygons(polygons).build();
     }
 }
