@@ -1,0 +1,25 @@
+@startuml
+class GraphicRenderer {
+    + void render()
+    - Color extractColor()
+    - int extractThickness()
+}
+
+class MeshDump {
+    + void dump(String fileName)
+    + void dump(Mesh aMesh)
+}
+
+class Main{
+    + void main(String[] args)
+}
+
+class SVGCanvas{
+    + Graphics2D build(int width, int height)
+    + void write(Graphics2D g, String fileName)
+}
+
+MeshDump <.. GraphicRenderer : _"uses"
+GraphicRenderer <.. Main : _"uses"
+SVGCanvas <.. GraphicRenderer :_"uses"
+@enduml
