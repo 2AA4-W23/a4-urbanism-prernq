@@ -24,6 +24,7 @@ public class Main {
                     }
                     else if (args.length == 3) {
                         arg3 = Integer.parseInt(args[2]);
+                        arg4 =5;
                     }
                     else if (args.length > 4) {
                         throw new Exception();
