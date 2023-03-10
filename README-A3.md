@@ -79,7 +79,7 @@ The program must compile and install successfully in maven with the feature impl
 
 | Id  | Feature title | Who? | Start | End | Status |
 | :-: |:-:            |---   | :-:   | :-: | :-:    |
-| || | | | | |
+|F01|Initialize classes & Enums(within them) for the different attributes of each category|Lily||| | |
 |  |  | ||||
 |  |  |  ||||
 |  |  | ||||
