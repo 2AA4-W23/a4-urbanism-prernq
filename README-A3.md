@@ -79,7 +79,7 @@ The program must compile and install successfully in maven with the feature impl
 
 | Id  | Feature title | Who? | Start | End | Status | MVP? |
 | :-: |:-:            |---   | :-:   | :-: | :-:    | :-: |
-|F01|Initialize classes & Enums(within them) for the different attributes of each category|Lily|||P|yes|
+|F01|Initialize classes & Enums(within them) for the different attributes of each category|Lily|03/09/2023||P|yes|
 |F02|Implement shape interface. Initializing circle shape. Create list of polygons & vertices & segments (like in DotGen)|Kiera|||P|yes|
 |F03|From centre, every polygon located outside of radius 200 is given property biome “ocean” and colour “0,0,204”|Kiera|||P|yes|
 |F03|From centre, every polygon located outside of radius 200 is given property biome “ocean” and colour “0,0,204”|Kiera|||P|yes|
