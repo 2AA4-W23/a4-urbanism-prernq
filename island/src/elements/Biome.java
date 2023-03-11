@@ -1,0 +1,12 @@
+package elements;
+
+public class Biome {
+
+    public enum Biomes {
+        BEACH, OCEAN, LAKE, TAIGA, TEMPERATE_DECIDUOUS_FOREST,
+        TEMPERATE_RAIN_FOREST, TROPICAL_SEASONAL_FOREST,
+        TROPICAL_RAIN_FOREST, SUBTROPICAL_DESERT, GRASSLANDS,
+        SAVANNA, TUNDRA
+    }
+
+}
