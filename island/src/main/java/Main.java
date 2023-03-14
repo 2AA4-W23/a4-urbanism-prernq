@@ -10,15 +10,45 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 public class Main {
+    public static String input;
+    public static String output;
+    public static String mode;
+
+
 
     public static void main(String[] args) throws IOException {
         MeshFactory factory = new MeshFactory();
 
+        for (int i = 0; i < args.length; i++){
+            String flag;
+            String arg;
 
-        //extract command line arguments
-        String input = args[0];
-        String output = args[1];
+            if (args[i].startsWith("-")){
+                flag = args[i];
+                System.out.println("Flag:"+flag);
 
+                arg = args[i+1];
+                System.out.println(arg);
+
+                switch (flag){
+                    case "-i":
+                        input = arg;
+                        break;
+                    case "-o":
+                        output = arg;
+                        break;
+                    case "--mode":
+                        mode = arg;
+                        break;
+                    default:
+                        System.out.println("just passing through");
+
+                }
+
+            }
+
+
+        }
 
         Structs.Mesh aMesh = factory.read(input);
         islandGen generator = new islandGen();

@@ -53,16 +53,16 @@ public class islandGen {
             for (Property p : properties){
                 if (p.getKey().equals("centroid")){
                     val = p.getValue();
-                    System.out.println("We have a centroid on our hand folks: "+val);
+                    //System.out.println("We have a centroid on our hand folks: "+val);
                 }
             }
 
             if (val.equals("yes")){
-                System.out.println("I am a centroid!");
+                //System.out.println("I am a centroid!");
                 this.inCentroids.add(Vertex.newBuilder().mergeFrom(v).build());
             }
             else{
-                System.out.println("I am a vertex");
+                //System.out.println("I am a vertex");
                 this.inVertices.add(Vertex.newBuilder().mergeFrom(v).build());
 
             }
@@ -85,12 +85,14 @@ public class islandGen {
         //get list of centroids inside a given radius (the polygons that make up the island)
         List<Integer> insideCents = shape.circle(200);
 
-        /*
+/*
         for (int i=0; i<insideCents.size(); i++){
             System.out.println(insideCents.get(i) + ": "+inCentroids.get(insideCents.get(i)).getX()+","+inCentroids.get(insideCents.get(i)).getY());
         }
 
-         */
+ */
+
+
 
 
 
