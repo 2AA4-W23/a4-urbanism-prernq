@@ -18,7 +18,7 @@ To install the different tooling on your computer, simply run:
 mosser@azrael A2 % mvn install
 ```
 
-After installation, you'll find an application named `generator.jar` in the `generator` directory, and a file named `visualizer.jar` in the `visualizer` one. 
+After installation, you'll find an application named `generator.jar` in the `generator` directory, a file named 'island.jar' in the 'island' directory, and and a file named `visualizer.jar` in the `visualizer` one. 
 
 ### Generator
 
@@ -40,6 +40,20 @@ mosser@azrael generator % java -jar generator.jar sample.mesh IR 300 8
 mosser@azrael generator % ls -lh sample.mesh
 -rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 sample.mesh
 mosser@azrael generator % 
+
+```
+
+### Island
+
+To generate an island using an existing mesh, go the the `island` directory, and use `java -jar` to run the product. The product can take 2 arguments: the first is the file containing the mesh and the second is the name of the file to store the island mesh.
+
+```
+mosser@azrael A2 % cd island 
+mosser@azrael island % java -jar island.jar ../generator/sample.mesh lagoon.mesh
+mossers@azrael island % ls -lh lagoon.mesh
+-rw-r--r--  1 keiralaskoski  staff   167K Mar 14 00:09 lagoon.mesh
+
+
 ```
 
 ### Visualizer
@@ -53,6 +67,8 @@ mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sam
 	* (this will output a mesh in normal mode)
 mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -X
 	* (this will output a mesh in debug mode)
+mosser@azrael visualizer % java -jar visualizer.jar ../island/lagoon.mesh sample.svg 
+	* (this will output an island mesh)
 	
 ... (lots of debug information printed to stdout) ...
 
@@ -80,33 +96,33 @@ The program must compile and install successfully in maven with the feature impl
 | Id  | Feature title | Who? | Start | End | Status | MVP? |
 | :-: |:-:            |---   | :-:   | :-: | :-:    | :-: |
 |F01|Initialize classes & Enums(within them) for the different attributes of each category|Lily|03/09/2023||P|yes|
-|F02|Implement shape interface. Initializing circle shape. Create list of polygons & vertices & segments (like in DotGen)|Kiera|||P|yes|
-|F03|From centre, every polygon located outside of radius 200 is given property biome “ocean” and colour “0,0,204”|Kiera|||P|yes|
-|F03|From centre, every polygon located outside of radius 200 is given property biome “ocean” and colour “0,0,204”|Kiera|||P|yes|
+|F02|Implement shape interface. Initializing circle shape. Create list of polygons & vertices & segments (like in DotGen)|Keira|03/13/23|03/14/23|D|yes|
+|F03|From centre, every polygon located outside of radius 200 is given property biome “ocean” and colour “0,0,204”|Keira|||P|yes|
+|F03|From centre, every polygon located outside of radius 200 is given property biome “ocean” and colour “0,0,204”|Keira|||P|yes|
 |F04|From centre, every polygon located between radius 200 and 50, given biome “forest” in biome class and colour 0,204,0|Prerna|||P|yes|
 |F05|From centre, every polygon located inside radius 50, given biome “lake” in biome class and colour 0,128,255 in colour class|Lily|||P|yes|
 |F06|All polygons with property land and has a neighbouring polygon with biome “Ocean” or biome “lagoon” is changed to colour “255,229,204” and biome “beach”|Prerna|||P|yes|
 |F07|Visualize filled polygons with colours in normal mode|Lily|||P|yes|
 |F08|Assign property “Elevation” to 0 for each polygon and vertex elevation is the average it’s polygons|Lily|||P|x|
 |F09|Assign property “Temperature” to each polygon based on sea level temp and elevation|Lily|||P|x|
-|F10|Assign property “Humidity” to each polygon as set value of 0|Kiera|||P|x|
+|F10|Assign property “Humidity” to each polygon as set value of 0|Keira|||P|x|
 |F11|Assign every polygon property “Aquifer” as “false”|Lily|||P|x|
 |F12|Assign every segment with property “River” as “false”|Prerna|||P|x|
 |F13|Assign every polygon with property “Soil absorption” as “0”|Prerna|||P|x|
-|F14|Initialize random class|Kiera|||P|x|
+|F14|Initialize random class|Keira|||P|x|
 |F15|Randomize elevation levels for polygons (beaches and rest of island) (default/random altimetric profile)|Lily|||P|x|
 |F16|Generate lakes from integer value|Prerna|||P|x|
-|F17|Generate basic rivers from integer value|Kiera|||P|x|
+|F17|Generate basic rivers from integer value|Keira|||P|x|
 |F18|Generate lakes based off of rivers with no outlet|Prerna|||P|x|
-|F19|Implement merging rivers and updating discharge level|Kiera|||P|x|
+|F19|Implement merging rivers and updating discharge level|Keira|||P|x|
 |F20|Generate random locations for aquifers from integer value|Lily|||P|x|
 |F21|Assign humidity values to polygons based on distance from lake, ocean or aquifer|Prerna|| ||P|x|
-|F22|Implement soil absorption profile|Kiera|||P|x|
+|F22|Implement soil absorption profile|Keira|||P|x|
 |F23|Assign more detailed biome values and colours (colour class) to polygons based on humidity and temperature|Lily|||P|x|
 |F24|Add altimetric profile for volcano|Prerna|||P|x|
 |F25|Add altimetric profile for flat island|Prerna|||P|x|
 |F26|Add altimetric profile for crater|Lily|||P|x|
-|F27|Implement oval shaped island|Kiera|||P|x|
+|F27|Implement oval shaped island|Keira|||P|x|
 |F28|Implement random shaped island – use random numbers|Keira|||P|x|
 |F29|Implement reproducibility|Keira|||P|x|
 |F30|Implement command line argument –shape|Lily|||P|x|
