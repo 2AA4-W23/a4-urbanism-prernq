@@ -49,7 +49,7 @@ To generate an island using an existing mesh, go the the `island` directory, and
 
 ```
 mosser@azrael A2 % cd island 
-mosser@azrael island % java -jar island.jar ../generator/sample.mesh lagoon.mesh
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o lagoon.mesh --mode lagoon
 mossers@azrael island % ls -lh lagoon.mesh
 -rw-r--r--  1 keiralaskoski  staff   167K Mar 14 00:09 lagoon.mesh
 

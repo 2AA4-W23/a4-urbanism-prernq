@@ -14,9 +14,14 @@ public class Main {
     public static String output;
     public static String mode;
 
-
+    public static void init(){
+        input = null;
+        output = null;
+        mode = null;
+    }
 
     public static void main(String[] args) throws IOException {
+        Main.init();
         MeshFactory factory = new MeshFactory();
 
         for (int i = 0; i < args.length; i++){
@@ -42,17 +47,13 @@ public class Main {
                         break;
                     default:
                         System.out.println("just passing through");
-
                 }
-
             }
-
-
         }
 
         Structs.Mesh aMesh = factory.read(input);
         islandGen generator = new islandGen();
-        Structs.Mesh myMesh = generator.generate(aMesh);
+        Structs.Mesh myMesh = generator.generate(aMesh, mode);
         factory.write(myMesh, output);
     }
 }

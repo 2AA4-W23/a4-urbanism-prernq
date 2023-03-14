@@ -13,6 +13,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
 import elements.*;
 
+
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,6 +27,7 @@ public class islandGen {
     public static List<Polygon> inPolygons;
     private Mesh inMesh;
     private Shape shape = new Shape();
+
 
     public void init(Mesh aMesh){
         inVertices = new ArrayList<>();
@@ -41,6 +43,7 @@ public class islandGen {
 
         //initialize all classes from elements package
         shape.Shape();
+
 
     }
 
@@ -79,20 +82,73 @@ public class islandGen {
         }
     }
 
-    public Mesh generate(Mesh aMesh){
+    public Mesh generate(Mesh aMesh, String mode){
         init(aMesh);
 
         //get list of centroids inside a given radius (the polygons that make up the island)
-        List<Integer> insideCents = shape.circle(200);
+        //List<Integer> insideCents = shape.circle(200);
 
 /*
         for (int i=0; i<insideCents.size(); i++){
             System.out.println(insideCents.get(i) + ": "+inCentroids.get(insideCents.get(i)).getX()+","+inCentroids.get(insideCents.get(i)).getY());
         }
 
+
  */
 
+        /*
+        System.out.println("My mkode is"+mode);
+        //for mode "lagoon"
+        if (mode.equals("lagoon")){
+            System.out.println("hey ;)");
+            List<Integer> insideCents = shape.circle(200);
 
+            //assign biome property
+            for (Polygon p: inPolygons){
+
+                //check if the polygon already has the property key "biome"
+                Boolean biomeProp = false;
+                List<Property> properties = p.getPropertiesList();
+                for (Property prop: properties){
+                    if (prop.getKey() == "biome"){
+                        biomeProp = true;
+                    }
+                }
+
+                //check if polygon should be considered ocean (not a centroid inside the island radius)
+                Boolean ocean = true;
+                for (int insideIdx: insideCents){
+                    if (insideIdx == p.getCentroidIdx()){
+                        ocean = false;
+                    }
+                }
+
+                //assign the property "ocean" to polygons
+                if (biomeProp == true){
+                    if (ocean == true){
+                        //p.newBuilderForType().get
+
+                    }
+                }
+                else{
+                    if (ocean == true){
+                        //p.newBuilderForType().
+                        Property addProp = Property.newBuilder().setKey("biome").setValue("ocean").build();
+                        Polygon.newBuilder(p).addProperties(addProp).build();
+                    }
+                }
+
+
+
+
+            }
+
+
+
+
+        }
+
+         */
 
 
 
