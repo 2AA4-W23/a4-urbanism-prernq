@@ -186,22 +186,27 @@ public class DotGen {
             }
         }
 
+
+
         //Adding neighbouring polygons as references
         ArrayList<Polygon> polygonsWithNeighbours = new ArrayList<>();
 
         for (Polygon p : polygons){
             List<Integer> pSegs = p.getSegmentIdxsList();
             ArrayList<Integer> neighbours = new ArrayList<>();
-
             for (int i = 0; i < pSegs.size(); i++){
                 for (Polygon ref: polygons) {
                     List<Integer> refSegs = ref.getSegmentIdxsList();
 
                     for (int j = 0; j < refSegs.size(); j++) {
-                        if ((refSegs.get(j) == pSegs.get(i)) && (ref.getCentroidIdx() != p.getCentroidIdx())) {
 
-                            neighbours.add(ref.getCentroidIdx());
+                        if (ref.getCentroidIdx() != p.getCentroidIdx()){
+                            int g = refSegs.get(j);
+                            int h = pSegs.get(i);
 
+                            if (g == h){
+                                neighbours.add(ref.getCentroidIdx());
+                            }
                         }
                     }
                 }
