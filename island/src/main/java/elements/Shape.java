@@ -38,6 +38,7 @@ public class Shape {
     }
 
     public void setCentre(){
+        /*
         double max_x = 0.0;
         double max_y = 0.0;
         for (Vertex v: islandGen.inVertices) {
@@ -47,19 +48,25 @@ public class Shape {
             if (compare(max_y, v.getY()) < 0){
                 max_y = v.getY();
             }
+
+
         }
 
         double centreX = max_x/2;
         double centreY = max_y/2;
 
+         */
+
         //this.centre.equals([centreX, centreY]);
-        this.centre[0] = centreX;
-        this.centre[1] = centreY;
+        this.centre[0] = width/2;
+        this.centre[1] = height/2;
     }
 
     public List<Integer> circle(double radius){        //returns int list of centroid indices within given radius of a circle centered at centre of mesh
 
         List<Integer> insideCents = new ArrayList<>();
+
+
 
         for (int i = 0; i < islandGen.inCentroids.size(); i++){
             Vertex c = islandGen.inCentroids.get(i);
@@ -68,12 +75,14 @@ public class Shape {
 
             double calc = Math.sqrt((Math.abs(x)*Math.abs(x)) + (Math.abs(y)*Math.abs(y)));
 
-            //System.out.println(i+": "+c.getX()+" "+c.getY()+"      "+calc);
+            System.out.println(i+": "+c.getX()+" "+c.getY()+"      "+calc);
 
             if (compare(radius, calc) >= 0){
+                System.out.println("Somehting should be added");
                 insideCents.add(i);
             }
         }
+        System.out.println("centre "+centre[0]+" "+centre[1]);
 
         return insideCents;
     }

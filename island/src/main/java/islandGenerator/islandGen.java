@@ -43,16 +43,16 @@ public class islandGen {
             for (Property p : properties){
                 if (p.getKey().equals("centroid")){
                     val = p.getValue();
-                    //System.out.println("We have a centroid on our hand folks: "+val);
+                    System.out.println("We have a centroid on our hand folks: "+val);
                 }
             }
 
             if (val.equals("yes")){
-                //System.out.println("I am a centroid!");
+                System.out.println("I am a centroid!");
                 this.inCentroids.add(Vertex.newBuilder().mergeFrom(v).build());
             }
             else{
-                //System.out.println("I am a vertex");
+                System.out.println("I am a vertex");
                 this.inVertices.add(Vertex.newBuilder().mergeFrom(v).build());
 
             }
