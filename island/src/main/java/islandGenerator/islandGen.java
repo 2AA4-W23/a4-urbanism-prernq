@@ -24,7 +24,8 @@ public class islandGen {
     public static List<Vertex> inCentroids;
     public static List<Segment> inSegments;
     public static List<Polygon> inPolygons;
-    public Mesh inMesh;
+    private Mesh inMesh;
+    private Shape shape = new Shape();
 
     public void init(Mesh aMesh){
         inVertices = new ArrayList<>();
@@ -32,6 +33,15 @@ public class islandGen {
         inSegments = new ArrayList<>();
         inPolygons = new ArrayList<>();
         inMesh = aMesh;
+
+        //make arrays of all values from input mesh aMesh
+        extractCentandVert();
+        extractSegments();
+        extractPolygons();
+
+        //initialize all classes from elements package
+        shape.Shape();
+
     }
 
     private void extractCentandVert(){
@@ -72,19 +82,17 @@ public class islandGen {
     public Mesh generate(Mesh aMesh){
         init(aMesh);
 
-        //make arrays of all values from input mesh aMesh
-        extractCentandVert();
-        extractSegments();
-        extractPolygons();
-
         //get list of centroids inside a given radius (the polygons that make up the island)
-        Shape shape = new Shape();
-        shape.Shape();
-        List<Integer> insideCents = shape.circle(100);
+        List<Integer> insideCents = shape.circle(200);
 
+        /*
         for (int i=0; i<insideCents.size(); i++){
             System.out.println(insideCents.get(i) + ": "+inCentroids.get(insideCents.get(i)).getX()+","+inCentroids.get(insideCents.get(i)).getY());
         }
+
+         */
+
+
 
 
         return Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build();

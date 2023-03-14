@@ -75,16 +75,12 @@ public class Shape {
 
             double calc = Math.sqrt((Math.abs(x)*Math.abs(x)) + (Math.abs(y)*Math.abs(y)));
 
-            System.out.println(i+": "+c.getX()+" "+c.getY()+"      "+calc);
+            //System.out.println(i+": "+c.getX()+" "+c.getY()+"      "+calc);
 
             if (compare(radius, calc) >= 0){
-                System.out.println("Somehting should be added");
                 insideCents.add(i);
             }
         }
-        System.out.println("centre "+centre[0]+" "+centre[1]);
-
         return insideCents;
     }
-
 }
