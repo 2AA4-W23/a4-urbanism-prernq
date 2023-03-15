@@ -1,14 +1,65 @@
 package elements;
 
-import ca.mcmaster.cas.se2aa4.a2.io.Structs;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+
+import static java.lang.Double.compare;
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
+
+import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
+
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.Random;
+
+import islandGenerator.islandGen;
+
+import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 public class Ocean {
 
-    public void assignOcean(){
+    public List<Polygon> assignOcean(List<Integer> insideCents){
 
+        List<Polygon> oceanPolys = new ArrayList<>();
+
+        //assign biome property
+        for (int i = 0; i < islandGen.inPolygons.size(); i++){
+
+            Structs.Polygon p = islandGen.inPolygons.get(i);
+
+            //check if polygon should be considered ocean (not a centroid inside the island radius)
+            Boolean ocean = true;
+            for (int insideIdx: insideCents){
+                if (insideIdx == p.getCentroidIdx()){
+                    ocean = false;
+                }
+            }
+
+            //check if the polygon already has the property key "biome"
+            List<Structs.Property> properties = p.getPropertiesList();
+            List<Structs.Property> newProp = new ArrayList<>();
+            for (Structs.Property prop: properties){
+                if (prop.getKey() != "biome"){
+                    newProp.add(prop);
+                }
+            }
+
+            //assign the property "ocean" to polygons
+            if (ocean == true){
+                Property addProp = Structs.Property.newBuilder().setKey("biome").setValue("ocean").build();
+                newProp.add(addProp);
+                oceanPolys.add(Polygon.newBuilder(p).addAllProperties(newProp).build());
+            }
+            else{
+                oceanPolys.add(p);
+            }
+        }
 
         //List<Structs.Polygon> test = new ArrayList<>();
 
@@ -72,7 +123,7 @@ public class Ocean {
 
 
 
-
+        return oceanPolys;
     }
 
 
