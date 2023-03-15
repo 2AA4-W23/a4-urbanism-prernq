@@ -45,87 +45,23 @@ public class Ocean {
             List<Structs.Property> properties = p.getPropertiesList();
             List<Structs.Property> newProp = new ArrayList<>();
             for (Structs.Property prop: properties){
-                System.out.println("working");
-                System.out.println((prop.getKey()).equals("biome"));;
-                if ((prop.getKey()).equals("biome") == false){
-                    System.out.println("Im also working");
+                if (((prop.getKey()).equals("biome") == false) || ((prop.getKey()).equals("rgb_color") == false)){
                     newProp.add(prop);
-                    System.out.println("added: "+prop.getKey()+" "+prop.getValue());
                 }
             }
 
-            //assign the property "ocean" to polygons
+            //assign the property "ocean" and colour to polygons
             if (ocean == true){
-                Property addProp = Structs.Property.newBuilder().setKey("biome").setValue("ocean").build();
-                newProp.add(addProp);
+                Property addOcean = Property.newBuilder().setKey("biome").setValue("ocean").build();
+                Property addColour = Property.newBuilder().setKey("rgb_color").setValue("0,0,204").build();
+                newProp.add(addOcean);
+                newProp.add(addColour);
                 oceanPolys.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
             }
             else{
                 oceanPolys.add(p);
             }
         }
-
-        //List<Structs.Polygon> test = new ArrayList<>();
-
-        /*
-        Property x = Property.newBuilder().setKey("biome").setValue("unassigned").build();
-        for (Polygon r : inPolygons){
-            Polygon withProperties = Polygon.newBuilder(r).addProperties(x).build();
-            test.add(withProperties);
-        }
-
-         */
-
-
-
-/*
-        System.out.println("My mode is"+mode);
-        //for mode "lagoon"
-        if (mode.equals("lagoon")){
-            System.out.println("hey ;)");
-            List<Integer> insideCents = shape.circle(200);
-
-            //assign biome property
-            for (int i = 0; i < inPolygons.size(); i++){
-                Structs.Polygon p = inPolygons.get(i);
-
-                //check if polygon should be considered ocean (not a centroid inside the island radius)
-                Boolean ocean = true;
-                for (int insideIdx: insideCents){
-                    if (insideIdx == p.getCentroidIdx()){
-                        ocean = false;
-                    }
-                }
-
-                //check if the polygon already has the property key "biome"
-                List<Structs.Property> oldProps = p.getPropertiesList();
-                List<Structs.Property> newProps = new ArrayList<>();
-                for (Structs.Property prop: oldProps){
-                    if (prop.getKey() != "biome"){
-                        newProps.add(prop);
-                    }
-                }
-
-
-                //assign the property "ocean" to polygons
-                if (ocean == true){
-                    //new property list with updated "biome" for "ocean"
-                    Structs.Property addProp = Structs.Property.newBuilder().setKey("biome").setValue("ocean").build();
-                    newProps.add(addProp);
-
-                    Structs.Polygon.newBuilder(p).clearProperties().addAllProperties(newProps).build();
-
-
-                    //Polygon addPoly = Polygon.newBuilder().mergeFrom(p).addProperties(addProp).build();
-                    //Polygon addPoly = Polygon.newBuilder(p).
-                    //inPolygons.set(i, addPoly);
-                }
-            }
-        }
-
- */
-
-
 
         return oceanPolys;
     }
