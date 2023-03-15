@@ -97,7 +97,7 @@ The program must compile and install successfully in maven with the feature impl
 | :-: |:-:            |---   | :-:   | :-: | :-:    | :-: |
 |F01|Initialize classes & Enums(within them) for the different attributes of each category|Lily|03/09/2023||P|yes|
 |F02|Implement shape interface. Initializing circle shape. Create list of polygons & vertices & segments (like in DotGen)|Keira|03/13/23|03/14/23|D|yes|
-|F03|From centre, every polygon located outside of radius 200 is given property biome “ocean” and colour “0,0,204”|Keira|||P|yes|
+|F03|From centre, every polygon located outside of radius 200 is given property biome “ocean” and colour “0,0,204”|Keira|03/14/23|03/15/23|D|yes|
 |F04|From centre, every polygon located between radius 200 and 50, given biome “forest” in biome class and colour 0,204,0|Prerna|||P|yes|
 |F05|From centre, every polygon located inside radius 50, given biome “lake” in biome class and colour 0,128,255 in colour class|Lily|||P|yes|
 |F06|All polygons with property land and has a neighbouring polygon with biome “Ocean” or biome “lagoon” is changed to colour “255,229,204” and biome “beach”|Prerna|||P|yes|
