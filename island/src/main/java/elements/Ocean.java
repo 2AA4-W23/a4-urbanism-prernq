@@ -45,8 +45,12 @@ public class Ocean {
             List<Structs.Property> properties = p.getPropertiesList();
             List<Structs.Property> newProp = new ArrayList<>();
             for (Structs.Property prop: properties){
-                if (prop.getKey() != "biome"){
+                System.out.println("working");
+                System.out.println((prop.getKey()).equals("biome"));;
+                if ((prop.getKey()).equals("biome") == false){
+                    System.out.println("Im also working");
                     newProp.add(prop);
+                    System.out.println("added: "+prop.getKey()+" "+prop.getValue());
                 }
             }
 
@@ -54,7 +58,7 @@ public class Ocean {
             if (ocean == true){
                 Property addProp = Structs.Property.newBuilder().setKey("biome").setValue("ocean").build();
                 newProp.add(addProp);
-                oceanPolys.add(Polygon.newBuilder(p).addAllProperties(newProp).build());
+                oceanPolys.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
             }
             else{
                 oceanPolys.add(p);

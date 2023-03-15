@@ -83,108 +83,44 @@ public class islandGen {
         }
     }
 
+    public void updatePolys(List<Polygon> newPolys){
+
+        List<Polygon> original = new ArrayList<>();
+        for (Polygon p : this.inPolygons){
+            original.add(Polygon.newBuilder().mergeFrom(p).build());
+        }
+
+        this.inPolygons.clear();
+        this.inPolygons = newPolys;
+
+    }
+
     public Mesh generate(Mesh aMesh, String mode){
         init(aMesh);
 
-        System.out.println("My mode is"+mode);
-        //for mode "lagoon"
-        if (mode.equals("lagoon")){
-            List<Integer> insideCents = shape.circle(200);
-
-            List<Polygon> original = new ArrayList<>();
-            for (Polygon p : inPolygons){
-                original.add(Polygon.newBuilder().mergeFrom(p).build());
-            }
-
-
-            List<Polygon> oceanAdded = ocean.assignOcean(insideCents);
-            inPolygons.clear();
-            inPolygons = oceanAdded;
-        }
-
-
-
-        /*
-        List<Polygon> test = new ArrayList<>();
-        test.add(Polygon.newBuilder().setCentroidIdx(42).build());
-        System.out.println(test.get(0).getCentroidIdx()); //prints 42
-
-        Polygon p = Polygon.newBuilder().mergeFrom(test.get(0)).setCentroidIdx(50).build();
-        System.out.println(p.getCentroidIdx()); //prints 50
-
-        test.set(0,p);
-        System.out.println(test.get(0).getCentroidIdx()); //prints 50
-
-         */
-
-
-
-        //get list of centroids inside a given radius (the polygons that make up the island)
-        //List<Integer> insideCents = shape.circle(200);
-
 /*
-        for (int i=0; i<insideCents.size(); i++){
-            System.out.println(insideCents.get(i) + ": "+inCentroids.get(insideCents.get(i)).getX()+","+inCentroids.get(insideCents.get(i)).getY());
-        }
+        //testing to make sure ocean class does not duplicate biome property
 
+        Property prop = Property.newBuilder().setKey("biome").setValue("unassigned").build();
+        Property test = Property.newBuilder().setKey("test").setValue("test").build();
+        List<Polygon> unassigned = new ArrayList<>();
+        for (Polygon p : inPolygons){
+            unassigned.add(Polygon.newBuilder(p).addProperties(prop).addProperties(test).build());
+        }
+        updatePolys(unassigned);
 
  */
 
-        /*
-        System.out.println("My mkode is"+mode);
         //for mode "lagoon"
         if (mode.equals("lagoon")){
-            System.out.println("hey ;)");
+            //get list of centroid that are inside the radius of the circle
             List<Integer> insideCents = shape.circle(200);
 
-            //assign biome property
-            for (Polygon p: inPolygons){
-
-                //check if the polygon already has the property key "biome"
-                Boolean biomeProp = false;
-                List<Property> properties = p.getPropertiesList();
-                for (Property prop: properties){
-                    if (prop.getKey() == "biome"){
-                        biomeProp = true;
-                    }
-                }
-
-                //check if polygon should be considered ocean (not a centroid inside the island radius)
-                Boolean ocean = true;
-                for (int insideIdx: insideCents){
-                    if (insideIdx == p.getCentroidIdx()){
-                        ocean = false;
-                    }
-                }
-
-                //assign the property "ocean" to polygons
-                if (biomeProp == true){
-                    if (ocean == true){
-                        //p.newBuilderForType().get
-
-                    }
-                }
-                else{
-                    if (ocean == true){
-                        //p.newBuilderForType().
-                        Property addProp = Property.newBuilder().setKey("biome").setValue("ocean").build();
-                        Polygon.newBuilder(p).addProperties(addProp).build();
-                    }
-                }
-
-
-
-
-            }
-
-
-
+            //get updated list of polygons with property key "biome" given value "ocean"
+            List<Polygon> oceanAdded = ocean.assignOcean(insideCents);
+            updatePolys(oceanAdded);
 
         }
-
-         */
-
-
 
 
         return Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build();
