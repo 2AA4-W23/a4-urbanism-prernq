@@ -85,6 +85,59 @@ public class islandGen {
     public Mesh generate(Mesh aMesh, String mode){
         init(aMesh);
 
+        System.out.println("My mode is"+mode);
+        //for mode "lagoon"
+        if (mode.equals("lagoon")){
+            System.out.println("hey ;)");
+            List<Integer> insideCents = shape.circle(200);
+
+            //assign biome property
+            for (int i = 0; i < inPolygons.size(); i++){
+                Polygon p = inPolygons.get(i);
+
+                //check if polygon should be considered ocean (not a centroid inside the island radius)
+                Boolean ocean = true;
+                for (int insideIdx: insideCents){
+                    if (insideIdx == p.getCentroidIdx()){
+                        ocean = false;
+                    }
+                }
+
+                //check if the polygon already has the property key "biome"
+                List<Property> properties = p.getPropertiesList();
+                List<Property> newProp = new ArrayList<>();
+                for (Property prop: properties){
+                    if (prop.getKey() != "biome"){
+                        newProp.add(prop);
+                    }
+                }
+
+                //assign the property "ocean" to polygons
+                if (ocean == true){
+                    Property addProp = Property.newBuilder().setKey("biome").setValue("ocean").build();
+                    Polygon addPoly = Polygon.newBuilder().mergeFrom(p).addProperties(addProp).build();
+                    inPolygons.set(i, addPoly);
+                }
+            }
+        }
+
+
+
+        /*
+        List<Polygon> test = new ArrayList<>();
+        test.add(Polygon.newBuilder().setCentroidIdx(42).build());
+        System.out.println(test.get(0).getCentroidIdx()); //prints 42
+
+        Polygon p = Polygon.newBuilder().mergeFrom(test.get(0)).setCentroidIdx(50).build();
+        System.out.println(p.getCentroidIdx()); //prints 50
+
+        test.set(0,p);
+        System.out.println(test.get(0).getCentroidIdx()); //prints 50
+
+         */
+
+
+
         //get list of centroids inside a given radius (the polygons that make up the island)
         //List<Integer> insideCents = shape.circle(200);
 
