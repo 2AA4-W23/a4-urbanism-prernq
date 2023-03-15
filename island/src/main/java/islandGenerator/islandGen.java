@@ -27,6 +27,7 @@ public class islandGen {
     public static List<Polygon> inPolygons;
     private Mesh inMesh;
     private Shape shape = new Shape();
+    private Ocean ocean = new Ocean();
 
 
     public void init(Mesh aMesh){
@@ -88,37 +89,17 @@ public class islandGen {
         System.out.println("My mode is"+mode);
         //for mode "lagoon"
         if (mode.equals("lagoon")){
-            System.out.println("hey ;)");
             List<Integer> insideCents = shape.circle(200);
 
-            //assign biome property
-            for (int i = 0; i < inPolygons.size(); i++){
-                Polygon p = inPolygons.get(i);
-
-                //check if polygon should be considered ocean (not a centroid inside the island radius)
-                Boolean ocean = true;
-                for (int insideIdx: insideCents){
-                    if (insideIdx == p.getCentroidIdx()){
-                        ocean = false;
-                    }
-                }
-
-                //check if the polygon already has the property key "biome"
-                List<Property> properties = p.getPropertiesList();
-                List<Property> newProp = new ArrayList<>();
-                for (Property prop: properties){
-                    if (prop.getKey() != "biome"){
-                        newProp.add(prop);
-                    }
-                }
-
-                //assign the property "ocean" to polygons
-                if (ocean == true){
-                    Property addProp = Property.newBuilder().setKey("biome").setValue("ocean").build();
-                    Polygon addPoly = Polygon.newBuilder().mergeFrom(p).addProperties(addProp).build();
-                    inPolygons.set(i, addPoly);
-                }
+            List<Polygon> original = new ArrayList<>();
+            for (Polygon p : inPolygons){
+                original.add(Polygon.newBuilder().mergeFrom(p).build());
             }
+
+
+            List<Polygon> oceanAdded = ocean.assignOcean(insideCents);
+            inPolygons.clear();
+            inPolygons = oceanAdded;
         }
 
 
