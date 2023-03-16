@@ -24,6 +24,8 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 public class Ocean {
 
+    private Colour colour;
+
     public List<Polygon> assignOcean(List<Integer> insideCents){
 
         List<Polygon> oceanPolys = new ArrayList<>();
@@ -53,7 +55,7 @@ public class Ocean {
             //assign the property "ocean" and colour to polygons
             if (ocean == true){
                 Property addOcean = Property.newBuilder().setKey("biome").setValue("ocean").build();
-                Property addColour = Property.newBuilder().setKey("rgb_color").setValue("0,0,204").build();
+                Property addColour = colour.addColour("ocean");
                 newProp.add(addOcean);
                 newProp.add(addColour);
                 oceanPolys.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());

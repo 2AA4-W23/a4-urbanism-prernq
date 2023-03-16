@@ -26,8 +26,11 @@ public class islandGen {
     public static List<Segment> inSegments;
     public static List<Polygon> inPolygons;
     private Mesh inMesh;
-    private Shape shape = new Shape();
+    private Shape isleShape = new Shape();
     private Ocean ocean = new Ocean();
+    private Biome biomes = new Biome();
+    private Shape.Shapes geoShape;
+
 
 
     public void init(Mesh aMesh){
@@ -43,9 +46,7 @@ public class islandGen {
         extractPolygons();
 
         //initialize all classes from elements package
-        shape.Shape();
-
-
+        isleShape.Shape();
     }
 
     private void extractCentandVert(){
@@ -63,66 +64,60 @@ public class islandGen {
 
             if (val.equals("yes")){
                 //System.out.println("I am a centroid!");
-                this.inCentroids.add(Vertex.newBuilder().mergeFrom(v).build());
+                inCentroids.add(Vertex.newBuilder().mergeFrom(v).build());
             }
             else{
                 //System.out.println("I am a vertex");
-                this.inVertices.add(Vertex.newBuilder().mergeFrom(v).build());
+                inVertices.add(Vertex.newBuilder().mergeFrom(v).build());
 
             }
         }
     }
     private void extractSegments(){
         for (Segment s : inMesh.getSegmentsList()){
-            this.inSegments.add(Segment.newBuilder().mergeFrom(s).build());
+            inSegments.add(Segment.newBuilder().mergeFrom(s).build());
         }
     }
     private void extractPolygons(){
         for (Polygon p : inMesh.getPolygonsList()){
-            this.inPolygons.add(Polygon.newBuilder().mergeFrom(p).build());
+            inPolygons.add(Polygon.newBuilder().mergeFrom(p).build());
         }
     }
 
     public void updatePolys(List<Polygon> newPolys){
 
         List<Polygon> original = new ArrayList<>();
-        for (Polygon p : this.inPolygons){
+        for (Polygon p : inPolygons){
             original.add(Polygon.newBuilder().mergeFrom(p).build());
         }
 
-        this.inPolygons.clear();
-        this.inPolygons = newPolys;
+        inPolygons.clear();
+        inPolygons = newPolys;
 
     }
 
     public Mesh generate(Mesh aMesh, String mode){
         init(aMesh);
 
-/*
-        //testing to make sure ocean class does not duplicate biome property
-
-        Property prop = Property.newBuilder().setKey("biome").setValue("unassigned").build();
-        Property test = Property.newBuilder().setKey("test").setValue("test").build();
-        List<Polygon> unassigned = new ArrayList<>();
-        for (Polygon p : inPolygons){
-            unassigned.add(Polygon.newBuilder(p).addProperties(prop).addProperties(test).build());
-        }
-        updatePolys(unassigned);
-
- */
-
-        //for mode "lagoon"
+        //for mode "lagoon" aka MVP
         if (mode.equals("lagoon")){
-            //get list of centroid that are inside the radius of the circle
-            List<Integer> insideCents = shape.circle(200);
 
-            //get updated list of polygons with property key "biome" given value "ocean"
-            List<Polygon> oceanAdded = ocean.assignOcean(insideCents);
-            updatePolys(oceanAdded);
+            //Choosing the island shape for MVP. This'll eventually be chosen based on a command line but for now just change it to the necessary enum value.
+            geoShape = Shape.Shapes.CIRCLE;
 
+            if (geoShape == Shape.Shapes.CIRCLE) {
+                //get list of centroid that are inside the radius of the circle
+                List<Integer> outsideCircle = isleShape.circle(200);
+                List<Integer> insideCircle = isleShape.circle(50);
+
+                List<Polygon> biomesAdded = biomes.assignforCircle(outsideCircle, insideCircle);
+                updatePolys(biomesAdded);
+                List<Polygon> oceanAdded = ocean.assignOcean(outsideCircle);
+                updatePolys(oceanAdded);
+            }
         }
 
-
+        //return Mesh.newBuilder().addAllSegments(inSegments).addAllPolygons(inPolygons).build();
         return Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build();
     }
 

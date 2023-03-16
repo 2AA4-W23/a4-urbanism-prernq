@@ -29,6 +29,7 @@ public class Shape {
         CIRCLE, OVAL, RANDOM
     }
 
+
     public void Shape(){
         System.out.println("Constructor working");
         height = 500;
@@ -38,26 +39,7 @@ public class Shape {
     }
 
     public void setCentre(){
-        /*
-        double max_x = 0.0;
-        double max_y = 0.0;
-        for (Vertex v: islandGen.inVertices) {
-            if (compare(max_x, v.getX()) < 0){
-                max_x = v.getX();
-            }
-            if (compare(max_y, v.getY()) < 0){
-                max_y = v.getY();
-            }
 
-
-        }
-
-        double centreX = max_x/2;
-        double centreY = max_y/2;
-
-         */
-
-        //this.centre.equals([centreX, centreY]);
         this.centre[0] = width/2;
         this.centre[1] = height/2;
     }
@@ -65,8 +47,6 @@ public class Shape {
     public List<Integer> circle(double radius){        //returns int list of centroid indices within given radius of a circle centered at centre of mesh
 
         List<Integer> insideCents = new ArrayList<>();
-
-
 
         for (int i = 0; i < islandGen.inCentroids.size(); i++){
             Vertex c = islandGen.inCentroids.get(i);
