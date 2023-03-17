@@ -35,7 +35,7 @@ public class Elevation {
             List<Structs.Property> properties = p.getPropertiesList();
             List<Structs.Property> newProp = new ArrayList<>();
             for (Structs.Property prop: properties){
-                if ((prop.getKey()).equals("elevation") == false){
+                if (!(prop.getKey()).equals("elevation")){
                     newProp.add(prop);
                 }
             }

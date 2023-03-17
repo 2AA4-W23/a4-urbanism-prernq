@@ -30,6 +30,7 @@ public class islandGen {
     private Ocean ocean = new Ocean();
     private Biome biomes = new Biome();
     private Elevation elevation = new Elevation();
+    private Temperature temperature = new Temperature();
     private Shape.Shapes geoShape;
 
     public void init(Mesh aMesh){
@@ -100,11 +101,11 @@ public class islandGen {
     public Mesh generate(Mesh aMesh, String mode){
         init(aMesh);
 
+        //Choosing the island shape. This'll eventually be chosen based on a command line but for now just change it to the necessary enum value.
+        geoShape = Shape.Shapes.CIRCLE;
+
         //for mode "lagoon" aka MVP
         if (mode.equals("lagoon")){
-
-            //Choosing the island shape for MVP. This'll eventually be chosen based on a command line but for now just change it to the necessary enum value.
-            geoShape = Shape.Shapes.CIRCLE;
 
             if (geoShape == Shape.Shapes.CIRCLE) {
                 //get list of centroid that are inside the radius of the circle
@@ -116,11 +117,19 @@ public class islandGen {
                 List<Polygon> oceanAdded = ocean.assignOceanforCircle(outsideCircle);
                 updatePolys(oceanAdded);
             }
-            else {
+        }
+        else if (mode.equals("normal")) {
+            //more complex colours and biomes to be added in F23
 
-            }
+            int seaLevelTemp = 0;
+
+            //assigning elevation to polygons
             List<Polygon> elevationAdded = elevation.assignElevation();
             updatePolys(elevationAdded);
+
+            List<Polygon> temperatureAdded = temperature.assignTemperature(seaLevelTemp);
+            updatePolys(temperatureAdded);
+
         }
 
         //return Mesh.newBuilder().addAllSegments(inSegments).addAllPolygons(inPolygons).build();
