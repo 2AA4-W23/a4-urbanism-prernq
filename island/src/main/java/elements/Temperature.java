@@ -54,6 +54,4 @@ public class Temperature {
         return PolysWithTemperature;
 
     }
-
-
 }

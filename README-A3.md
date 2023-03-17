@@ -103,9 +103,9 @@ The program must compile and install successfully in maven with the feature impl
 |F06|All polygons with property land and has a neighbouring polygon with biome “Ocean” or biome “lagoon” is changed to colour “255,229,204” and biome “beach”|Prerna|||P|yes|
 |F07|Visualize filled polygons with colours in normal mode|Lily|||P|yes|
 |F08|Assign property “Elevation” to 0 for each polygon and vertex elevation is the average it’s polygons|Lily|03/16/2023||P|x|
-|F09|Assign property “Temperature” to each polygon based on sea level temp and elevation|Lily|03/16/2023|03/17/2023|D|x|
+|F09|Assign property “Temperature” to each polygon based on sea level temp and elevation|Lily|03/16/2023|03/16/2023|D|x|
 |F10|Assign property “Humidity” to each polygon as set value of 0|Keira|||P|x|
-|F11|Assign every polygon property “Aquifer” as “false”|Lily|||P|x|
+|F11|Assign every polygon property “Aquifer” as “false”|Lily|03/16/2023|03/16/2023|D|x|
 |F12|Assign every segment with property “River” as “false”|Prerna|||P|x|
 |F13|Assign every polygon with property “Soil absorption” as “0”|Prerna|||P|x|
 |F14|Initialize random class|Keira|||P|x|

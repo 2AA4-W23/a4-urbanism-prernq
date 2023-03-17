@@ -31,6 +31,7 @@ public class islandGen {
     private Biome biomes = new Biome();
     private Elevation elevation = new Elevation();
     private Temperature temperature = new Temperature();
+    private Aquifer aquifer = new Aquifer();
     private Shape.Shapes geoShape;
 
     public void init(Mesh aMesh){
@@ -127,8 +128,13 @@ public class islandGen {
             List<Polygon> elevationAdded = elevation.assignElevation();
             updatePolys(elevationAdded);
 
+            //assigning temperature to polygons
             List<Polygon> temperatureAdded = temperature.assignTemperature(seaLevelTemp);
             updatePolys(temperatureAdded);
+
+            //assigning aquifers to polygons
+            List<Polygon> aquiferAdded = aquifer.assignAquifer();
+            updatePolys(aquiferAdded);
 
         }
 
