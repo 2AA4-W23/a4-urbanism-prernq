@@ -23,6 +23,7 @@ import islandGenerator.islandGen;
 public class Biome {
 
     private Colour colour;
+
     //dont know if we actually need this enum...
     public enum Biomes {
         BEACH, OCEAN, LAKE, TAIGA, TEMPERATE_DECIDUOUS_FOREST,
@@ -32,7 +33,7 @@ public class Biome {
     }
 
     //this function gets called when the island is the circle shape.
-    public List<Polygon> assignforCircle(List<Integer> outsideCircle, List<Integer> insideCircle) {
+    public List<Polygon> assignBiomeforCircle(List<Integer> outsideCircle, List<Integer> insideCircle) {
 
         List<Polygon> PolysWithBiome = new ArrayList<>();
 

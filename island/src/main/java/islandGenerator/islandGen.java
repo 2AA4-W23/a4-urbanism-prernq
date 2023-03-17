@@ -29,9 +29,8 @@ public class islandGen {
     private Shape isleShape = new Shape();
     private Ocean ocean = new Ocean();
     private Biome biomes = new Biome();
+    private Elevation elevation = new Elevation();
     private Shape.Shapes geoShape;
-
-
 
     public void init(Mesh aMesh){
         inVertices = new ArrayList<>();
@@ -73,11 +72,13 @@ public class islandGen {
             }
         }
     }
+
     private void extractSegments(){
         for (Segment s : inMesh.getSegmentsList()){
             inSegments.add(Segment.newBuilder().mergeFrom(s).build());
         }
     }
+
     private void extractPolygons(){
         for (Polygon p : inMesh.getPolygonsList()){
             inPolygons.add(Polygon.newBuilder().mergeFrom(p).build());
@@ -110,11 +111,16 @@ public class islandGen {
                 List<Integer> outsideCircle = isleShape.circle(200);
                 List<Integer> insideCircle = isleShape.circle(50);
 
-                List<Polygon> biomesAdded = biomes.assignforCircle(outsideCircle, insideCircle);
+                List<Polygon> biomesAdded = biomes.assignBiomeforCircle(outsideCircle, insideCircle);
                 updatePolys(biomesAdded);
-                List<Polygon> oceanAdded = ocean.assignOcean(outsideCircle);
+                List<Polygon> oceanAdded = ocean.assignOceanforCircle(outsideCircle);
                 updatePolys(oceanAdded);
             }
+            else {
+
+            }
+            List<Polygon> elevationAdded = elevation.assignElevation();
+            updatePolys(elevationAdded);
         }
 
         //return Mesh.newBuilder().addAllSegments(inSegments).addAllPolygons(inPolygons).build();

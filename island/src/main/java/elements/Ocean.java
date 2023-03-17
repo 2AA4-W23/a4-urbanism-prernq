@@ -26,7 +26,7 @@ public class Ocean {
 
     private Colour colour;
 
-    public List<Polygon> assignOcean(List<Integer> insideCents){
+    public List<Polygon> assignOceanforCircle(List<Integer> insideCents){
 
         List<Polygon> oceanPolys = new ArrayList<>();
 
