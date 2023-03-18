@@ -24,7 +24,19 @@ public class Aquifer {
 
     public List<Structs.Polygon> assignAquifer() {
 
+        Random rand = new Random();
+
+        //will later be determined by a command line argument. int = 10 for now.
+        int numAquifers = 25;
+        ArrayList<Integer> randomAquifers = new ArrayList<>();
+
         List<Polygon> PolysWithAquifer = new ArrayList<>();
+
+        //get the indices of the random aquifers.
+        for (int i = 0; i < numAquifers; i++) {
+            int randomPoly = rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
+            randomAquifers.add(randomPoly);
+        }
 
         //assign property "true" or "false" for aquifer.
         for (int i = 0; i < islandGen.inPolygons.size(); i++) {
@@ -40,8 +52,14 @@ public class Aquifer {
                 }
             }
 
-            Property addAquifer = Property.newBuilder().setKey("aquifer").setValue("false").build();
-            newProp.add(addAquifer);
+            if (randomAquifers.contains(i)) {
+                Property addAquifer = Property.newBuilder().setKey("aquifer").setValue("true").build();
+                newProp.add(addAquifer);
+            }
+            else {
+                Property addAquifer = Property.newBuilder().setKey("aquifer").setValue("false").build();
+                newProp.add(addAquifer);
+            }
             PolysWithAquifer.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
         }
 
