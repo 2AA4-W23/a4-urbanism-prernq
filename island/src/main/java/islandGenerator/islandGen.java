@@ -51,6 +51,8 @@ public class islandGen {
     }
 
     private void extractCentandVert(){
+
+        Property vertThickness = Property.newBuilder().setKey("thickness").setValue(String.valueOf(0)).build();
         String val = null;
 
         for (Vertex v : this.inMesh.getVerticesList()){
@@ -65,19 +67,21 @@ public class islandGen {
 
             if (val.equals("yes")){
                 //System.out.println("I am a centroid!");
-                inCentroids.add(Vertex.newBuilder().mergeFrom(v).build());
+                inCentroids.add(Vertex.newBuilder().mergeFrom(v).clearProperties().addProperties(vertThickness).build());
             }
             else{
                 //System.out.println("I am a vertex");
-                inVertices.add(Vertex.newBuilder().mergeFrom(v).build());
+                inVertices.add(Vertex.newBuilder().mergeFrom(v).clearProperties().addProperties(vertThickness).build());
 
             }
         }
     }
 
     private void extractSegments(){
+        Property segThickness = Property.newBuilder().setKey("thickness").setValue(String.valueOf(1)).build();
+
         for (Segment s : inMesh.getSegmentsList()){
-            inSegments.add(Segment.newBuilder().mergeFrom(s).build());
+            inSegments.add(Segment.newBuilder().mergeFrom(s).clearProperties().addProperties(segThickness).build());
         }
     }
 

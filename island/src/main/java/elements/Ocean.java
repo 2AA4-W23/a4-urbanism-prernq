@@ -24,7 +24,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 public class Ocean {
 
-    private Colour colour;
+    Colour colour = new Colour();
 
     public List<Polygon> assignOceanforCircle(List<Integer> insideCents){
 

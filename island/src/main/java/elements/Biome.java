@@ -22,7 +22,7 @@ import islandGenerator.islandGen;
 
 public class Biome {
 
-    private Colour colour;
+    Colour colour = new Colour();
 
     //dont know if we actually need this enum...
     public enum Biomes {

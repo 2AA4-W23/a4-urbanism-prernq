@@ -1,15 +1,18 @@
 package ca.mcmaster.cas.se2aa4.a2.visualizer;
 
+import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,6 +26,49 @@ public class GraphicRenderer {
         canvas.setColor(Color.BLACK);
         Stroke stroke = new BasicStroke(0.5f);
         canvas.setStroke(stroke);
+
+        // draw polygons
+        for (Polygon p : aMesh.getPolygonsList()) {
+
+            List<Integer> segments;
+
+            segments = p.getSegmentIdxsList();
+
+            List<Integer> vertIdxs = new ArrayList<>();
+            for (int i : segments) {
+                Segment s = aMesh.getSegmentsList().get(i);
+                vertIdxs.add(s.getV1Idx());
+                vertIdxs.add(s.getV2Idx());
+            }
+
+            List<Integer> newVertIdxs = new ArrayList<>();
+            for (int i : vertIdxs) {
+                if (!(newVertIdxs.contains(i))) {
+                    newVertIdxs.add(i);
+                }
+            }
+
+            ArrayList<Integer> xCoords = new ArrayList<>();
+            ArrayList<Integer> yCoords = new ArrayList<>();
+            int vertNum = 0;
+            for (int i : newVertIdxs) {
+                vertNum++;
+                Vertex v = aMesh.getVerticesList().get(i);
+                xCoords.add((int) v.getX());
+                yCoords.add((int) v.getY());
+            }
+
+            int[] x = xCoords.stream().mapToInt(i -> i).toArray();
+            int[] y = yCoords.stream().mapToInt(i -> i).toArray();
+
+            Color old = canvas.getColor();
+
+            canvas.setColor(extractColor(p.getPropertiesList()));
+            canvas.fillPolygon(x, y, vertNum);
+
+            canvas.setColor(old);
+        }
+
 
         // draw segments
         for (Segment s : aMesh.getSegmentsList()) {
