@@ -109,7 +109,7 @@ The program must compile and install successfully in maven with the feature impl
 |F12|Assign every segment with property “River” as “false”|Prerna|||P|x|
 |F13|Assign every polygon with property “Soil absorption” as “0”|Prerna|||P|x|
 |F14|Initialize random class|Keira|||P|x|
-|F15|Randomize elevation levels for polygons (beaches and rest of island) (default/random altimetric profile)|Lily|||P|x|
+|F15|Randomize elevation levels for polygons (beaches and rest of island) (default/random altimetric profile)|Lily|03/18/2023||P|x|
 |F16|Generate lakes from integer value|Prerna|||P|x|
 |F17|Generate basic rivers from integer value|Keira|||P|x|
 |F18|Generate lakes based off of rivers with no outlet|Prerna|||P|x|
