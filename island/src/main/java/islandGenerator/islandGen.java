@@ -113,6 +113,7 @@ public class islandGen {
         if (mode.equals("lagoon")){
 
             if (geoShape == Shape.Shapes.CIRCLE) {
+                int seaLevelTemp = 0;
                 //get list of centroid that are inside the radius of the circle
                 List<Integer> outsideCircle = isleShape.circle(200);
                 List<Integer> insideCircle = isleShape.circle(50);
@@ -121,6 +122,18 @@ public class islandGen {
                 updatePolys(biomesAdded);
                 List<Polygon> oceanAdded = ocean.assignOceanforCircle(outsideCircle);
                 updatePolys(oceanAdded);
+
+                //assigning elevation to polygons
+                List<Polygon> elevationAdded = elevation.assignElevation();
+                updatePolys(elevationAdded);
+
+                //assigning temperature to polygons
+                List<Polygon> temperatureAdded = temperature.assignTemperature(seaLevelTemp);
+                updatePolys(temperatureAdded);
+
+                //assigning aquifers to polygons
+                List<Polygon> aquiferAdded = aquifer.assignAquifer();
+                updatePolys(aquiferAdded);
             }
         }
         else if (mode.equals("normal")) {

@@ -24,7 +24,32 @@ public class Elevation {
 
     public List<Polygon> assignElevation() {
 
+        Random rand = new Random();
+
+        int numRandomHighPoints = 10;
+        int numRandomLowPoints = 10;
+        ArrayList<Integer> randomHP = new ArrayList<>();
+        ArrayList<Integer> randomLP = new ArrayList<>();
+
         List<Polygon> PolysWithElevation = new ArrayList<>();
+
+        //get the indices of the random high points
+        for (int i = 0; i < numRandomHighPoints; i++) {
+            int randomPoly = rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
+            randomHP.add(randomPoly);
+        }
+
+        //get the indices of the random low points (making sure to not choose any points that are already in the high point array).
+        for (int i = 0; i < numRandomLowPoints; i++) {
+            boolean chosen = true;
+            while (chosen == true) {
+                int randomPoly = rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
+                if ((randomHP.contains(randomPoly)) == false) {
+                    randomLP.add(randomPoly);
+                    chosen = false;
+                }
+            }
+        }
 
         //assign elevation property
         for (int i = 0; i < islandGen.inPolygons.size(); i++) {
@@ -34,14 +59,42 @@ public class Elevation {
             //check if the polygon already has the property key "elevation"
             List<Structs.Property> properties = p.getPropertiesList();
             List<Structs.Property> newProp = new ArrayList<>();
-            for (Structs.Property prop: properties){
-                if (!(prop.getKey()).equals("elevation")){
+            for (Structs.Property prop : properties) {
+                if (!(prop.getKey()).equals("elevation")) {
                     newProp.add(prop);
                 }
             }
 
-            Property addElevation = Property.newBuilder().setKey("elevation").setValue(String.valueOf(0)).build();
-            newProp.add(addElevation);
+            boolean oceanORbeachfound = false;
+            for (Property prop : p.getPropertiesList()) {
+                if (prop.getKey() == "biome") {
+                    if ((prop.getValue() == "ocean") || (prop.getValue() == "lake")) {
+                        Property addElevation = Property.newBuilder().setKey("elevation").setValue(String.valueOf(0)).build();
+                        newProp.add(addElevation);
+                        oceanORbeachfound = true;
+                    }
+                    else if ((prop.getValue() == "beach")) {
+                        Property addElevation = Property.newBuilder().setKey("elevation").setValue(String.valueOf(1)).build();
+                        newProp.add(addElevation);
+                        oceanORbeachfound = true;
+                    }
+                }
+            }
+
+            if (oceanORbeachfound == false) {
+                if (randomHP.contains(i)) {
+                    Property addElevation = Property.newBuilder().setKey("elevation").setValue(String.valueOf(5)).build();
+                    newProp.add(addElevation);
+                }
+                else if (randomLP.contains(i)) {
+                    Property addElevation = Property.newBuilder().setKey("elevation").setValue(String.valueOf(-5)).build();
+                    newProp.add(addElevation);
+                }
+                else {
+                    Property addElevation = Property.newBuilder().setKey("elevation").setValue(String.valueOf(1)).build();
+                    newProp.add(addElevation);
+                }
+            }
             PolysWithElevation.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
         }
 
