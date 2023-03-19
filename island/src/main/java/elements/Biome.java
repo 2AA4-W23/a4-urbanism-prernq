@@ -50,7 +50,14 @@ public class Biome {
                 }
             }
 
+            //checks if polygon should be considered forest
+            // if centroid inside outtercircle but not inside inner circle
             Boolean forest = false;
+            for (int outsideIdx: outsideCircle){
+                if(outsideIdx == p.getCentroidIdx() && lake == false){
+                    forest = true;
+                }
+            }
 
             //check if the polygon already has the property key "biome"
             List<Structs.Property> properties = p.getPropertiesList();
@@ -70,6 +77,11 @@ public class Biome {
                 PolysWithBiome.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
             }
             else if (forest == true) {
+                Property addForest = Property.newBuilder().setKey("biome").setValue("forest").build();
+                Property addForestColour = colour.addColour("forest");
+                newProp.add(addForest);
+                newProp.add(addForestColour);
+                PolysWithBiome.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
 
             }
             else{
