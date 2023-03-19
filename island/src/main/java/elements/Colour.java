@@ -20,6 +20,9 @@ public class Colour {
         else if (biome == "forest") {
             colour = Property.newBuilder().setKey("rgb_color").setValue("0,204,0").build();
         }
+        else if (biome == "beach") {
+            colour = Property.newBuilder().setKey("rgb_color").setValue("255,229,204").build();
+        }
 
         return colour;
     }

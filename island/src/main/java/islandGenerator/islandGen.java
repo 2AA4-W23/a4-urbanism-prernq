@@ -28,6 +28,7 @@ public class islandGen {
     private Mesh inMesh;
     private Shape isleShape = new Shape();
     private Ocean ocean = new Ocean();
+    private Beach beach = new Beach();
     private Biome biomes = new Biome();
     private Elevation elevation = new Elevation();
     private Temperature temperature = new Temperature();
@@ -123,6 +124,8 @@ public class islandGen {
                 updatePolys(biomesAdded);
                 List<Polygon> oceanAdded = ocean.assignOceanforCircle(outsideCircle);
                 updatePolys(oceanAdded);
+                List<Polygon> beachAdded = beach.assignBeachforCircle(outsideCircle);
+                updatePolys(beachAdded);
 
                 //assigning elevation to polygons
                 List<Polygon> elevationAdded = elevation.assignElevation();
