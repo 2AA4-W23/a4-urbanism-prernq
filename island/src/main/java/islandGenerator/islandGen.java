@@ -31,6 +31,7 @@ public class islandGen {
     private Biome biomes = new Biome();
     private Elevation elevation = new Elevation();
     private Temperature temperature = new Temperature();
+    private Humidity humidity = new Humidity();
     private Aquifer aquifer = new Aquifer();
     private Shape.Shapes geoShape;
 
@@ -130,6 +131,9 @@ public class islandGen {
                 //assigning temperature to polygons
                 List<Polygon> temperatureAdded = temperature.assignTemperature(seaLevelTemp);
                 updatePolys(temperatureAdded);
+
+                List<Polygon> humidityAdded = humidity.assignHumidity();
+                updatePolys(humidityAdded);
 
                 //assigning aquifers to polygons
                 List<Polygon> aquiferAdded = aquifer.assignAquifer();
