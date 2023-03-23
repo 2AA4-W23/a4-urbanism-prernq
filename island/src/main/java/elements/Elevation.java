@@ -28,25 +28,8 @@ public class Elevation {
 
         int numRandomHighPoints = 10;
         int numRandomLowPoints = 10;
-        ArrayList<Integer> randomHP;
-        ArrayList<Integer> randomLP;
-
-
-        islandGen.seed.randElevation(numRandomHighPoints, numRandomLowPoints);
-        randomHP = islandGen.seed.getRandHigh();
-        randomLP = islandGen.seed.getRandLow();
-
-
-
-
-
-        for (int i: randomHP){
-            System.out.println(i);
-        }
-        for (int j: randomLP){
-            System.out.println(j);
-        }
-
+        ArrayList<Integer> randomHP = new ArrayList<>();
+        ArrayList<Integer> randomLP = new ArrayList<>();
 
 
 
