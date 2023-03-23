@@ -36,7 +36,7 @@ public class SoilAbsorption {
             Boolean is_land = false;
             Boolean it_touches_water = false;
             Boolean neighbour_touches_water = false;
-            Boolean neighbour2_touches_Water = false;
+            Boolean neighbour2_touches_water = false;
             int absorption;
 
             //creates list of neighbour polygons from neighbour index list
@@ -51,7 +51,7 @@ public class SoilAbsorption {
                 for(int idx : neighbour_neighbour_idxs){
                     Polygon neighbour_poly = islandGen.inPolygons.get(idx);
                     // if not existing neighbour of main poly and not already a first-degree neighbour
-                    if(!p_neighbours.contains(neighbour_poly) && !p_neighbours_of_neighbours.contains(neighbour_poly)){
+                    if(!p_neighbours.contains(neighbour_poly) && !p_neighbours_of_neighbours.contains(neighbour_poly) && neighbour_poly != p){
                         p_neighbours_of_neighbours.add(neighbour_poly);
                     }
                 }
@@ -114,21 +114,25 @@ public class SoilAbsorption {
                 }
             }
             //assign the property "ocean" and colour to polygons
-            if (neighbour_touches_water){
+            if (it_touches_water){
                 Property addSoilAbsorption = Property.newBuilder().setKey("soil_absorption").setValue("1").build();
                 //Property addSoilColour = colour.addColour("profile1");
                 newProp.add(addSoilAbsorption);
                 //newProp.add(addSoilColour);
                 polysWithAbsorption.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
-            }else if (neighbour2_touches_Water){
+            }else if (neighbour_touches_water){
                 Property addSoilAbsorption = Property.newBuilder().setKey("soil_absorption").setValue("2").build();
-                //Property addSoilColour = colour.addColour("profile1");
+                //Property addSoilColour = colour.addColour("profile2");
                 newProp.add(addSoilAbsorption);
                 //newProp.add(addSoilColour);
                 polysWithAbsorption.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
             }
             else{
-                polysWithAbsorption.add(p);
+                Property addSoilAbsorption = Property.newBuilder().setKey("soil_absorption").setValue("0").build();
+                //Property addSoilColour = colour.addColour("profile0");
+                newProp.add(addSoilAbsorption);
+                //newProp.add(addSoilColour);
+                polysWithAbsorption.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
             }
         }
 
