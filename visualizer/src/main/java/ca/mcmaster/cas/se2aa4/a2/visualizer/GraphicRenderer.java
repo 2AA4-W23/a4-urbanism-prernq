@@ -32,10 +32,47 @@ public class GraphicRenderer {
         for (Polygon p : aMesh.getPolygonsList()) {
             System.out.println("\n\nPoly "+p.getCentroidIdx()+": ");
             List<Integer> segments;
-
             segments = p.getSegmentIdxsList();
+            System.out.println(segments);
 
+            List<Segment> s = aMesh.getSegmentsList();
             List<Integer> vertIdxs = new ArrayList<>();
+
+            int curr = 0;
+
+
+            for (int i = 0; i < (segments.size()-1); i++){
+
+                for (int j: segments) {
+
+                    int v1 = s.get(j).getV1Idx();
+                    int v2 = s.get(j).getV2Idx();
+
+
+                    if (vertIdxs.isEmpty()) {
+                        vertIdxs.add(v1);
+                        vertIdxs.add(v2);
+                        curr = s.get(segments.get(0)).getV2Idx();
+                        break;
+
+                    } else if ((v1 == curr) && (!vertIdxs.contains(v2))) {
+                        vertIdxs.add(v2);
+                        curr = v2;
+                        break;
+
+                    } else if ((v2 == curr) && (!vertIdxs.contains(v1))) {
+                        vertIdxs.add(v1);
+                        curr = v1;
+                        break;
+                    }
+
+                }
+
+            }
+
+
+
+            /*
             for (int i : segments) {
                 Segment s = aMesh.getSegmentsList().get(i);
                 vertIdxs.add(s.getV1Idx());
@@ -50,6 +87,8 @@ public class GraphicRenderer {
                 }
             }
 
+             */
+
 
 
             //ArrayList<Integer> xCoords = new ArrayList<>();
@@ -58,15 +97,15 @@ public class GraphicRenderer {
 
             Path2D.Double path = new Path2D.Double();
 
-            double x = aMesh.getVerticesList().get(newVertIdxs.get(0)).getX();
-            double y = aMesh.getVerticesList().get(newVertIdxs.get(0)).getY();
-            System.out.println(newVertIdxs.get(0));
+            double x = aMesh.getVerticesList().get(vertIdxs.get(0)).getX();
+            double y = aMesh.getVerticesList().get(vertIdxs.get(0)).getY();
+            System.out.println(vertIdxs.get(0));
             path.moveTo(x,y);
 
-            for (int i =1;i<=(newVertIdxs.size()-1);i++) {
-                System.out.println(newVertIdxs.get(i));
-                x = aMesh.getVerticesList().get(newVertIdxs.get(i)).getX();
-                y = aMesh.getVerticesList().get(newVertIdxs.get(i)).getY();
+            for (int i =1;i<=(vertIdxs.size()-1);i++) {
+                System.out.println(vertIdxs.get(i));
+                x = aMesh.getVerticesList().get(vertIdxs.get(i)).getX();
+                y = aMesh.getVerticesList().get(vertIdxs.get(i)).getY();
 
                 path.lineTo(x, y);
 
