@@ -31,7 +31,10 @@ public class Elevation {
         ArrayList<Integer> randomHP = new ArrayList<>();
         ArrayList<Integer> randomLP = new ArrayList<>();
 
+
+
         List<Polygon> PolysWithElevation = new ArrayList<>();
+
 
         //get the indices of the random high points
         for (int i = 0; i < numRandomHighPoints; i++) {
@@ -50,6 +53,9 @@ public class Elevation {
                 }
             }
         }
+
+
+
 
         //assign elevation property
         for (int i = 0; i < islandGen.inPolygons.size(); i++) {

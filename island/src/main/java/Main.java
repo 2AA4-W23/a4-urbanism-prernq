@@ -30,7 +30,7 @@ public class Main {
 
             if (args[i].startsWith("-")){
                 flag = args[i];
-                System.out.println("Flag:"+flag);
+                //System.out.println("Flag:"+flag);
 
                 arg = args[i+1];
                 System.out.println(arg);

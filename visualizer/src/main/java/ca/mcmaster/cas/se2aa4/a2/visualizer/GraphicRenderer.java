@@ -12,6 +12,7 @@ import java.awt.Stroke;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,16 +30,54 @@ public class GraphicRenderer {
 
         // draw polygons
         for (Polygon p : aMesh.getPolygonsList()) {
-
+            System.out.println("\n\nPoly "+p.getCentroidIdx()+": ");
             List<Integer> segments;
-
             segments = p.getSegmentIdxsList();
+            System.out.println(segments);
 
+            List<Segment> s = aMesh.getSegmentsList();
             List<Integer> vertIdxs = new ArrayList<>();
+
+            int curr = 0;
+
+
+            for (int i = 0; i < (segments.size()-1); i++){
+
+                for (int j: segments) {
+
+                    int v1 = s.get(j).getV1Idx();
+                    int v2 = s.get(j).getV2Idx();
+
+
+                    if (vertIdxs.isEmpty()) {
+                        vertIdxs.add(v1);
+                        vertIdxs.add(v2);
+                        curr = s.get(segments.get(0)).getV2Idx();
+                        break;
+
+                    } else if ((v1 == curr) && (!vertIdxs.contains(v2))) {
+                        vertIdxs.add(v2);
+                        curr = v2;
+                        break;
+
+                    } else if ((v2 == curr) && (!vertIdxs.contains(v1))) {
+                        vertIdxs.add(v1);
+                        curr = v1;
+                        break;
+                    }
+
+                }
+
+            }
+
+
+
+            /*
             for (int i : segments) {
                 Segment s = aMesh.getSegmentsList().get(i);
                 vertIdxs.add(s.getV1Idx());
                 vertIdxs.add(s.getV2Idx());
+                System.out.println(s.getV1Idx()+" "+s.getV2Idx());
             }
 
             List<Integer> newVertIdxs = new ArrayList<>();
@@ -48,24 +87,59 @@ public class GraphicRenderer {
                 }
             }
 
-            ArrayList<Integer> xCoords = new ArrayList<>();
-            ArrayList<Integer> yCoords = new ArrayList<>();
-            int vertNum = 0;
-            for (int i : newVertIdxs) {
-                vertNum++;
-                Vertex v = aMesh.getVerticesList().get(i);
-                xCoords.add((int) v.getX());
-                yCoords.add((int) v.getY());
+             */
+
+
+
+            //ArrayList<Integer> xCoords = new ArrayList<>();
+            //ArrayList<Integer> yCoords = new ArrayList<>();
+            //int vertNum = newVertIdxs.size();
+
+            Path2D.Double path = new Path2D.Double();
+
+            double x = aMesh.getVerticesList().get(vertIdxs.get(0)).getX();
+            double y = aMesh.getVerticesList().get(vertIdxs.get(0)).getY();
+            System.out.println(vertIdxs.get(0));
+            path.moveTo(x,y);
+
+            for (int i =1;i<=(vertIdxs.size()-1);i++) {
+                System.out.println(vertIdxs.get(i));
+                x = aMesh.getVerticesList().get(vertIdxs.get(i)).getX();
+                y = aMesh.getVerticesList().get(vertIdxs.get(i)).getY();
+
+                path.lineTo(x, y);
+
+                //Vertex v = aMesh.getVerticesList().get(newVertIdxs.get(i));
+                //xCoords.add((int) v.getX());
+                //yCoords.add((int) v.getY());
+                //System.out.println("coord "+v.getX()+','+v.getY());
             }
 
-            int[] x = xCoords.stream().mapToInt(i -> i).toArray();
-            int[] y = yCoords.stream().mapToInt(i -> i).toArray();
+            path.closePath();
+
+            /*
+            int x[] = new int[vertNum];
+            int y[] = new int[vertNum];
+            for(int i=0;i<vertNum;i++){
+                x[i] = xCoords.get(i);
+                y[i] = xCoords.get(i);
+
+            }
+
+             */
+
+            //int[] x = xCoords.stream().mapToInt(i -> i).toArray();
+            //int[] y = yCoords.stream().mapToInt(i -> i).toArray();
+
+
+
+            //canvas.drawPolygon(x, y, vertNum);
+
 
             Color old = canvas.getColor();
 
             canvas.setColor(extractColor(p.getPropertiesList()));
-            canvas.fillPolygon(x, y, vertNum);
-
+            canvas.fill(path);
             canvas.setColor(old);
         }
 
