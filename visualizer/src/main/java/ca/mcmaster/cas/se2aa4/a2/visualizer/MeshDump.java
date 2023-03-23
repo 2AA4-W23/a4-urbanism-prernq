@@ -24,9 +24,10 @@ public class MeshDump {
         List<Polygon> polygons = aMesh.getPolygonsList();
 
         System.out.println("|Vertices| = " + vertices.size());
+        int j = 0;
         for (Vertex v : vertices){
             StringBuffer line = new StringBuffer();
-            line.append(String.format("(%.2f,%.2f)",v.getX(), v.getY()));
+            line.append(String.format(j+":\t(%.2f,%.2f)",v.getX(), v.getY()));
             line.append(" [");
             for(Property prop: v.getPropertiesList()){
                 line.append(String.format("%s -> %s, ", prop.getKey(), prop.getValue()));
@@ -36,15 +37,17 @@ public class MeshDump {
         }
 
         System.out.println("|Segments| = " + segments.size());
+        int i = 0;
         for (Segment s : segments){
             StringBuffer line = new StringBuffer();
-            line.append(String.format("[%d,%d]", s.getV1Idx(),s.getV2Idx()));
+            line.append(String.format(i+":\t[%d,%d]", s.getV1Idx(),s.getV2Idx()));
             line.append(" [");
             for(Property prop: s.getPropertiesList()){
                 line.append(String.format("%s -> %s, ", prop.getKey(), prop.getValue()));
             }
             line.append("]");
             System.out.println(line);
+            i++;
         }
 
         System.out.println("|Polygons| = " + segments.size());

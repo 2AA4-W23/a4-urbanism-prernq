@@ -130,8 +130,8 @@ public class islandGen {
                 updatePolys(beachAdded);
 
                 //assigning elevation to polygons
-                List<Polygon> elevationAdded = elevation.assignElevation();
-                updatePolys(elevationAdded);
+                //List<Polygon> elevationAdded = elevation.assignElevation();
+                //updatePolys(elevationAdded);
 
                 //assigning temperature to polygons
                 List<Polygon> temperatureAdded = temperature.assignTemperature(seaLevelTemp);
@@ -153,8 +153,8 @@ public class islandGen {
 
 
             //assigning elevation to polygons
-            List<Polygon> elevationAdded = elevation.assignElevation();
-            updatePolys(elevationAdded);
+            //List<Polygon> elevationAdded = elevation.assignElevation();
+            //updatePolys(elevationAdded);
 
             //assigning temperature to polygons
             List<Polygon> temperatureAdded = temperature.assignTemperature(seaLevelTemp);
@@ -163,7 +163,7 @@ public class islandGen {
             //assigning aquifers to polygons
             List<Polygon> aquiferAdded = aquifer.assignAquifer();
             updatePolys(aquiferAdded);
-
+/*
             for (Polygon p: inPolygons){
                 for (Property prop: p.getPropertiesList()){
                     if (prop.getKey().equals("elevation")){
@@ -171,6 +171,8 @@ public class islandGen {
                     }
                 }
             }
+
+ */
 
         }
 

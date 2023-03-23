@@ -313,6 +313,8 @@ public class DotGen {
             libJTS.resetCentroids();
         }
 
+        libJTS.convexHull();
+
         ArrayList<ArrayList<ArrayList<Double>>> voronoiPoly = libJTS.getPolygonCoords();
         ArrayList<Double[]> voronoiCentroids = libJTS.getCentroids();
         ArrayList<ArrayList<Integer>> voronoiNeighbours = libJTS.getPolyNeighbours();
@@ -398,11 +400,11 @@ public class DotGen {
             centroids.add(Vertex.newBuilder().setX(c[0]).setY(c[1]).build());
         }
 
-        System.out.println("before convex hull");
-        for (Polygon p: polygons){
-            System.out.println(p.getCentroidIdx()+": "+p.getSegmentIdxsList());
-        }
 
+
+
+
+/*
         //compute convex hull
         GeometryFactory geometryFactory = new GeometryFactory();
         for(Polygon p : polygons){
@@ -419,10 +421,8 @@ public class DotGen {
             Geometry convexHullGeom = convexHull.getConvexHull();
         }
 
-        System.out.println("after convex hull");
-        for (Polygon p: polygons){
-            System.out.println(p.getCentroidIdx()+": "+p.getSegmentIdxsList());
-        }
+ */
+
 
         //Distribute colours and thicknesses of centroids.
         ArrayList<Vertex> centroidsWithProperties = new ArrayList<>();

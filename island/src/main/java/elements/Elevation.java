@@ -24,16 +24,21 @@ public class Elevation {
 
     public List<Polygon> assignElevation() {
 
-        //Random rand = new Random();
+        Random rand = new Random();
 
         int numRandomHighPoints = 10;
         int numRandomLowPoints = 10;
         ArrayList<Integer> randomHP;
         ArrayList<Integer> randomLP;
 
+
         islandGen.seed.randElevation(numRandomHighPoints, numRandomLowPoints);
         randomHP = islandGen.seed.getRandHigh();
         randomLP = islandGen.seed.getRandLow();
+
+
+
+
 
         for (int i: randomHP){
             System.out.println(i);
@@ -43,9 +48,11 @@ public class Elevation {
         }
 
 
+
+
         List<Polygon> PolysWithElevation = new ArrayList<>();
 
-        /*
+
         //get the indices of the random high points
         for (int i = 0; i < numRandomHighPoints; i++) {
             int randomPoly = rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
@@ -63,7 +70,7 @@ public class Elevation {
                 }
             }
         }
-         */
+
 
 
 
