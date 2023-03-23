@@ -34,6 +34,7 @@ public class islandGen {
     private Temperature temperature = new Temperature();
     private Humidity humidity = new Humidity();
     private Aquifer aquifer = new Aquifer();
+    private SoilAbsorption soilAbsorption = new SoilAbsorption();
     private Shape.Shapes geoShape;
 
     public void init(Mesh aMesh){
@@ -141,6 +142,10 @@ public class islandGen {
                 //assigning aquifers to polygons
                 List<Polygon> aquiferAdded = aquifer.assignAquifer();
                 updatePolys(aquiferAdded);
+
+                //assigning soil profiles to polygons
+                List<Polygon> soilAbsorptionAdded = soilAbsorption.assignSoilAbsorptionforCircle(outsideCircle);
+                updatePolys(soilAbsorptionAdded);
             }
         }
         else if (mode.equals("normal")) {
