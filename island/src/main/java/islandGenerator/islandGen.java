@@ -35,6 +35,7 @@ public class islandGen {
     private Humidity humidity = new Humidity();
     private Aquifer aquifer = new Aquifer();
     private Shape.Shapes geoShape;
+    public static Seed seed;
 
     public void init(Mesh aMesh){
         inVertices = new ArrayList<>();
@@ -42,6 +43,7 @@ public class islandGen {
         inSegments = new ArrayList<>();
         inPolygons = new ArrayList<>();
         inMesh = aMesh;
+        seed = new Seed();
 
         //make arrays of all values from input mesh aMesh
         extractCentandVert();
@@ -147,6 +149,8 @@ public class islandGen {
             //more complex colours and biomes to be added in F23
 
             int seaLevelTemp = 0;
+            seed.applySeed();
+
 
             //assigning elevation to polygons
             List<Polygon> elevationAdded = elevation.assignElevation();
@@ -159,6 +163,14 @@ public class islandGen {
             //assigning aquifers to polygons
             List<Polygon> aquiferAdded = aquifer.assignAquifer();
             updatePolys(aquiferAdded);
+
+            for (Polygon p: inPolygons){
+                for (Property prop: p.getPropertiesList()){
+                    if (prop.getKey().equals("elevation")){
+                        System.out.println(p.getCentroidIdx()+" "+prop.getValue());
+                    }
+                }
+            }
 
         }
 

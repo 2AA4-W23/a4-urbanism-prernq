@@ -398,6 +398,11 @@ public class DotGen {
             centroids.add(Vertex.newBuilder().setX(c[0]).setY(c[1]).build());
         }
 
+        System.out.println("before convex hull");
+        for (Polygon p: polygons){
+            System.out.println(p.getCentroidIdx()+": "+p.getSegmentIdxsList());
+        }
+
         //compute convex hull
         GeometryFactory geometryFactory = new GeometryFactory();
         for(Polygon p : polygons){
@@ -412,6 +417,11 @@ public class DotGen {
             Geometry pointsGeom = geometryFactory.createMultiPointFromCoords(polypoints.toArray(new Coordinate[0]));
             ConvexHull convexHull = new ConvexHull(pointsGeom);
             Geometry convexHullGeom = convexHull.getConvexHull();
+        }
+
+        System.out.println("after convex hull");
+        for (Polygon p: polygons){
+            System.out.println(p.getCentroidIdx()+": "+p.getSegmentIdxsList());
         }
 
         //Distribute colours and thicknesses of centroids.
