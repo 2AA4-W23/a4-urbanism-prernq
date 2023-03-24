@@ -50,12 +50,12 @@ public class Biome {
                 }
             }
 
-            //checks if polygon should be considered forest
+            //checks if polygon should be considered land
             // if centroid inside outtercircle but not inside inner circle
-            Boolean forest = false;
+            Boolean land = false;
             for (int outsideIdx: outsideCircle){
                 if(outsideIdx == p.getCentroidIdx() && lake == false){
-                    forest = true;
+                    land = true;
                 }
             }
 
@@ -68,7 +68,7 @@ public class Biome {
                 }
             }
 
-            //assign the correct biome property for the circle island (forest or lake) and colour to polygons using the Colour class.
+            //assign the correct biome property for the circle island (land or lake) and colour to polygons using the Colour class.
             if (lake == true){
                 Property addLake = Property.newBuilder().setKey("biome").setValue("lake").build();
                 Property addColour = colour.addColour("lake");
@@ -76,11 +76,70 @@ public class Biome {
                 newProp.add(addColour);
                 PolysWithBiome.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
             }
-            else if (forest == true) {
-                Property addForest = Property.newBuilder().setKey("biome").setValue("forest").build();
-                Property addForestColour = colour.addColour("forest");
-                newProp.add(addForest);
-                newProp.add(addForestColour);
+            else if (land == true) {
+                int temp = 1000;
+                int humid = 1000;
+                for (Property prop: newProp) {
+                    if ((prop.getKey()).equals("temperature")) {
+                        temp = Integer.parseInt(prop.getValue());
+                    }
+                    else if ((prop.getKey()).equals("humidity")) {
+                        humid = Integer.parseInt(prop.getValue());
+                    }
+                }
+
+
+                Property addLand;
+                Property addLandColour;
+
+                //assign taiga biome
+                if (((temp >= -4)&&(temp <= 4)) && ((humid >= 3)&&(humid <= 20))) {
+                    addLand = Property.newBuilder().setKey("biome").setValue("taiga").build();
+                    addLandColour = colour.addColour("taiga");
+                }
+                //assign temperate deciduous forest
+                else if (((temp >= 4)&&(temp <= 20)) && ((humid >= 10)&&(humid <= 20))) {
+                    addLand = Property.newBuilder().setKey("biome").setValue("tempdforest").build();
+                    addLandColour = colour.addColour("tempdforest");
+                }
+                //assign temperate rain forest
+                else if (((temp >= 4)&&(temp <= 20)) && ((humid >= 20)&&(humid <= 30))) {
+                    addLand = Property.newBuilder().setKey("biome").setValue("temprforest").build();
+                    addLandColour = colour.addColour("temprforest");
+                }
+                //assign savanna
+                else if (((temp >= 20)&&(temp <= 30)) && ((humid >= 3)&&(humid <= 24))) {
+                    addLand = Property.newBuilder().setKey("biome").setValue("savanna").build();
+                    addLandColour = colour.addColour("savanna");
+                }
+                //assign tropical rain forest
+                else if (((temp >= 20)&&(temp <= 30)) && ((humid >= 24)&&(humid <= 45))) {
+                    addLand = Property.newBuilder().setKey("biome").setValue("troprforest").build();
+                    addLandColour = colour.addColour("troprforest");
+                }
+                //assign desert
+                else if (((temp >= 4)&&(temp <= 20)) && ((humid >= 3)&&(humid <= 10))) {
+                    addLand = Property.newBuilder().setKey("biome").setValue("desert").build();
+                    addLandColour = colour.addColour("desert");
+                }
+                //assign subtropical desert
+                else if (((temp >= -4)&&(temp <= 30)) && ((humid >= 0)&&(humid <= 3))) {
+                    addLand = Property.newBuilder().setKey("biome").setValue("subdesert").build();
+                    addLandColour = colour.addColour("subdesert");
+                }
+                //assign tundra
+                else if (((temp >= -15)&&(temp <= -4)) && ((humid >= 0)&&(humid <= 10))) {
+                    addLand = Property.newBuilder().setKey("biome").setValue("tundra").build();
+                    addLandColour = colour.addColour("tundra");
+                }
+                //assign regular forest
+                else {
+                    addLand = Property.newBuilder().setKey("biome").setValue("forest").build();
+                    addLandColour = colour.addColour("forest");
+                }
+
+                newProp.add(addLand);
+                newProp.add(addLandColour);
                 PolysWithBiome.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
 
             }

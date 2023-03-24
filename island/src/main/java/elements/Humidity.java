@@ -39,7 +39,7 @@ public class Humidity {
                 }
             }
 
-            Property addHumidity = Property.newBuilder().setKey("humidity").setValue(String.valueOf(0)).build();
+            Property addHumidity = Property.newBuilder().setKey("humidity").setValue(String.valueOf(5)).build();
             newProp.add(addHumidity);
 
             PolysWithHumidity.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
