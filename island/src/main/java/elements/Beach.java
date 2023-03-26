@@ -50,7 +50,7 @@ public class Beach {
             List<Structs.Property> newProp = new ArrayList<>();
             for (Structs.Property prop: properties){
                 if ((prop.getKey()).equals("biome") == true) {
-                    if(((prop.getValue()).equals("forest")) && ((prop.getValue()).equals("taiga")) && ((prop.getValue()).equals("tempdforest")) && ((prop.getValue()).equals("temprforest")) && ((prop.getValue()).equals("savanna")) && ((prop.getValue()).equals("troprforest")) && ((prop.getValue()).equals("desert")) && ((prop.getValue()).equals("subdesert")) && ((prop.getValue()).equals("tundra"))) {
+                    if(((prop.getValue()).equals("forest")) || ((prop.getValue()).equals("taiga")) || ((prop.getValue()).equals("tempdforest")) || ((prop.getValue()).equals("temprforest")) || ((prop.getValue()).equals("savanna")) || ((prop.getValue()).equals("troprforest")) || ((prop.getValue()).equals("desert")) || ((prop.getValue()).equals("subdesert")) || ((prop.getValue()).equals("tundra"))) {
                         is_land = true;              
                     }
                 }

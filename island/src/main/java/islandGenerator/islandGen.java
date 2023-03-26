@@ -30,6 +30,7 @@ public class islandGen {
     private Ocean ocean = new Ocean();
     private Beach beach = new Beach();
     private Biome biomes = new Biome();
+    private River river = new River();
     private Elevation elevation = new Elevation();
     private Temperature temperature = new Temperature();
     private Humidity humidity = new Humidity();
@@ -108,6 +109,18 @@ public class islandGen {
 
     }
 
+    public void updateSegments(List<Segment> newSegments){
+
+        List<Segment> original_segments = new ArrayList<>();
+        for (Segment s : inSegments){
+            original_segments.add(Segment.newBuilder().mergeFrom(s).build());
+        }
+
+        inSegments.clear();
+        inSegments = newSegments;
+
+    }
+
     public Mesh generate(Mesh aMesh, String mode){
         init(aMesh);
 
@@ -152,6 +165,9 @@ public class islandGen {
 
                 List<Polygon> beachAdded = beach.assignBeachforCircle(outsideCircle);
                 updatePolys(beachAdded);
+
+                //List<Segment> riverAdded = river.assignRiverSegments(outsideCircle, insideCircle);
+                //updateSegments(riverAdded);
             }
         }
         else if (mode.equals("normal")) {
