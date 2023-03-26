@@ -24,7 +24,14 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 
 public class River {
-    public List<Segment> assignRiverSegments(List<Integer> outsideCircle, List<Integer> insideCircle){
+    public List<Segment> assignRiverSegments(List<Integer> outsideCircle, List<Integer> insideCircle, int num_of_rivers){
+
+        //rivers work by getting the list of all segments and checking the elevation associated with the first polygon they connect
+        //gets a random segment to start with and generates vertexes associated with it
+        //uses the list of polygons and gets the first polygon the segment is associated with to check if the river is on land
+        //if the polygon is land, it will add this segment to the list of river segments or it should just change the properties, color and thickness, associated with the segment
+        //it checks the neighboring polygons to find the lowest polygon that shares the segment vertexes to continue the river
+        //if there is no polygon to continue to, makes the current polygon a lake, if it reaches a body of water should stop.
         
         List<Polygon> polysWithRiverSegments = new ArrayList<>();
         int river_start_idx= 100;
