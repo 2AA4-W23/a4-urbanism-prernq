@@ -145,27 +145,43 @@ public class islandGen {
                 updatePolys(elevationAdded);
 
                 //assigning temperature to polygons
-                List<Polygon> temperatureAdded = temperature.assignTemperature(seaLevelTemp);
+                List<Polygon> temperatureAdded = temperature.assignTemperature(seaLevelTemp); //change back to sealevel temp
                 updatePolys(temperatureAdded);
 
-                List<Polygon> humidityAdded = humidity.assignHumidity();
-                updatePolys(humidityAdded);
+                //assign land biome values
+                List<Polygon> biomesAdded = biomes.assignBiomeforCircle(outsideCircle, insideCircle);
+                updatePolys(biomesAdded);
+
+                //assigning lakes to polygons
+                List<Polygon> lakeAdded = lake.assignLakes(outsideCircle, insideCircle, 3); // needs an input for number of lakes
+                updatePolys(lakeAdded);
 
                 //assigning aquifers to polygons
                 List<Polygon> aquiferAdded = aquifer.assignAquifer();
                 updatePolys(aquiferAdded);
+
+                List<Polygon> humidityAdded = humidity.assignHumidity("canada");
+                updatePolys(humidityAdded);
+
 
                 //assigning soil profiles to polygons
                 List<Polygon> soilAbsorptionAdded = soilAbsorption.assignSoilAbsorptionforCircle(outsideCircle);
                 updatePolys(soilAbsorptionAdded);
 
                 //assign land biome values
-                List<Polygon> biomesAdded = biomes.assignBiomeforCircle(outsideCircle, insideCircle);
-                updatePolys(biomesAdded);
+                List<Polygon> biomesAdded2 = biomes.assignBiomeforCircle(outsideCircle, insideCircle);
+                updatePolys(biomesAdded2);
 
                 List<Polygon> beachAdded = beach.assignBeachforCircle(outsideCircle);
                 updatePolys(beachAdded);
 
+<<<<<<< Updated upstream
+=======
+                //assigning lakes to polygons
+               // List<Polygon> lakeAdded = lake.assignLakes(outsideCircle, insideCircle, 3); // needs an input for number of lakes
+                //updatePolys(lakeAdded);
+
+>>>>>>> Stashed changes
                 //List<Segment> riverAdded = river.assignRiverSegments(outsideCircle, insideCircle);
                 //updateSegments(riverAdded);
             }
