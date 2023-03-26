@@ -24,6 +24,8 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 
 public class River {
+    Colour colour = new Colour();
+
     public List<Segment> assignRiverSegments(List<Integer> outsideCircle, List<Integer> insideCircle, int num_of_rivers){
 
         //rivers work by getting the list of all segments and checking the elevation associated with the first polygon they connect
@@ -32,19 +34,48 @@ public class River {
         //if the polygon is land, it will add this segment to the list of river segments or it should just change the properties, color and thickness, associated with the segment
         //it checks the neighboring polygons to find the lowest polygon that shares the segment vertexes to continue the river
         //if there is no polygon to continue to, makes the current polygon a lake, if it reaches a body of water should stop.
-        
-        List<Polygon> polysWithRiverSegments = new ArrayList<>();
-        int river_start_idx= 100;
+
+        List<Segment> segmentsWithRivers = new ArrayList<>();
         List<Integer> river_segments = new ArrayList<>();
         List<Segment> river_segments_with_properties = new ArrayList<>();
-        
+
+        Random rand = new Random();
+        int river_start_idx = 0;
+        river_start_idx = rand.nextInt((islandGen.inSegments.size()));
         Structs.Segment river_start_segment = islandGen.inSegments.get(river_start_idx);
+
+        
         int river_start_v1_idx = river_start_segment.getV1Idx();
         int river_start_v2_idx = river_start_segment.getV2Idx();
         Structs.Vertex river_start_v1 = islandGen.inVertices.get(river_start_v1_idx);
         Structs.Vertex river_start_v2 = islandGen.inVertices.get(river_start_v2_idx);
 
+        
+        for(Segment s: islandGen.inSegments){
+            List<Structs.Property> properties = s.getPropertiesList();
+            List<Structs.Property> newProp = new ArrayList<>();
+            //check if the polygon already has the property key "biome"
+            for (Structs.Property prop: properties){
+                if (((prop.getKey()).equals("river") == false) || ((prop.getKey()).equals("rgb_color") == false)){
+                    newProp.add(prop);
+                }
+            }
+            //assign the property "river" to false for all segments
+            Property addRiver = Property.newBuilder().setKey("river").setValue("false").build();
+            Property addColour = colour.addColour("lake");
+            Property addThickness = Property.newBuilder().setKey("Thickness").setValue("0").build();
+            newProp.add(addRiver);
+            newProp.add(addColour);
+            newProp.add(addThickness);
+            segmentsWithRivers.add(Segment.newBuilder(s).clearProperties().addAllProperties(newProp).build());
 
+        }
+
+        //return segmentsWithRivers;
+
+        
+
+        //this doesnt work needs to be changed
         for (int i = 0; i < islandGen.inPolygons.size(); i++){
 
             Structs.Polygon p = islandGen.inPolygons.get(i);
