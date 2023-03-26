@@ -115,7 +115,7 @@ The program must compile and install successfully in maven with the feature impl
 |F18|Generate lakes based off of rivers with no outlet|Prerna|||P|x|
 |F19|Implement merging rivers and updating discharge level|Keira|||P|x|
 |F20|Generate random locations for aquifers from integer value|Lily|03/18/2023|03/18/2023|D|x|
-|F21|Assign humidity values to polygons based on distance from lake, ocean or aquifer|Prerna|| ||P|x|
+|F21|Assign humidity values to polygons based on distance from lake, ocean or aquifer|Prerna|| ||D|x|
 |F22|Implement soil absorption profile|Keira|||P|x|
 |F23|Assign more detailed biome values and colours (colour class) to polygons based on humidity and temperature|Lily|||P|x|
 |F24|Add altimetric profile for volcano|Prerna|||P|x|
