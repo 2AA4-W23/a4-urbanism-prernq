@@ -31,6 +31,7 @@ public class islandGen {
     private Beach beach = new Beach();
     private Biome biomes = new Biome();
     private River river = new River();
+    private Lake lake = new Lake();
     private Elevation elevation = new Elevation();
     private Temperature temperature = new Temperature();
     private Humidity humidity = new Humidity();
@@ -163,7 +164,6 @@ public class islandGen {
                 List<Polygon> humidityAdded = humidity.assignHumidity("canada");
                 updatePolys(humidityAdded);
 
-
                 //assigning soil profiles to polygons
                 List<Polygon> soilAbsorptionAdded = soilAbsorption.assignSoilAbsorptionforCircle(outsideCircle);
                 updatePolys(soilAbsorptionAdded);
@@ -175,13 +175,10 @@ public class islandGen {
                 List<Polygon> beachAdded = beach.assignBeachforCircle(outsideCircle);
                 updatePolys(beachAdded);
 
-<<<<<<< Updated upstream
-=======
                 //assigning lakes to polygons
                // List<Polygon> lakeAdded = lake.assignLakes(outsideCircle, insideCircle, 3); // needs an input for number of lakes
                 //updatePolys(lakeAdded);
 
->>>>>>> Stashed changes
                 //List<Segment> riverAdded = river.assignRiverSegments(outsideCircle, insideCircle);
                 //updateSegments(riverAdded);
             }

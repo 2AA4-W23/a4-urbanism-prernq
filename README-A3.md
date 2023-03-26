@@ -98,19 +98,19 @@ The program must compile and install successfully in maven with the feature impl
 |F01|Initialize classes & Enums(within them) for the different attributes of each category|Lily|03/09/2023|03/09/2023|D|yes|
 |F02|Implement shape interface. Initializing circle shape. Create list of polygons & vertices & segments (like in DotGen)|Keira|03/13/23|03/14/23|D|yes|
 |F03|From centre, every polygon located outside of radius 200 is given property biome “ocean” and colour “0,0,204”|Keira|03/14/23|03/15/23|D|yes|
-|F04|From centre, every polygon located between radius 200 and 50, given biome “forest” in biome class and colour 0,204,0|Prerna|||P|yes|
+|F04|From centre, every polygon located between radius 200 and 50, given biome “forest” in biome class and colour 0,204,0|Prerna|||D|yes|
 |F05|From centre, every polygon located inside radius 50, given biome “lake” in biome class and colour 0,128,255 in colour class|Lily|03/16/2023|03/16/2023|D|yes|
-|F06|All polygons with property land and has a neighbouring polygon with biome “Ocean” or biome “lagoon” is changed to colour “255,229,204” and biome “beach”|Prerna|||P|yes|
+|F06|All polygons with property land and has a neighbouring polygon with biome “Ocean” or biome “lagoon” is changed to colour “255,229,204” and biome “beach”|Prerna|||D|yes|
 |F07|Visualize filled polygons with colours in normal mode|Lily|03/17/2023|02/23/23|D|yes|
 |F08|Assign property “Elevation” to 0 for each polygon and vertex elevation is the average it’s polygons|Lily|03/16/2023||P|x|
 |F09|Assign property “Temperature” to each polygon based on sea level temp and elevation|Lily|03/16/2023|03/16/2023|D|x|
 |F10|Assign property “Humidity” to each polygon as set value of 0|Lily|03/18/2023|03/18/2023|D|x|
 |F11|Assign every polygon property “Aquifer” as “false”|Lily|03/16/2023|03/16/2023|D|x|
-|F12|Assign every segment with property “River” as “false”|Prerna|||P|x|
-|F13|Assign every polygon with property “Soil absorption” as “0”|Prerna|||P|x|
+|F12|Assign every segment with property “River” as “false”|Prerna|||D|x|
+|F13|Assign every polygon with property “Soil absorption” as “0”|Prerna|||D?|x|
 |F14|Initialize random class|Keira|||P|x|
 |F15|Randomize elevation levels for polygons (beaches and rest of island) (default/random altimetric profile)|Lily|03/18/2023||P|x|
-|F16|Generate lakes from integer value|Prerna|||P|x|
+|F16|Generate lakes from integer value|Prerna|||D|x|
 |F17|Generate basic rivers from integer value|Keira|||P|x|
 |F18|Generate lakes based off of rivers with no outlet|Prerna|||P|x|
 |F19|Implement merging rivers and updating discharge level|Keira|||P|x|
