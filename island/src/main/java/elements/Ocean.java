@@ -25,10 +25,9 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 public class Ocean {
 
     Colour colour = new Colour();
+    List<Polygon> oceanPolys = new ArrayList<>();
 
     public List<Polygon> assignOceanforCircle(List<Integer> insideCents){
-
-        List<Polygon> oceanPolys = new ArrayList<>();
 
         //assign biome property
         for (int i = 0; i < islandGen.inPolygons.size(); i++){
