@@ -1,0 +1,176 @@
+@startuml
+
+class DotGen {
+    - int width
+    - int height
+    - int square_size
+    + String mode
+    - ArrayList vertex_coords
+    - ArrayList centroid_coords
+    ~ ArrayList vertices
+    ~ ArrayList segments
+    ~ ArrayList verticesWithProperties
+    ~ ArrayList segmentsWithProperties
+    ~ ArrayList polygons
+    ~ ArrayList polygonsWithNeighbours
+    ~ ArrayList centroids
+    ~ ArrayList centroidsWithProperties
+
+    + Mesh generategrid()
+    + Mesh generateirregular()
+
+}
+
+class Main {
+    + String arg1
+    + String arg2
+    + void main( String[] args )
+}
+
+class Irregular {
+    - int width
+    - int height
+    + String mode
+    + List<Coordinates> centroids
+    + List<Polygon> polygons
+    + ArrayList<ArrayList<ArrayList<Double>>> polyCoords
+    
+    + void setCentroids()
+    + void resetCentroids()
+    + ArrayList getCentroids()
+    + ArrayList getPolygonCoords()
+    + void voronoiDiagram()
+
+}
+Irregular <.. DotGen : _"uses"
+DotGen <.. Main : _"uses"
+
+class GraphicRenderer {
+    + void render()
+    - Color extractColor()
+    - int extractThickness()
+}
+
+class MeshDump {
+    + void dump(String fileName)
+    + void dump(Mesh aMesh)
+}
+
+class Main{
+    + void main(String[] args)
+}
+
+class SVGCanvas{
+    + Graphics2D build(int width, int height)
+    + void write(Graphics2D g, String fileName)
+}
+
+MeshDump <.. GraphicRenderer : _"uses"
+GraphicRenderer <.. Main : _"uses"
+SVGCanvas <.. GraphicRenderer :_"uses"
+
+class IslandGen{
+    + init(Mesh aMesh)
+    + extractCentandVert()
+    -  extractSegments()
+    -  extractPolygons()
+    + updatePolys(List<Polygon> newPolys)
+    + updateSegments(List<Segment> newSegments)
+    + generate(Mesh aMesh, String mode)
+
+}
+
+
+class AltimetricProfile{
+    + volcano()
+    + crater()
+    + flat()
+
+}
+
+class Aquifer{
+    + assignAquifer()
+
+}
+
+class Beach {
+    + assignBeachforCircle()
+
+}
+
+class Biome {
+    + assignBiomeforCircle
+
+}
+
+class Colour{
+    + addColour(biome)
+
+}
+
+class Elevation {
+    + assignElevation()
+
+}
+
+class Humidity {
+    + assignHumidity(location)
+
+}
+
+class Lake {
+    + assignLakes(outsideCircle, insideCircle, num_lakes)
+
+}
+
+class Ocean {
+    + assignOceanforCircle(insideCents)
+
+}
+
+class River {
+    + assignRiverSegments(outsideCircle, insideCircle, num_of_rivers)
+}
+
+class Seed {
+    + applySeed()
+    + getSeed()
+    + randElevation()
+    + getRandHigh()
+    + getRandLow()
+
+}
+
+class Shape{
+    + shape()
+    + setCentre()
+
+
+}
+
+class SoilAbsorption {
+    + assignSoilAbsorptionforCircle()
+
+}
+
+class Temperature {
+    +  assignTemperature(sealeveltemp)
+}
+
+AltimetricProfile <.. islandGen : _"uses"
+Aquifer <.. islandGen : _"uses"
+Beach <.. islandGen : _"uses"
+Biome <.. islandGen : _"uses"
+Colour <.. islandGen : _"uses"
+Elevation <.. islandGen : _"uses"
+Humidity <.. islandGen : _"uses"
+Lake <.. islandGen : _"uses"
+Ocean <.. islandGen : _"uses"
+River <.. islandGen : _"uses"
+Seed <.. islandGen : _"uses"
+Shape <.. islandGen : _"uses"
+SoilAbsorption <.. islandGen : _"uses"
+Temperature <.. islandGen : _"uses"
+islandGen <.. Main : "uses"
+
+@enduml

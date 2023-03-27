@@ -31,6 +31,7 @@ public class islandGen {
     private Beach beach = new Beach();
     private Biome biomes = new Biome();
     private River river = new River();
+    private AltimetricProfile altimetric = new AltimetricProfile();
     private Lake lake = new Lake();
     private Elevation elevation = new Elevation();
     private Temperature temperature = new Temperature();
@@ -137,9 +138,14 @@ public class islandGen {
                 //get list of centroid that are inside the radius of the circle
                 List<Integer> outsideCircle = isleShape.circle(200);
                 List<Integer> insideCircle = isleShape.circle(50);
+                List<Integer> centerCircle = isleShape.circle(10);
 
                 List<Polygon> oceanAdded = ocean.assignOceanforCircle(outsideCircle);
                 updatePolys(oceanAdded);
+
+                //assign elevation based on alitmetric profile
+                List<Polygon> altimetricAdded = altimetric.volcano(insideCircle, outsideCircle, centerCircle);
+                updatePolys(altimetricAdded);
 
                 //assigning elevation to polygons
                 List<Polygon> elevationAdded = elevation.assignElevation();
