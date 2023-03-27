@@ -12,3 +12,4 @@ make sure the code runs smoothly (everything works together and output is as exp
 
 Complete questions 5-7 of the written tema document
 submit updated feature plan
+Add test cases
