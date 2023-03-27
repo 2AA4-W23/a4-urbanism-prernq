@@ -1,0 +1,13 @@
+Features to be completed by Keira Laskoski (laskoskk):
+
+F07: Initialize random class
+F17: Generate random number of rivers
+F19: implement merging rivers
+F22: implement soil absorption
+F27: implement oval shaped island
+F28: implement random shaped
+F29: Implement reproducibility
+implement command line arguments
+make sure the code runs smoothly (everything works together and output is as expected)
+
+Complete questions 5-7 of the written tema document
