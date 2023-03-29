@@ -207,16 +207,27 @@ public class islandGen {
             //assigning aquifers to polygons
             List<Polygon> aquiferAdded = aquifer.assignAquifer();
             updatePolys(aquiferAdded);
-/*
-            for (Polygon p: inPolygons){
-                for (Property prop: p.getPropertiesList()){
-                    if (prop.getKey().equals("elevation")){
-                        System.out.println(p.getCentroidIdx()+" "+prop.getValue());
-                    }
-                }
-            }
 
- */
+
+        }
+
+        else if (mode.equals("test")){
+
+            System.out.println(inPolygons.size());
+            //must be between -10 and 25
+            int seaLevelTemp = 5;
+            //get list of centroid that are inside the radius of the circle
+            List<Integer> outsideCircle = isleShape.circle(200);
+            List<Integer> insideCircle = isleShape.circle(50);
+            List<Integer> centerCircle = isleShape.circle(10);
+
+            List<Polygon> oceanAdded = ocean.assignOceanforCircle(outsideCircle);
+            updatePolys(oceanAdded);
+
+            //assigning elevation to polygons
+            List<Polygon> elevationAdded = elevation.assignElevation();
+            updatePolys(elevationAdded);
+
 
         }
 

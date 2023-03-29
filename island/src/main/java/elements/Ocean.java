@@ -26,8 +26,11 @@ public class Ocean {
 
     Colour colour = new Colour();
     List<Polygon> oceanPolys = new ArrayList<>();
+    Properties properties = new Properties();
 
     public List<Polygon> assignOceanforCircle(List<Integer> insideCents){
+
+        Property oceanColour = colour.addColour("ocean");
 
         //assign biome property
         for (int i = 0; i < islandGen.inPolygons.size(); i++){
@@ -42,27 +45,15 @@ public class Ocean {
                 }
             }
 
-            //check if the polygon already has the property key "biome"
-            List<Structs.Property> properties = p.getPropertiesList();
-            List<Structs.Property> newProp = new ArrayList<>();
-            for (Structs.Property prop: properties){
-                if (((prop.getKey()).equals("biome") == false) || ((prop.getKey()).equals("rgb_color") == false)){
-                    newProp.add(prop);
-                }
-            }
-
             //assign the property "ocean" and colour to polygons
             if (ocean == true){
-                Property addOcean = Property.newBuilder().setKey("biome").setValue("ocean").build();
-                Property addColour = colour.addColour("ocean");
-                newProp.add(addOcean);
-                newProp.add(addColour);
-                oceanPolys.add(Polygon.newBuilder(p).clearProperties().addAllProperties(newProp).build());
+                p = properties.addPropertyP(p, "biome", "ocean");
+                p = properties.addPropertyP(p, oceanColour.getKey(), oceanColour.getValue());
             }
-            else{
-                oceanPolys.add(p);
-            }
+            oceanPolys.add(p);
         }
+
+        System.out.println(oceanPolys.size());
 
         return oceanPolys;
     }
