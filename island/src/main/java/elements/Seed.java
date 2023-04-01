@@ -8,10 +8,16 @@ import java.util.Random;
 public class Seed {
     public static Random rand;
     public static long seed;
+    public static Shape.Shapes shape;
+    public static AltimetricProfile.Profiles altProfile;
+    public static int riverNum;
+    public int[] riverStart;
+
+
+
+
     public static ArrayList<Integer> randomHP;
     public static ArrayList<Integer> randomLP;
-
-
 
     public void applySeed(){
         rand = new Random();
@@ -27,12 +33,55 @@ public class Seed {
         return seed;
     }
 
+    public void getRands(){
+        //random shape
+        Shape.Shapes[] shapesList = Shape.Shapes.values();
+        System.out.println(shapesList.length);
+        shape = shapesList[rand.nextInt(shapesList.length)];
+
+        System.out.println(shape);
+
+        //random altimetric profile
+        AltimetricProfile.Profiles[] altList = AltimetricProfile.Profiles.values();
+        altProfile = altList[rand.nextInt(altList.length)];
+
+        System.out.println(altProfile);
+
+
+        //random rivers
+        riverNum = rand.nextInt(11);
+        riverStart = new int[riverNum];
+
+        for (int i = 0; i < riverStart.length; i++){
+            boolean approved = false;
+            int rivVert;
+
+            do{
+                rivVert = rand.nextInt(islandGen.inVertices.size());
+
+                if (!(islandGen.oceanVerts.contains(islandGen.inVertices.get(rivVert)))){
+                    approved = true;
+                }
+            }
+            while (approved == false);
+
+            riverStart[i] = rivVert;
+            System.out.println(rivVert);
+        }
+
+
+
+    }
+
+
     public ArrayList<Integer> getRandHigh(){
         return randomHP;
     }
     public ArrayList<Integer> getRandLow(){
         return randomLP;
     }
+
+
 
     public void randElevation(int numHigh, int numLow){
         ArrayList<Integer> randomHP = new ArrayList<>();

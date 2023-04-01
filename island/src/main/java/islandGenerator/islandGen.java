@@ -25,6 +25,9 @@ public class islandGen {
     public static List<Vertex> inCentroids;
     public static List<Segment> inSegments;
     public static List<Polygon> inPolygons;
+    public static List<Vertex> oceanVerts;
+    public static List<Segment> oceanSegs;
+    public static List<Polygon> oceanPolys;
     private Mesh inMesh;
     private Shape isleShape = new Shape();
     private Ocean ocean = new Ocean();
@@ -46,6 +49,11 @@ public class islandGen {
         inCentroids = new ArrayList<>();
         inSegments = new ArrayList<>();
         inPolygons = new ArrayList<>();
+        oceanVerts = new ArrayList<>();
+        oceanSegs = new ArrayList<>();
+        oceanPolys = new ArrayList<>();
+
+
         inMesh = aMesh;
         seed = new Seed();
 
@@ -120,6 +128,50 @@ public class islandGen {
 
         inSegments.clear();
         inSegments = newSegments;
+
+    }
+
+    public void getOceanLists(){
+
+        for (Polygon p: inPolygons){
+            boolean ocean = true;
+
+            for (Property prop: p.getPropertiesList()){
+                if (!(prop.getValue().equals("ocean"))){
+                    ocean = false;
+                }
+            }
+
+            if (ocean == true){
+                oceanPolys.add(p);
+
+                for (int segIdx: p.getSegmentIdxsList()){
+                    Segment seg = inSegments.get(segIdx);
+                    Vertex v1 = inVertices.get(seg.getV1Idx());
+                    Vertex v2 = inVertices.get(seg.getV2Idx());
+
+                    if (oceanSegs.isEmpty()){
+                        oceanSegs.add(seg);
+                    }
+                    else{
+                        if (!(oceanSegs.contains(seg))){
+                            oceanSegs.add(seg);
+                        }
+                    }
+
+                    if (oceanVerts.isEmpty() || (!(oceanVerts.contains(v1))) && (!(oceanVerts.contains(v2)))){
+                        oceanVerts.add(v1);
+                        oceanVerts.add(v2);
+                    }
+                    else if (!(oceanVerts.contains(v1))){
+                        oceanVerts.add(v1);
+                    }
+                    else if (!(oceanVerts.contains(v2))){
+                        oceanVerts.add(v2);
+                    }
+                }
+            }
+        }
 
     }
 
@@ -224,9 +276,16 @@ public class islandGen {
             List<Polygon> oceanAdded = ocean.assignOceanforCircle(outsideCircle);
             updatePolys(oceanAdded);
 
+            getOceanLists();
+
             //assigning elevation to polygons
-            List<Polygon> elevationAdded = elevation.assignElevation();
-            updatePolys(elevationAdded);
+            //List<Polygon> elevationAdded = elevation.assignElevation();
+            //updatePolys(elevationAdded);
+
+            Seed seed = new Seed();
+            seed.applySeed(43);
+            seed.getRands();
+
 
 
         }
