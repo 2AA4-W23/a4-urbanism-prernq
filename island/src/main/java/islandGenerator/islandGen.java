@@ -131,6 +131,18 @@ public class islandGen {
 
     }
 
+    public void updateVertices(List<Vertex> newVertices){
+
+        List<Vertex> original = new ArrayList<>();
+        for (Vertex v : inVertices){
+            original.add(Vertex.newBuilder().mergeFrom(v).build());
+        }
+
+        inVertices.clear();
+        inVertices = newVertices;
+
+    }
+
     public void getOceanLists(){
 
         for (Polygon p: inPolygons){
@@ -278,13 +290,17 @@ public class islandGen {
 
             getOceanLists();
 
-            //assigning elevation to polygons
-            //List<Polygon> elevationAdded = elevation.assignElevation();
-            //updatePolys(elevationAdded);
-
             Seed seed = new Seed();
             seed.applySeed(43);
             seed.getRands();
+
+            //assigning elevation to polygons
+            List<Polygon> elevationAdded = elevation.assignElevation();
+            updatePolys(elevationAdded);
+            List<Vertex> elevationVert = elevation.AssignElevationVert();
+            updateVertices(elevationVert);
+
+
 
 
 

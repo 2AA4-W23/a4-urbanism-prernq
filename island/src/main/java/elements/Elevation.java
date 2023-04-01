@@ -21,21 +21,22 @@ import java.util.Random;
 import islandGenerator.islandGen;
 
 public class Elevation {
+    List<Polygon> PolysWithElevation = new ArrayList<>();
+    List<Vertex> VertsWithElevation = new ArrayList<>();
+    Properties properties = new Properties();
+    Seed seed = new Seed();
+
 
     public List<Polygon> assignElevation() {
-
-        Random rand = new Random();
 
         int numRandomHighPoints = 10;
         int numRandomLowPoints = 10;
         ArrayList<Integer> randomHP = new ArrayList<>();
         ArrayList<Integer> randomLP = new ArrayList<>();
 
-        List<Polygon> PolysWithElevation = new ArrayList<>();
-
         //get the indices of the random high points
         for (int i = 0; i < numRandomHighPoints; i++) {
-            int randomPoly = rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
+            int randomPoly = seed.rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
             randomHP.add(randomPoly);
         }
 
@@ -43,7 +44,7 @@ public class Elevation {
         for (int i = 0; i < numRandomLowPoints; i++) {
             boolean chosen = true;
             while (chosen == true) {
-                int randomPoly = rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
+                int randomPoly = seed.rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
                 if ((randomHP.contains(randomPoly)) == false) {
                     randomLP.add(randomPoly);
                     chosen = false;
@@ -91,7 +92,8 @@ public class Elevation {
                     newProp.add(addElevation);
                 }
                 else {
-                    Property addElevation = Property.newBuilder().setKey("elevation").setValue(String.valueOf(1)).build();
+                    int randElevation = seed.rand.nextInt(10)-4;
+                    Property addElevation = Property.newBuilder().setKey("elevation").setValue(String.valueOf(randElevation)).build();
                     newProp.add(addElevation);
                 }
             }
@@ -100,5 +102,42 @@ public class Elevation {
 
         return PolysWithElevation;
 
+    }
+
+    public List<Vertex> AssignElevationVert(){
+
+        for (int i = 0; i < islandGen.inVertices.size(); i++){
+            int avgElevation = 0;
+            int count = 0;
+            int elevation = 0;
+            Vertex v = islandGen.inVertices.get(i);
+
+
+            for (Polygon p: PolysWithElevation){
+                List<Integer> segIdxs = p.getSegmentIdxsList();
+
+                for (int segIdx: segIdxs){
+                    Segment s = islandGen.inSegments.get(segIdx);
+
+                    if ((s.getV1Idx() == i) || (s.getV2Idx() == i)){
+                        for (Property prop: p.getPropertiesList()){
+                            if (prop.getKey().equals("elevation")){
+                                elevation = Integer.valueOf(prop.getValue());
+                            }
+                        }
+
+                        avgElevation += elevation;
+                        count ++;
+                        break;
+                    }
+                }
+            }
+
+            avgElevation = avgElevation/count;
+            System.out.println(i+" "+avgElevation);
+            Vertex updatedVert = properties.addPropertyV(v, "elevation", String.valueOf(avgElevation));
+            VertsWithElevation.add(updatedVert);
+        }
+        return VertsWithElevation;
     }
 }
