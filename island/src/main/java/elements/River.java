@@ -24,9 +24,53 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 
 public class River {
-    Colour colour = new Colour();
+    private Colour colour = new Colour();
+    private Seed seed = new Seed();
+    private Properties properties = new Properties();
 
-    public List<Segment> assignRiverSegments(List<Integer> outsideCircle, List<Integer> insideCircle, int num_of_rivers){
+    private List<Vertex> currVerts = new ArrayList<>();
+    private List<Vertex> nextVerts = new ArrayList<>();
+    private List<Segment> segmentsWithRivers = new ArrayList<>();
+    private Property addColour = colour.addColour("lake");
+
+    public void checkAndAdd(Vertex curr, Vertex next, int segIdx){
+        int currElev = -5;
+        int nextElev = -5;
+        for (Property pCurr: curr.getPropertiesList()){
+            if (pCurr.getKey().equals("elevation")){
+                currElev = Integer.valueOf(pCurr.getValue());
+
+            }
+        }
+        for (Property pNext: next.getPropertiesList()){
+            if (pNext.getKey().equals("elevation")){
+                nextElev = Integer.valueOf(pNext.getValue());
+            }
+        }
+
+        if (islandGen.oceanSegs.contains(islandGen.inSegments.get(segIdx))){
+            System.out.println("you reached the ocean");
+        }
+        else if (currElev > nextElev){
+            System.out.println("segment added");
+            nextVerts.add(next);
+
+            Segment newSeg = properties.addPropertyS(segmentsWithRivers.get(segIdx), "river", "true");
+            newSeg = properties.addPropertyS(newSeg, "thickness", "4");
+            newSeg = properties.addPropertyS(newSeg, addColour.getKey(), addColour.getValue());
+
+            segmentsWithRivers.remove(segIdx);
+            segmentsWithRivers.add(segIdx, newSeg);
+        }
+        else{
+            System.out.println("Im not going anywhere");
+        }
+
+
+
+    }
+
+    public List<Segment> assignRiverSegments(List<Integer> outsideCircle, List<Integer> insideCircle, int num_of_rivers, int[] riverStart){
 
         //rivers work by getting the list of all segments and checking the elevation associated with the first polygon they connect
         //gets a random segment to start with and generates vertexes associated with it
@@ -35,13 +79,15 @@ public class River {
         //it checks the neighboring polygons to find the lowest polygon that shares the segment vertexes to continue the river
         //if there is no polygon to continue to, makes the current polygon a lake, if it reaches a body of water should stop.
 
-        List<Segment> segmentsWithRivers = new ArrayList<>();
+
+
+        /*
         List<Integer> river_segments = new ArrayList<>();
         List<Segment> river_segments_with_properties = new ArrayList<>();
 
-        Random rand = new Random();
+
         int river_start_idx = 0;
-        river_start_idx = rand.nextInt((islandGen.inSegments.size()));
+        river_start_idx = seed.rand.nextInt((islandGen.inSegments.size()));
         Structs.Segment river_start_segment = islandGen.inSegments.get(river_start_idx);
 
         
@@ -50,9 +96,15 @@ public class River {
         Structs.Vertex river_start_v1 = islandGen.inVertices.get(river_start_v1_idx);
         Structs.Vertex river_start_v2 = islandGen.inVertices.get(river_start_v2_idx);
 
-        
+         */
+
+
+
+
         for(Segment s: islandGen.inSegments){
-            List<Structs.Property> properties = s.getPropertiesList();
+            //List<Structs.Property> props = s.getPropertiesList();
+
+            /*
             List<Structs.Property> newProp = new ArrayList<>();
             //check if the polygon already has the property key "biome"
             for (Structs.Property prop: properties){
@@ -60,20 +112,86 @@ public class River {
                     newProp.add(prop);
                 }
             }
+
+             */
             //assign the property "river" to false for all segments
-            Property addRiver = Property.newBuilder().setKey("river").setValue("false").build();
-            Property addColour = colour.addColour("lake");
-            Property addThickness = Property.newBuilder().setKey("Thickness").setValue("0").build();
+            //Property addRiver = Property.newBuilder().setKey("river").setValue("false").build();
+
+
+            //Property addThickness = Property.newBuilder().setKey("Thickness").setValue("0").build();
+
+            /*
             newProp.add(addRiver);
             newProp.add(addColour);
             newProp.add(addThickness);
             segmentsWithRivers.add(Segment.newBuilder(s).clearProperties().addAllProperties(newProp).build());
+             */
+            if (!(islandGen.oceanSegs.contains(s))) {
+                s = properties.addPropertyS(s, addColour.getKey(), "0,0,0");
+                s = properties.addPropertyS(s, "river", "false");
+                s = properties.addPropertyS(s, "thickness", "1");
+            }
 
+            segmentsWithRivers.add(s);
         }
 
-        //return segmentsWithRivers;
+        for (int i = 0; i < riverStart.length; i++){
+            System.out.println("NEW VERTEX");
+            System.out.println(riverStart[i]);
 
-        
+            Vertex start = islandGen.inVertices.get(riverStart[i]);
+            //Property vertColour = Property.newBuilder().setKey("rgb_color").setValue("0,0,255").build();
+            start = properties.addPropertyV(start, "rgb_color", "255,0,0");
+            start = properties.addPropertyV(start, "thickness", "7");
+            islandGen.inVertices.remove(riverStart[i]);
+            islandGen.inVertices.add(riverStart[i], start);
+
+            currVerts.clear();
+            nextVerts.clear();
+
+            currVerts.add(start);
+
+            do{
+                System.out.println("going through currVerts "+currVerts.size());
+
+                for (Vertex curr: currVerts) {
+                    int segIdx = 0;
+
+                    for (Segment s : islandGen.inSegments) {
+                        Vertex next;
+                        Vertex v1 = islandGen.inVertices.get(s.getV1Idx());
+
+                        Vertex v2 = islandGen.inVertices.get(s.getV2Idx());
+
+
+                        if ((Double.compare(curr.getX(), v1.getX()) == 0) && (Double.compare(curr.getY(), v1.getY()) == 0)) {
+                            System.out.println("match to v1");
+                            next = v2;
+                            checkAndAdd(curr, next, segIdx);
+                        } else if ((Double.compare(curr.getX(), v2.getX()) == 0) && (Double.compare(curr.getY(), v2.getY()) == 0)) {
+                            next = v1;
+                            System.out.println("match to v2");
+                            checkAndAdd(curr, next, segIdx);
+                        }
+
+                        segIdx++;
+                    }
+                }
+
+                currVerts.clear();
+                currVerts.addAll(nextVerts);
+                nextVerts.clear();
+
+                System.out.println("at end of currVerts "+currVerts.size());
+
+            }while (!(currVerts.isEmpty()));
+        }
+
+        return segmentsWithRivers;
+
+
+
+        /*
 
         //this doesnt work needs to be changed
         for (int i = 0; i < islandGen.inPolygons.size(); i++){
@@ -189,6 +307,9 @@ public class River {
             }
         }
 
-        return river_segments_with_properties;
+        //return river_segments_with_properties;
+
+         */
+
     }
 }

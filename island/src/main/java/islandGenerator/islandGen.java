@@ -149,8 +149,10 @@ public class islandGen {
             boolean ocean = true;
 
             for (Property prop: p.getPropertiesList()){
-                if (!(prop.getValue().equals("ocean"))){
-                    ocean = false;
+                if (prop.getKey().equals("biome")){
+                    if (!(prop.getValue().equals("ocean"))){
+                        ocean = false;
+                    }
                 }
             }
 
@@ -277,7 +279,7 @@ public class islandGen {
 
         else if (mode.equals("test")){
 
-            System.out.println(inPolygons.size());
+
             //must be between -10 and 25
             int seaLevelTemp = 5;
             //get list of centroid that are inside the radius of the circle
@@ -288,11 +290,14 @@ public class islandGen {
             List<Polygon> oceanAdded = ocean.assignOceanforCircle(outsideCircle);
             updatePolys(oceanAdded);
 
+            //assign land biome values
+            List<Polygon> biomesAdded = biomes.assignBiomeforCircle(outsideCircle, insideCircle);
+            updatePolys(biomesAdded);
+
             getOceanLists();
 
             Seed seed = new Seed();
-            seed.applySeed(43);
-            seed.getRands();
+            seed.applySeed(42);
 
             //assigning elevation to polygons
             List<Polygon> elevationAdded = elevation.assignElevation();
@@ -300,6 +305,43 @@ public class islandGen {
             List<Vertex> elevationVert = elevation.AssignElevationVert();
             updateVertices(elevationVert);
 
+
+            seed.getRands();
+
+            List<Segment> riverSegments = river.assignRiverSegments(outsideCircle, insideCircle, 10, seed.riverStart);
+            updateSegments(riverSegments);
+
+/*
+            System.out.println("TEST PROPERTY ADD");
+            Property prop1 = Property.newBuilder().setKey("key").setValue("value").build();
+            Property prop2 = Property.newBuilder().setKey("testkey").setValue("testvalue").build();
+            Property prop3 = Property.newBuilder().setKey("key").setValue("update").build();
+
+            List<Segment> segList = new ArrayList<>();
+
+            Segment seg1 = Segment.newBuilder().setV1Idx(42).setV2Idx(43).addProperties(prop1).build();
+            segList.add(seg1);
+
+            Segment seg2 = Segment.newBuilder().addProperties(prop2).addProperties(prop3).build();
+
+            for (Property p: seg1.getPropertiesList()){
+                System.out.println(p.getKey()+" "+p.getValue());
+            }
+            for (Property p: seg2.getPropertiesList()){
+                System.out.println(p.getKey()+" "+p.getValue());
+            }
+
+            //System.out.println("MERGE 1");
+            //seg1 = seg1.toBuilder().mergeFrom(seg2).build();
+
+            System.out.println("ADD");
+            segList.add(0, seg2);
+
+            for (Property p: segList.get(0).getPropertiesList()){
+                System.out.println(p.getKey()+" "+p.getValue());
+            }
+
+ */
 
 
 

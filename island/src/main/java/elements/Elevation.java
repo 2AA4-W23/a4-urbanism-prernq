@@ -133,8 +133,11 @@ public class Elevation {
                 }
             }
 
-            avgElevation = avgElevation/count;
-            System.out.println(i+" "+avgElevation);
+            if (!(count == 0)){
+                avgElevation = avgElevation/count;
+            }
+
+            //System.out.println(i+" "+avgElevation);
             Vertex updatedVert = properties.addPropertyV(v, "elevation", String.valueOf(avgElevation));
             VertsWithElevation.add(updatedVert);
         }

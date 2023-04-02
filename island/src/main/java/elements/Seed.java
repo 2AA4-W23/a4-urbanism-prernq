@@ -4,6 +4,12 @@ import islandGenerator.islandGen;
 
 import java.util.ArrayList;
 import java.util.Random;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
 public class Seed {
     public static Random rand;
@@ -33,6 +39,7 @@ public class Seed {
         return seed;
     }
 
+
     public void getRands(){
         //random shape
         Shape.Shapes[] shapesList = Shape.Shapes.values();
@@ -60,15 +67,30 @@ public class Seed {
                 rivVert = rand.nextInt(islandGen.inVertices.size());
 
                 if (!(islandGen.oceanVerts.contains(islandGen.inVertices.get(rivVert)))){
-                    approved = true;
+                    for (Property prop: islandGen.inVertices.get(rivVert).getPropertiesList()){
+                        if (prop.getKey().equals("elevation")){
+                            System.out.println(prop.getValue());
+                            int elev = Integer.valueOf(prop.getValue());
+                            if (elev > 0){
+                                approved = true;
+                            }
+                            else{
+                                System.out.println("not approved" +elev);
+                            }
+                        }
+                    }
                 }
             }
             while (approved == false);
 
             riverStart[i] = rivVert;
             System.out.println(rivVert);
+
         }
 
+        for (int j = 0; j < riverStart.length; j++){
+            System.out.println(riverStart[j]);
+        }
 
 
     }
