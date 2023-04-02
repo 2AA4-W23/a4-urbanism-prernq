@@ -294,10 +294,15 @@ public class islandGen {
             List<Polygon> biomesAdded = biomes.assignBiomeforCircle(outsideCircle, insideCircle);
             updatePolys(biomesAdded);
 
+
+
             getOceanLists();
 
             Seed seed = new Seed();
             seed.applySeed(42);
+
+            List<Polygon> beachAdded = beach.assignBeachforCircle(outsideCircle);
+            updatePolys(beachAdded);
 
             //assigning elevation to polygons
             List<Polygon> elevationAdded = elevation.assignElevation();
@@ -310,6 +315,9 @@ public class islandGen {
 
             List<Segment> riverSegments = river.assignRiverSegments(outsideCircle, insideCircle, 10, seed.riverStart);
             updateSegments(riverSegments);
+
+            beachAdded = beach.assignBeachforCircle(outsideCircle);
+            updatePolys(beachAdded);
 
 /*
             System.out.println("TEST PROPERTY ADD");

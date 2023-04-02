@@ -48,7 +48,7 @@ public class River {
             }
         }
 
-        if (islandGen.oceanSegs.contains(islandGen.inSegments.get(segIdx))){
+        if ((islandGen.oceanSegs.contains(islandGen.inSegments.get(segIdx))) || (islandGen.oceanVerts.contains(curr))){
             System.out.println("you reached the ocean");
         }
         else if (currElev > nextElev){
@@ -63,7 +63,47 @@ public class River {
             segmentsWithRivers.add(segIdx, newSeg);
         }
         else{
-            System.out.println("Im not going anywhere");
+
+            System.out.println("Im not going anywhere, so I will be a lake");
+            boolean add = false;
+            for (int polyIdx = 0; polyIdx < islandGen.inPolygons.size(); polyIdx++){
+                Polygon p = islandGen.inPolygons.get(polyIdx);
+                for (int idx: p.getSegmentIdxsList()){
+                    Segment s = islandGen.inSegments.get(idx);
+                    Vertex v1 = islandGen.inVertices.get(s.getV1Idx());
+                    Vertex v2 = islandGen.inVertices.get(s.getV2Idx());
+
+                    if (((Double.compare(curr.getX(), v1.getX()) == 0) && (Double.compare(curr.getY(), v1.getY()) == 0)) || (Double.compare(curr.getX(), v2.getX()) == 0) && (Double.compare(curr.getY(), v2.getY()) == 0)) {
+                        String biome = null;
+                        for (Property prop: p.getPropertiesList()){
+                            if (prop.getKey().equals("biome")){
+                                biome = prop.getValue();
+                            }
+                            else if (prop.getKey().equals("elevation")){
+                                int pElev = Integer.valueOf(prop.getValue());
+                                if (pElev < currElev){
+                                    add = true;
+                                }
+                            }
+                        }
+                        if (add == true){
+                            Polygon newP = p;
+                            if (biome.equals("ocean")){
+                                newP = properties.addPropertyP(newP, "biome", "ocean");
+                                newP = properties.addPropertyP(newP, colour.addColour("ocean").getKey(), colour.addColour("ocean").getValue());
+                            }
+                            else{
+                                newP = properties.addPropertyP(newP, "biome", "lake");
+                                newP = properties.addPropertyP(newP, addColour.getKey(), addColour.getValue());
+                            }
+
+                            islandGen.inPolygons.remove(polyIdx);
+                            islandGen.inPolygons.add(polyIdx, newP);
+                        }
+                    }
+                }
+                polyIdx++;
+            }
         }
 
 
