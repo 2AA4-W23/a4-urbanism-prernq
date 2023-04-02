@@ -65,14 +65,14 @@ public class River {
         else{
 
             System.out.println("Im not going anywhere, so I will be a lake");
-            boolean add = false;
+
             for (int polyIdx = 0; polyIdx < islandGen.inPolygons.size(); polyIdx++){
                 Polygon p = islandGen.inPolygons.get(polyIdx);
                 for (int idx: p.getSegmentIdxsList()){
                     Segment s = islandGen.inSegments.get(idx);
                     Vertex v1 = islandGen.inVertices.get(s.getV1Idx());
                     Vertex v2 = islandGen.inVertices.get(s.getV2Idx());
-
+                    boolean add = false;
                     if (((Double.compare(curr.getX(), v1.getX()) == 0) && (Double.compare(curr.getY(), v1.getY()) == 0)) || (Double.compare(curr.getX(), v2.getX()) == 0) && (Double.compare(curr.getY(), v2.getY()) == 0)) {
                         String biome = null;
                         for (Property prop: p.getPropertiesList()){
@@ -92,7 +92,7 @@ public class River {
                                 newP = properties.addPropertyP(newP, "biome", "ocean");
                                 newP = properties.addPropertyP(newP, colour.addColour("ocean").getKey(), colour.addColour("ocean").getValue());
                             }
-                            else{
+                            else if (!(biome.equals("beach"))){
                                 newP = properties.addPropertyP(newP, "biome", "lake");
                                 newP = properties.addPropertyP(newP, addColour.getKey(), addColour.getValue());
                             }
