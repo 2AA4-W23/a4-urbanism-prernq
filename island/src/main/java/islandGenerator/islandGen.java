@@ -198,7 +198,7 @@ public class islandGen {
 
     }
 
-    public Mesh generate(Mesh aMesh, String mode){
+    public Mesh generate(Mesh aMesh, String mode, String shape, String altitude, String lakes, String rivers, String aquifers, String soil, String biomeProfile, String givenSeed){
         init(aMesh);
 
         //Choosing the island shape. This'll eventually be chosen based on a command line but for now just change it to the necessary enum value.
@@ -266,28 +266,6 @@ public class islandGen {
                 //updateSegments(riverAdded);
             }
         }
-        else if (mode.equals("normal")) {
-            //more complex colours and biomes to be added in F23
-
-            int seaLevelTemp = 0;
-            seed.applySeed();
-
-
-            //assigning elevation to polygons
-            List<Polygon> elevationAdded = elevation.assignElevation();
-            updatePolys(elevationAdded);
-
-            //assigning temperature to polygons
-            List<Polygon> temperatureAdded = temperature.assignTemperature(seaLevelTemp);
-            updatePolys(temperatureAdded);
-
-            //assigning aquifers to polygons
-            List<Polygon> aquiferAdded = aquifer.assignAquifer();
-            updatePolys(aquiferAdded);
-
-
-        }
-
         else if (mode.equals("test")){
 
 
@@ -330,39 +308,37 @@ public class islandGen {
             beachAdded = beach.assignBeachforCircle(outsideCircle);
             updatePolys(beachAdded);
 
-/*
-            System.out.println("TEST PROPERTY ADD");
-            Property prop1 = Property.newBuilder().setKey("key").setValue("value").build();
-            Property prop2 = Property.newBuilder().setKey("testkey").setValue("testvalue").build();
-            Property prop3 = Property.newBuilder().setKey("key").setValue("update").build();
+        }
 
-            List<Segment> segList = new ArrayList<>();
+        else {
 
-            Segment seg1 = Segment.newBuilder().setV1Idx(42).setV2Idx(43).addProperties(prop1).build();
-            segList.add(seg1);
-
-            Segment seg2 = Segment.newBuilder().addProperties(prop2).addProperties(prop3).build();
-
-            for (Property p: seg1.getPropertiesList()){
-                System.out.println(p.getKey()+" "+p.getValue());
+            //apply seed
+            if (givenSeed.isEmpty()){
+                seed.applySeed();
+                seedNum = seed.getSeed();
             }
-            for (Property p: seg2.getPropertiesList()){
-                System.out.println(p.getKey()+" "+p.getValue());
+            else{
+                seedNum = Long.valueOf(givenSeed);
+                seed.applySeed(seedNum);
             }
 
-            //System.out.println("MERGE 1");
-            //seg1 = seg1.toBuilder().mergeFrom(seg2).build();
+            //more complex colours and biomes to be added in F23
 
-            System.out.println("ADD");
-            segList.add(0, seg2);
-
-            for (Property p: segList.get(0).getPropertiesList()){
-                System.out.println(p.getKey()+" "+p.getValue());
-            }
-
- */
+            int seaLevelTemp = 0;
+            seed.applySeed();
 
 
+            //assigning elevation to polygons
+            List<Polygon> elevationAdded = elevation.assignElevation();
+            updatePolys(elevationAdded);
+
+            //assigning temperature to polygons
+            List<Polygon> temperatureAdded = temperature.assignTemperature(seaLevelTemp);
+            updatePolys(temperatureAdded);
+
+            //assigning aquifers to polygons
+            List<Polygon> aquiferAdded = aquifer.assignAquifer();
+            updatePolys(aquiferAdded);
 
 
         }
