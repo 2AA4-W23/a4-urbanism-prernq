@@ -24,6 +24,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 public class Lake {
     Colour colour = new Colour();
+    Seed seed = new Seed();
     public List<Polygon> assignLakes(List<Integer> outsideCircle, List<Integer> insideCircle, int num_lakes){
         
         List<Structs.Polygon> lakePolys = new ArrayList<>();
@@ -34,13 +35,13 @@ public class Lake {
         
         for(int i=0; i < num_lakes; i++){
 
-            Random rand = new Random();
+
             int randomindex = 0;
-            Polygon p = lakePolys.get(rand.nextInt(lakePolys.size()));
+            Polygon p = lakePolys.get(seed.rand.nextInt(lakePolys.size()));
             Boolean can_be_lake = false;
             
             while(!can_be_lake){
-                randomindex = rand.nextInt((lakePolys.size()));
+                randomindex = seed.rand.nextInt((lakePolys.size()));
                 p = lakePolys.get(randomindex);
                 List<Structs.Property> properties = p.getPropertiesList();
                 for (Structs.Property prop: properties){

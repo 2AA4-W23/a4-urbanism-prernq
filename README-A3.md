@@ -114,7 +114,7 @@ The program must compile and install successfully in maven with the feature impl
 |F16|Generate lakes from integer value|Prerna|||D|x|
 |F17|Generate basic rivers from integer value|Keira|03/30/2023|04/02/2023|D|x|
 |F18|Generate lakes based off of rivers with no outlet|Prerna|04/02/2023|04/02/2023|D|x|
-|F19|Implement merging rivers and updating discharge level|Keira|||P|x|
+|F19|Implement merging rivers and updating discharge level|Keira|04/02/2023|04/02/2023|D|x|
 |F20|Generate random locations for aquifers from integer value|Lily|03/18/2023|03/18/2023|D|x|
 |F21|Assign humidity values to polygons based on distance from lake, ocean or aquifer|Prerna|| ||D|x|
 |F22|Implement soil absorption profile|Keira|||P|x|

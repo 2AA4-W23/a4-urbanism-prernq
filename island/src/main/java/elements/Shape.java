@@ -31,7 +31,6 @@ public class Shape {
 
 
     public void Shape(){
-        System.out.println("Constructor working");
         height = 500;
         width = 500;
         centre = new double[2];

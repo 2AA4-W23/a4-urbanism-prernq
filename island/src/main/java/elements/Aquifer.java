@@ -21,10 +21,9 @@ import java.util.Random;
 import islandGenerator.islandGen;
 
 public class Aquifer {
+    Seed seed = new Seed();
 
     public List<Structs.Polygon> assignAquifer() {
-
-        Random rand = new Random();
 
         //will later be determined by a command line argument. int = 10 for now.
         int numAquifers = 25;
@@ -34,7 +33,7 @@ public class Aquifer {
 
         //get the indices of the random aquifers.
         for (int i = 0; i < numAquifers; i++) {
-            int randomPoly = rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
+            int randomPoly = seed.rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
             randomAquifers.add(randomPoly);
         }
 
