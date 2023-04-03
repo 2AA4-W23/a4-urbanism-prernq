@@ -36,6 +36,7 @@ public class River {
     public void checkAndAdd(Vertex curr, Vertex next, int segIdx){
         int currElev = -5;
         int nextElev = -5;
+        int segThick = 0;
         for (Property pCurr: curr.getPropertiesList()){
             if (pCurr.getKey().equals("elevation")){
                 currElev = Integer.valueOf(pCurr.getValue());
@@ -55,8 +56,15 @@ public class River {
             System.out.println("segment added");
             nextVerts.add(next);
 
+            for (Property pSeg: segmentsWithRivers.get(segIdx).getPropertiesList()){
+                if (pSeg.getKey().equals("thickness")){
+                    segThick = Integer.valueOf(pSeg.getValue());
+                }
+            }
+            int newThick = segThick + 3;
+
             Segment newSeg = properties.addPropertyS(segmentsWithRivers.get(segIdx), "river", "true");
-            newSeg = properties.addPropertyS(newSeg, "thickness", "4");
+            newSeg = properties.addPropertyS(newSeg, "thickness", String.valueOf(newThick));
             newSeg = properties.addPropertyS(newSeg, addColour.getKey(), addColour.getValue());
 
             segmentsWithRivers.remove(segIdx);
@@ -169,7 +177,7 @@ public class River {
             if (!(islandGen.oceanSegs.contains(s))) {
                 s = properties.addPropertyS(s, addColour.getKey(), "0,0,0");
                 s = properties.addPropertyS(s, "river", "false");
-                s = properties.addPropertyS(s, "thickness", "1");
+                s = properties.addPropertyS(s, "thickness", "0");
             }
 
             segmentsWithRivers.add(s);

@@ -23,8 +23,13 @@ import islandGenerator.islandGen;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 public class AltimetricProfile {
+    Seed seed = new Seed();
     public enum Profiles {
         FLAT, VOLCANO, RANDOM
+    }
+    public List<Polygon> random(){
+        List<Polygon> randomPolys = new ArrayList<>();
+        return randomPolys;
     }
     public List<Polygon> volcano (List<Integer> outsideCircle, List<Integer> insideCircle, List<Integer> middleCircle){
         List<Polygon> volcanoPolys = new ArrayList<>();
@@ -38,8 +43,8 @@ public class AltimetricProfile {
                 }
             }
         }
-        Random rand = new Random();
-        Polygon p = starting_polys.get(rand.nextInt(starting_polys.size()));
+
+        Polygon p = starting_polys.get(seed.rand.nextInt(starting_polys.size()));
 
         List<Polygon> p_first_degree_neighbours = new ArrayList<>();
         List<Polygon> p_second_degree_neighbours = new ArrayList<>();

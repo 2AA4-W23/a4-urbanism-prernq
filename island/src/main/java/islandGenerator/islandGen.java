@@ -299,7 +299,7 @@ public class islandGen {
             getOceanLists();
 
             Seed seed = new Seed();
-            seed.applySeed(42);
+            seed.applySeed();
 
             List<Polygon> beachAdded = beach.assignBeachforCircle(outsideCircle);
             updatePolys(beachAdded);

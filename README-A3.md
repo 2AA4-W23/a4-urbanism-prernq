@@ -51,6 +51,7 @@ To generate an island using an existing mesh, go the the `island` directory, and
 mosser@azrael A2 % cd island 
 mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o lagoon.mesh --mode lagoon
 mossers@azrael island % ls -lh lagoon.mesh
+
 -rw-r--r--  1 keiralaskoski  staff   167K Mar 14 00:09 lagoon.mesh
 
 
@@ -108,11 +109,11 @@ The program must compile and install successfully in maven with the feature impl
 |F11|Assign every polygon property “Aquifer” as “false”|Lily|03/16/2023|03/16/2023|D|x|
 |F12|Assign every segment with property “River” as “false”|Prerna|||D|x|
 |F13|Assign every polygon with property “Soil absorption” as “0”|Prerna|||D?|x|
-|F14|Initialize random class|Keira|||P|x|
+|F14|Initialize random class|Keira|03/22/2023||P|x|
 |F15|Randomize elevation levels for polygons (beaches and rest of island) (default/random altimetric profile)|Lily|03/18/2023||P|x|
 |F16|Generate lakes from integer value|Prerna|||D|x|
-|F17|Generate basic rivers from integer value|Keira|||P|x|
-|F18|Generate lakes based off of rivers with no outlet|Prerna|||P|x|
+|F17|Generate basic rivers from integer value|Keira|03/30/2023|04/02/2023|D|x|
+|F18|Generate lakes based off of rivers with no outlet|Prerna|04/02/2023|04/02/2023|D|x|
 |F19|Implement merging rivers and updating discharge level|Keira|||P|x|
 |F20|Generate random locations for aquifers from integer value|Lily|03/18/2023|03/18/2023|D|x|
 |F21|Assign humidity values to polygons based on distance from lake, ocean or aquifer|Prerna|| ||D|x|
