@@ -43,6 +43,15 @@ public class islandGen {
     private SoilAbsorption soilAbsorption = new SoilAbsorption();
     private Shape.Shapes geoShape;
     public static Seed seed;
+    public long seedNum;
+    public static AltimetricProfile.Profiles altProfile;
+    public int riverNum;
+    public int[] riverStart;
+    public int avgTemp;
+    public int avgHumidity;
+    public int lakeNum;
+    public int aquiNum;
+    public int absorpProfile;
 
     public void init(Mesh aMesh){
         inVertices = new ArrayList<>();
@@ -193,10 +202,11 @@ public class islandGen {
         init(aMesh);
 
         //Choosing the island shape. This'll eventually be chosen based on a command line but for now just change it to the necessary enum value.
-        geoShape = Shape.Shapes.CIRCLE;
+        //geoShape = Shape.Shapes.CIRCLE;
 
         //for mode "lagoon" aka MVP
         if (mode.equals("lagoon")){
+            geoShape = Shape.Shapes.CIRCLE;
 
             if (geoShape == Shape.Shapes.CIRCLE) {
                 //must be between -10 and 25
@@ -233,7 +243,7 @@ public class islandGen {
                 List<Polygon> aquiferAdded = aquifer.assignAquifer();
                 updatePolys(aquiferAdded);
 
-                List<Polygon> humidityAdded = humidity.assignHumidity("canada");
+                List<Polygon> humidityAdded = humidity.assignHumidity(10);
                 updatePolys(humidityAdded);
 
                 //assigning soil profiles to polygons
@@ -246,6 +256,7 @@ public class islandGen {
 
                 List<Polygon> beachAdded = beach.assignBeachforCircle(outsideCircle);
                 updatePolys(beachAdded);
+
 
                 //assigning lakes to polygons
                // List<Polygon> lakeAdded = lake.assignLakes(outsideCircle, insideCircle, 3); // needs an input for number of lakes
@@ -311,7 +322,7 @@ public class islandGen {
             updateVertices(elevationVert);
 
 
-            seed.getRands();
+            //seed.getRands();
 
             List<Segment> riverSegments = river.assignRiverSegments(outsideCircle, insideCircle, 10, seed.riverStart);
             updateSegments(riverSegments);

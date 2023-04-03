@@ -21,7 +21,7 @@ import java.util.Random;
 import islandGenerator.islandGen;
 
 public class Humidity {
-    public List<Structs.Polygon> assignHumidity(String location) {
+    public List<Structs.Polygon> assignHumidity(int avgHumidity) {
         
         List<Polygon> PolysWithHumidity = new ArrayList<>();
         //assign property for humidity.
@@ -159,7 +159,12 @@ public class Humidity {
             }
 
             //calculate humidity of polygon
-            humidity = (num_of_1dwater*2 + num_of_2dwater*1 + num_of_3dwater*0.5 + num_of_4dwater*0.2);
+            humidity = (num_of_1dwater*2 + num_of_2dwater*1 + num_of_3dwater*0.5 + num_of_4dwater*0.2)*(avgHumidity/100);
+
+            if(Double.compare(humidity, 45.0) > 0){
+                humidity = 45.0;
+            }
+
             int humidity_int =  (int)humidity;
 
             //check if the polygon already has the property key "humidity"

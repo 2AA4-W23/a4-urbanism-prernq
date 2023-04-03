@@ -16,14 +16,8 @@ public class Seed {
     public static long seed;
     public static Shape.Shapes shape;
     public static AltimetricProfile.Profiles altProfile;
-    public static int riverNum;
     public int[] riverStart;
 
-
-
-
-    public static ArrayList<Integer> randomHP;
-    public static ArrayList<Integer> randomLP;
 
     public void applySeed(){
         rand = new Random();
@@ -40,7 +34,7 @@ public class Seed {
     }
 
 
-    public void getRands(){
+    public Shape.Shapes getShape() {
         //random shape
         Shape.Shapes[] shapesList = Shape.Shapes.values();
         System.out.println(shapesList.length);
@@ -48,15 +42,21 @@ public class Seed {
 
         System.out.println(shape);
 
+        return shape;
+    }
+
+    public AltimetricProfile.Profiles getProfile() {
         //random altimetric profile
         AltimetricProfile.Profiles[] altList = AltimetricProfile.Profiles.values();
         altProfile = altList[rand.nextInt(altList.length)];
 
         System.out.println(altProfile);
 
+        return altProfile;
+    }
 
-        //random rivers
-        riverNum = rand.nextInt(11);
+    public int[] getRiverStart(int riverNum) {    //random rivers
+
         riverStart = new int[riverNum];
 
         for (int i = 0; i < riverStart.length; i++){
@@ -92,76 +92,8 @@ public class Seed {
             System.out.println(riverStart[j]);
         }
 
+        return riverStart;
 
     }
 
-
-    public ArrayList<Integer> getRandHigh(){
-        return randomHP;
-    }
-    public ArrayList<Integer> getRandLow(){
-        return randomLP;
-    }
-
-
-
-    public void randElevation(int numHigh, int numLow){
-        ArrayList<Integer> randomHP = new ArrayList<>();
-        ArrayList<Integer> randomLP = new ArrayList<>();
-
-        //add random high point polygon indices to list
-        for (int i = 0; i < numHigh; i++) {
-            boolean chosen = true;
-            while (chosen == true){
-                int randInt = rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
-
-                if (randomHP == null){
-                    randomHP.add(randInt);
-                    chosen = false;
-                }
-                else if (((randomHP.contains(randInt)) == false)) {
-                    randomHP.add(randInt);
-                    chosen = false;
-                }
-            }
-        }
-
-        //add random low point polygon indices to list
-        for (int i = 0; i < numLow; i++) {
-            boolean chosen = true;
-            while (chosen == true){
-                int randInt = rand.nextInt(((islandGen.inPolygons.size()) - 0) + 1) + 0;
-
-                if (randomLP == null){
-                    if (randomHP == null){
-                        randomLP.add(randInt);
-                        chosen = false;
-                    }
-                    else{
-                        if (randomHP.contains(randInt) == false){
-                            randomLP.add(randInt);
-                            chosen = false;
-                        }
-                    }
-                }
-                else{
-                    if (randomHP == null){
-                        if ((randomLP.contains(randInt)) == false){
-                            randomLP.add(randInt);
-                            chosen = false;
-                        }
-                    }
-                    else{
-                        if (((randomLP.contains(randInt)) == false) && ((randomHP.contains(randInt)) == false)){
-                            randomLP.add(randInt);
-                            chosen = false;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    public void setAllRand(int numHigh, int numLow){
-        randElevation(numHigh, numLow);
-    }
 }
