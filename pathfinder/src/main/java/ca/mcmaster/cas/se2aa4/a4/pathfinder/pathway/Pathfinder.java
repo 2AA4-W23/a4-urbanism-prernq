@@ -5,5 +5,5 @@ import java.util.List;
 
 
 public interface Pathfinder {
-    List <Node> findPath(Node start, Node end);
+    List <Node> path_finder(Node start, Node end);
 }
