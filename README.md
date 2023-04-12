@@ -93,6 +93,7 @@ When you develop features and enrich the product, remember that you have first t
 The program must compile and install successfully in maven with the feature implemented and when run, produce give the desired output in generator and visualizer for multiple test cases.
 
 ### Product Backlog
+Kanban Board Available: https://trello.com/invite/b/pbj5uwt1/ATTId7744c4fbe60bf8b6476dd80e45ca83c66D7C8DD/kanban-board-a4
 
 | Id  | Feature title  | Start  | End    | Status | MVP? |
 | :-: | :-:            | ---    | :-:    | :-:    | :-:  |
