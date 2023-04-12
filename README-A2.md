@@ -1,5 +1,8 @@
-# Assignment A4: Urbanism
-Authors: Prerna Prabhu [prabhp3@mcmaster.ca]
+# Assignment A2: Mesh Generator
+
+  - Keira Laskoski [laskoskk@mcmaster.ca]
+  - Lily Porter [portel7@mcmaster.ca]
+  - Prerna Prabhu [prabhp3@mcmaster.ca]
 
 ## How to run the product
 
@@ -15,7 +18,7 @@ To install the different tooling on your computer, simply run:
 mosser@azrael A2 % mvn install
 ```
 
-After installation, you'll find an application named `generator.jar` in the `generator` directory, a file named 'island.jar' in the 'island' directory, and and a file named `visualizer.jar` in the `visualizer` one. 
+After installation, you'll find an application named `generator.jar` in the `generator` directory, and a file named `visualizer.jar` in the `visualizer` one. 
 
 ### Generator
 
@@ -37,25 +40,7 @@ mosser@azrael generator % java -jar generator.jar sample.mesh IR 300 8
 mosser@azrael generator % ls -lh sample.mesh
 -rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 sample.mesh
 mosser@azrael generator % 
-
 ```
-
-### Island
-
-To generate an island using an existing mesh, go the the `island` directory, and use `java -jar` to run the product. The product can take 2 arguments: the first is the file containing the mesh and the second is the name of the file to store the island mesh.
-
-```
-mosser@azrael A2 % cd island 
-mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o lagoon.mesh --mode lagoon
-mossers@azrael island % ls -lh lagoon.mesh
-
--rw-r--r--  1 keiralaskoski  staff   167K Mar 14 00:09 lagoon.mesh
-
-
-```
-### PathFinder
-To generate cities within the mesh, go to the `pathfinder` directory, and use `java -jar` to run the product. The product can take one argument: the number of cities you'd like to produce onto the mesh.
-
 
 ### Visualizer
 
@@ -68,8 +53,6 @@ mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sam
 	* (this will output a mesh in normal mode)
 mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -X
 	* (this will output a mesh in debug mode)
-mosser@azrael visualizer % java -jar visualizer.jar ../island/lagoon.mesh sample.svg 
-	* (this will output an island mesh)
 	
 ... (lots of debug information printed to stdout) ...
 
@@ -94,11 +77,30 @@ The program must compile and install successfully in maven with the feature impl
 
 ### Product Backlog
 
-| Id  | Feature title  | Start  | End    | Status | MVP? |
-| :-: | :-:            | ---    | :-:    | :-:    | :-:  |
-| F01 | Intoduce nodes |04-10-23|04-12-23| P      | X    |
-| F02 | Intoduce edges |04-10-23|04-12-23| P      | X    |
-| F03 | Create graph   |04-10-23|04-12-23| P      | X    |
-| F04 | Create shortest path algorithm |04-10-23|04-12-23| P      | X    |
-| F05 | Find path between each node |04-10-23|04-12-23| P      | X    |
-
+| Id  | Feature title | Who? | Start | End | Status |
+| :-: |:-:            |---   | :-:   | :-: | :-:    |
+| |---GRID MODE---| | | | | |
+| F01 | Create list of vertices | Prerna |02/17/2023|02/20/2023|D|
+| F02 | Create list of segments | Prerna |02/17/2023|02/20/2023|D|
+| F03 | Create list of Polygons | Prerna |02/19/2023|02/20/2023|D|
+| F04 | Create list of centroids | Prerna |02/19/2023|02/21/2023|D|
+| F05 | Reference neighbouring polygons | Keira |02/22/22|02/23/22|D|
+| F06 | Assign vertex colour and thickness | Lily |02/20/2023|02/20/2023|D|
+| F07 | Assign segment colour and thickness | Lily |02/21/2023|02/21/2023|D|
+| F08 | Assign centroid colour and thickness | Lily |02/21/2023|02/21/2023|D|
+| F09 | Add centroid and segment data to MeshDump | Keira |02/23/22|02/23/22|D|
+| F10 |Create SVG canvas| From original code |-------|-----|D|
+| F11 |Implement switching between debug and normal mode| Lily |02/21/2023|02/22/2023|D|
+| F12 |Render vertices and centroids on canvas|Lily|02/20/2023|02/22/2023|D|
+| F13 |Render segments on canvas|Lily|02/21/2023|02/21/2023|D|
+| F14 |Write SVG file|From original code|-------|-----|D|
+| |---IRREGULAR MODE---| | | | |
+| F15 |Generate 40 random points| Lily |02/22/2023|02/22/2023|D|
+| F16 |Compute Voronoi diagram| Keira|02/24/2023 | 02/26/2023|D|
+| F17 |Apply Lloyd relaxation 5 times|Keira |02/26/2023 | 02/26/2023|D|
+| F18 |Crop the mesh to appropriate size| Prerna | 2023/02/25 | 2023/02/26 |D|
+| F19 |Delaunay's triangle|Keira |02/27/2023 | 02/27/2023|D|
+| F20 |Compute ConvexHull to Reorder segments|Prerna|02/27/23 |02/27/2023 |D|
+| F21 |Generate user requested number of points & relaxation level|Lily |02/27/23 |02/27/23 |D|
+| F22 |Command line arguments for type of mesh|Lily |02/23/23|02/23/23 |D|
+| F23 | not a feature - Adding Dependencies |Keira | 02/24/2023|02/24/2023 | D|
