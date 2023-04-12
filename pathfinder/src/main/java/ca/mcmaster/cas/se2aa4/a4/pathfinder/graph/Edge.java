@@ -1,4 +1,4 @@
-package graph;
+package ca.mcmaster.cas.se2aa4.a4.pathfinder.graph;
 
 import java.util.HashMap;
 import java.util.Map;
