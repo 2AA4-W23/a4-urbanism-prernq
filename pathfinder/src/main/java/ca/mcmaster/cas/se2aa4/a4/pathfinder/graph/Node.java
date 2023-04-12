@@ -10,11 +10,11 @@ public class Node {
     //initialize node variables
     private List <Edge> edgePath; 
     private Map <String, String> properties;
-    private int nodeNumber; //identifies the node
+    private int nodeIndex; //identifies the node
 
     //create node object
-    public Node (int nodeNumber) {
-        this.nodeNumber = nodeNumber;
+    public Node (int nodeIndex) {
+        this.nodeIndex = nodeIndex;
         this.edgePath = new ArrayList<>();
         this.properties = new HashMap<>();
     }
@@ -41,8 +41,8 @@ public class Node {
     }
 
     //returns the node number
-    public int getNodeNumber () {
-        return nodeNumber;
+    public int getnodeIndex () {
+        return nodeIndex;
     }
 
 }

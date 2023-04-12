@@ -1,8 +1,9 @@
 package ca.mcmaster.cas.se2aa4.a4.pathfinder.pathway;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.graph.Node;
+import ca.mcmaster.cas.se2aa4.a4.pathfinder.graph.Edge;
 import java.util.List;
 
 
-public class Pathfinder {
-    
+public interface Pathfinder {
+    List <Node> findPath(Node start, Node end);
 }
