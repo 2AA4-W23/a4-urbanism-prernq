@@ -96,8 +96,8 @@ The program must compile and install successfully in maven with the feature impl
 
 | Id  | Feature title  | Start  | End    | Status | MVP? |
 | :-: | :-:            | ---    | :-:    | :-:    | :-:  |
-| F01 | Intoduce nodes |04-10-23|04-12-23| P      | X    |
-| F02 | Intoduce edges |04-10-23|04-12-23| P      | X    |
+| F01 | Intoduce nodes |04-10-23|04-12-23| D      | X    |
+| F02 | Intoduce edges |04-10-23|04-12-23| D      | X    |
 | F03 | Create graph   |04-10-23|04-12-23| P      | X    |
 | F04 | Create shortest path algorithm |04-10-23|04-12-23| P      | X    |
 | F05 | Find path between each node |04-10-23|04-12-23| P      | X    |
