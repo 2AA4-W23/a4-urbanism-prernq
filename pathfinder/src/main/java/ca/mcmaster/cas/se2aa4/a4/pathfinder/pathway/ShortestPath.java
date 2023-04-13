@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.PriorityQueue;
 import java.util.Comparator;
 
-//Algorithm ShortestPath(start, end, w) 2co3!!!!!!
+//Algorithm ShortestPath(start, end, w)
 public class ShortestPath implements Pathfinder {
     
     //initialize variables

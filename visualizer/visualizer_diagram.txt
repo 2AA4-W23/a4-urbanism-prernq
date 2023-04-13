@@ -1,25 +1,49 @@
 @startuml
-class GraphicRenderer {
-    + void render()
-    - Color extractColor()
-    - int extractThickness()
+
+class Edge {
+    + Edge()
+    + getWeight()
+    + setWeight()
+    + getStartNode()
+    + getEndNode()
+    + addProperty()
+    + getProperty()
 }
 
-class MeshDump {
-    + void dump(String fileName)
-    + void dump(Mesh aMesh)
+class Graph {
+    + Graph()
+    + getNodeList()
+    + getNode()
+    + getEdgeList()
+    + getEdge()
+    + void addNode()
+    + void addNode()
+    + void addEdge()
 }
 
-class Main{
-    + void main(String[] args)
+class Node{
+    + Node()
+    + getEdgePath()
+    + addEdgePath()
+    + addProperty()
+    + getProperty()
+    + getnodeIndex()
 }
 
-class SVGCanvas{
-    + Graphics2D build(int width, int height)
-    + void write(Graphics2D g, String fileName)
+interface Pathfinder{
+    + path_finder()
 }
 
-MeshDump <.. GraphicRenderer : _"uses"
-GraphicRenderer <.. Main : _"uses"
-SVGCanvas <.. GraphicRenderer :_"uses"
+class ShortestPath{
+    + ShortestPath()
+    + path_finder()
+}
+
+Edge <.. Graph : _"uses"
+Node <.. Edge : _"uses"
+Node <.. Graph : _"uses"
+ShortestPath <.. Pathfinder : _"uses"
+Graph <.. ShortestPath : _"uses" 
+
+
 @enduml

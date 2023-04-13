@@ -54,7 +54,15 @@ mossers@azrael island % ls -lh lagoon.mesh
 
 ```
 ### PathFinder
-To generate cities within the mesh, go to the `pathfinder` directory, and use `java -jar` to run the product. The product can take one argument: the number of cities you'd like to produce onto the mesh.
+To generate cities within the mesh, go to the `island` directory, and use `java -jar` to run the product. The product can take one argument: the number of cities you'd like to produce onto the mesh. It relies on the island generator directory.
+
+```
+mosser@azrael A2 % cd island 
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o lagoon.mesh --city 5
+mossers@azrael island % ls -lh lagoon.mesh
+
+```
+
 
 
 ### Visualizer
@@ -93,13 +101,17 @@ When you develop features and enrich the product, remember that you have first t
 The program must compile and install successfully in maven with the feature implemented and when run, produce give the desired output in generator and visualizer for multiple test cases.
 
 ### Product Backlog
-Kanban Board Available: https://trello.com/invite/b/pbj5uwt1/ATTId7744c4fbe60bf8b6476dd80e45ca83c66D7C8DD/kanban-board-a4
+Kanban Board Available in Projects 
 
 | Id  | Feature title  | Start  | End    | Status | MVP? |
 | :-: | :-:            | ---    | :-:    | :-:    | :-:  |
 | F01 | Intoduce nodes |04-10-23|04-12-23| D      | X    |
 | F02 | Intoduce edges |04-10-23|04-12-23| D      | X    |
-| F03 | Create graph   |04-10-23|04-12-23| P      | X    |
-| F04 | Create shortest path algorithm |04-10-23|04-12-23| P      | X    |
-| F05 | Find path between each node |04-10-23|04-12-23| P      | X    |
-
+| F03 | Create graph   |04-10-23|04-12-23| D     | X    |
+| F04 | Create shortest path algorithm |04-10-23|04-12-23| D      | X    |
+| F05 | Find path between each node |04-10-23|04-12-23| D     |    |
+| F06 | Create cities from int value |04-10-23|04-12-23| D      |    |
+| F07 | Generate random cities not on water |04-10-23|04-12-23| D      |    |
+| F08 | Create capital city |04-10-23|04-12-23| D      |    |
+| F09 | Integrate into islandGen |04-10-23|04-12-23| D      |    |
+| F10 | Create command line argument for number of cities |04-10-23|04-12-23| D      |    |

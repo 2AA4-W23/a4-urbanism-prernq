@@ -21,6 +21,7 @@ public class Main {
     public static String soil;
     public static String biomes;
     public static String seed;
+    public static String city;
 
     public static void init(){
         input = null;
@@ -34,6 +35,7 @@ public class Main {
         soil = null;
         biomes = null;
         seed = null;
+        city = null;
 
     }
 
@@ -78,6 +80,8 @@ public class Main {
                         biomes = arg;
                     case "--seed":
                         seed = arg;
+                    case "--city:":
+                        city = arg;
                     default:
                         System.out.println("just passing through");
                 }
@@ -86,7 +90,7 @@ public class Main {
 
         Structs.Mesh aMesh = factory.read(input);
         islandGen generator = new islandGen();
-        Structs.Mesh myMesh = generator.generate(aMesh, mode, shape, altitude, lakes, rivers, aquifers, soil, biomes, seed);
+        Structs.Mesh myMesh = generator.generate(aMesh, mode, shape, altitude, lakes, rivers, aquifers, soil, biomes, seed, city);
         factory.write(myMesh, output);
     }
 }

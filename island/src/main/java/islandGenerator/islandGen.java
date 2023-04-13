@@ -11,8 +11,11 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
-import elements.*;
 
+import elements.*;
+import pathGenerator.City;
+import pathGenerator.StarNetwork;
+import pathGenerator.Translator;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -198,7 +201,7 @@ public class islandGen {
 
     }
 
-    public Mesh generate(Mesh aMesh, String mode, String shape, String altitude, String lakes, String rivers, String aquifers, String soil, String biomeProfile, String givenSeed){
+    public Mesh generate(Mesh aMesh, String mode, String shape, String altitude, String lakes, String rivers, String aquifers, String soil, String biomeProfile, String givenSeed, String numCity){
         init(aMesh);
 
         //Choosing the island shape. This'll eventually be chosen based on a command line but for now just change it to the necessary enum value.
@@ -256,6 +259,7 @@ public class islandGen {
 
                 List<Polygon> beachAdded = beach.assignBeachforCircle(outsideCircle);
                 updatePolys(beachAdded);
+
 
 
                 //assigning lakes to polygons
@@ -342,6 +346,12 @@ public class islandGen {
 
 
         }
+
+        List<Polygon> cityAdded = new City(Integer.parseInt(numCity), Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build()).createCapital();
+        updatePolys(cityAdded);
+        StarNetwork network = new StarNetwork(Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build());
+        List<Polygon> networkAdded = network.createPath();
+        updatePolys(networkAdded);
 
         //return Mesh.newBuilder().addAllSegments(inSegments).addAllPolygons(inPolygons).build();
         return Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build();
