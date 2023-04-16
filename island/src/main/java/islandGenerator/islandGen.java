@@ -364,9 +364,9 @@ public class islandGen {
         numCity = "5";
         List<Vertex> cityAdded = new City(Integer.parseInt(numCity)).assignCities();
         updateCentroids(cityAdded);
-        //StarNetwork network = new StarNetwork(Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build());
-        //List<Polygon> networkAdded = network.createPath();
-        //updatePolys(networkAdded);
+        StarNetwork network = new StarNetwork(Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build());
+        List<Segment> networkAdded = network.createPath();
+        updateSegments(networkAdded);
 
         //return Mesh.newBuilder().addAllSegments(inSegments).addAllPolygons(inPolygons).build();
         return Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build();

@@ -54,7 +54,7 @@ public class StarNetwork {
         }
     }
 
-    public List<Polygon> createPath(){
+    public List<Segment> createPath(){
 
 
         //create path properties
@@ -85,7 +85,7 @@ public class StarNetwork {
 
         Mesh new_mesh = duplicate.build();
 
-        return new_mesh.getPolygonsList();
+        return new_mesh.getSegmentsList();
 
     }
 }
