@@ -1,0 +1,64 @@
+@startuml
+participant generator.Main
+participant DotGen
+participant islandGen
+->  generator.Main : args()
+activate generator.Main
+generator.Main -> DotGen : generateirregular()
+generator.Main -> islandGen.Main : args()
+deactivate generator.Main
+islandGen.Main -> islandGen : generate()
+activate islandGen.Main
+islandGen -> islandGen : updatePolys()
+deactivate islandGen.Main
+activate islandGen
+islandGen -> AltimetricProfile : altimetric()
+islandGen -> islandGen : updatePolys()
+islandGen -> Elevation : assignELevation()
+islandGen -> islandGen : updatePolys()
+islandGen -> Temperature : assignTemperature()
+islandGen -> islandGen : updatePolys()
+islandGen -> Biome : assignBiome()
+islandGen -> islandGen : updatePolys()
+islandGen -> Lake : assignLakes()
+islandGen -> islandGen : updatePolys()
+islandGen -> Aquifer : assignAquifer()
+islandGen -> islandGen : updatePolys()
+islandGen -> Humidity : assignHumidity()
+islandGen -> islandGen : updatePolys()
+islandGen -> SoilAbsorption : assignSoilAbsorption()
+islandGen -> islandGen : updatePolys()
+islandGen -> Beach : assignBeach()
+islandGen -> islandGen : updatePolys()
+islandGen -> River : assignRiverSegments()
+islandGen -> islandGen : updateSegments()
+islandGen -> City : assignCities()
+activate City
+City -> islandGen : return
+islandGen -> islandGen : updateCentroids()
+deactivate City
+islandGen -> StarNetwork : StarNetwork()
+activate StarNetwork
+StarNetwork -> Translator : translate()
+activate Translator
+Translator -> Graph: Graph()
+activate Graph
+Graph -> Node : addNode()
+Graph -> Edge : addEdge()
+deactivate Graph
+Translator -> StarNetwork : return()
+deactivate Translator
+StarNetwork -> ShortestPath : ShortestPath()
+activate ShortestPath
+ShortestPath -> StarNetwork : return
+deactivate ShortestPath
+StarNetwork -> islandGen : return()
+deactivate StarNetwork
+islandGen -> islandGen : updateSegments()
+islandGen -> GraphicRenderer
+deactivate islandGen
+GraphicRenderer-> GraphicRenderer : render()
+activate GraphicRenderer
+
+deactivate islandGen
+@enduml
