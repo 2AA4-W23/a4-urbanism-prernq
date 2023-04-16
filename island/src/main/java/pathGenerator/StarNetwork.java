@@ -55,37 +55,39 @@ public class StarNetwork {
     }
 
     public List<Segment> createPath(){
+        List<Segment> segs = new ArrayList<>();
+        List<Polygon> polys = new ArrayList<>();
+        List<Vertex> vertices = new ArrayList<>();
 
+        for (int j = 0; j < islandGen.inSegments.size(); j++){
+            segs.add(islandGen.inSegments.get(j));
+        }
+
+        for (int j = 0; j < islandGen.inPolygons.size(); j++){
+            polys.add(islandGen.inPolygons.get(j));
+        }
+
+        for(int i = 0; i < islandGen.inVertices.size(); i++){
+            vertices.add(islandGen.inVertices.get(i));
+        }
 
         //create path properties
         Property path_color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0").build();
         Property path_thickness = Property.newBuilder().setKey("thickness").setValue("3").build();
 
-        List<Polygon> polys = new ArrayList<>();
-        for (int j = 0; j < islandGen.inPolygons.size(); j++){
-            polys.add(islandGen.inPolygons.get(j));
-        }
-
         //finds shortest path
         Pathfinder find_path = new ShortestPath(graph);
-        
-        Mesh.Builder duplicate = Mesh.newBuilder();  
-        duplicate.addAllPolygons(aMesh.getPolygonsList());
-        duplicate.addAllVertices(aMesh.getVerticesList());
-        duplicate.addAllSegments(aMesh.getSegmentsList());
-
         List<Node> path_nodes = find_path.path_finder(graph.getNode(city_node_idxs.get(0)), graph.getNode(city_node_idxs.get(1)));
         
         for(Node n: path_nodes){
-            //segments.add(Segment.newBuilder().setV1Idx(i).setV2Idx(j).build())
-            Vertex.Builder new_path = Vertex.newBuilder(aMesh.getVertices(n.getnodeIndex()));
-            new_path.addProperties(path_color);
-            duplicate.setVertices(n.getnodeIndex(), new_path);
+            //seg.add(Segment.newBuilder().setV1Idx(i).setV2Idx(j).build())
+            
+            int n_idx = n.getnodeIndex();
+            Vertex vertexNode = vertices.get(n_idx);
+            vertices.set(n_idx, Vertex.newBuilder(vertexNode).addProperties(path_color).build());
+            vertices.set(n_idx, Vertex.newBuilder(vertexNode).addProperties(path_thickness).build());
         }
-
-        Mesh new_mesh = duplicate.build();
-
-        return new_mesh.getSegmentsList();
+        return segs;
 
     }
 }
