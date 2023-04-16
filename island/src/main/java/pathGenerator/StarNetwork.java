@@ -10,6 +10,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
+import islandGenerator.islandGen;
 
 import java.util.Random;
 import java.util.ArrayList;
@@ -27,15 +28,27 @@ public class StarNetwork {
         this.aMesh = mesh;
         this.graph = new Translator(mesh).translate();
         this.city_node_idxs = new ArrayList<>();
-        
         cityFinder();
         
     }
 
     public void cityFinder(){
+        List<Polygon> polys = new ArrayList<>();
+        List<Vertex> vertices = new ArrayList<>();
 
-        for(Polygon p: aMesh.getPolygonsList()){
-            if(aMesh.getVertices(p.getCentroidIdx()).getPropertiesCount() == 1){
+        for (int j = 0; j < islandGen.inPolygons.size(); j++){
+            polys.add(islandGen.inPolygons.get(j));
+        }
+
+        for(int i = 0; i < islandGen.inVertices.size(); i++){
+            vertices.add(islandGen.inVertices.get(i));
+        }
+
+        for(Polygon p: polys){
+            int cent_idx = p.getCentroidIdx();
+            Vertex cent = vertices.get(cent_idx);
+
+            if((cent.getPropertiesList()).size() == 1){
                 city_node_idxs.add(p.getCentroidIdx());
             }
         }
@@ -43,11 +56,20 @@ public class StarNetwork {
 
     public List<Polygon> createPath(){
 
-        Property path_color = Structs.Property.newBuilder().setKey("rgb_color").setValue("0,255,255").build();
 
+        //create path properties
+        Property path_color = Property.newBuilder().setKey("rgb_color").setValue("255,0,0").build();
+        Property path_thickness = Property.newBuilder().setKey("thickness").setValue("3").build();
+
+        List<Polygon> polys = new ArrayList<>();
+        for (int j = 0; j < islandGen.inPolygons.size(); j++){
+            polys.add(islandGen.inPolygons.get(j));
+        }
+
+        //finds shortest path
         Pathfinder find_path = new ShortestPath(graph);
-        Mesh.Builder duplicate = Structs.Mesh.newBuilder();
         
+        Mesh.Builder duplicate = Mesh.newBuilder();  
         duplicate.addAllPolygons(aMesh.getPolygonsList());
         duplicate.addAllVertices(aMesh.getVerticesList());
         duplicate.addAllSegments(aMesh.getSegmentsList());
@@ -55,11 +77,10 @@ public class StarNetwork {
         List<Node> path_nodes = find_path.path_finder(graph.getNode(city_node_idxs.get(0)), graph.getNode(city_node_idxs.get(1)));
         
         for(Node n: path_nodes){
-            
-            System.out.println(n.getnodeIndex());
-            Vertex.Builder new_city = Vertex.newBuilder(aMesh.getVertices(n.getnodeIndex()));
-            new_city.addProperties(path_color);
-            duplicate.setVertices(n.getnodeIndex(), new_city);
+            //segments.add(Segment.newBuilder().setV1Idx(i).setV2Idx(j).build())
+            Vertex.Builder new_path = Vertex.newBuilder(aMesh.getVertices(n.getnodeIndex()));
+            new_path.addProperties(path_color);
+            duplicate.setVertices(n.getnodeIndex(), new_path);
         }
 
         Mesh new_mesh = duplicate.build();

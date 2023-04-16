@@ -155,6 +155,18 @@ public class islandGen {
 
     }
 
+    public void updateCentroids(List<Vertex> newCentroids){
+
+        List<Vertex> original = new ArrayList<>();
+        for (Vertex c : inCentroids){
+            original.add(Vertex.newBuilder().mergeFrom(c).build());
+        }
+
+        inCentroids.clear();
+        inCentroids = newCentroids;
+
+    }
+
     public void getOceanLists(){
 
         for (Polygon p: inPolygons){
@@ -218,13 +230,16 @@ public class islandGen {
                 List<Integer> outsideCircle = isleShape.circle(200);
                 List<Integer> insideCircle = isleShape.circle(50);
                 List<Integer> centerCircle = isleShape.circle(10);
+                Seed seed = new Seed();
+                seed.applySeed(Long.valueOf(givenSeed));
+                
 
                 List<Polygon> oceanAdded = ocean.assignOceanforCircle(outsideCircle);
                 updatePolys(oceanAdded);
 
                 //assign elevation based on alitmetric profile
-                List<Polygon> altimetricAdded = altimetric.volcano(insideCircle, outsideCircle, centerCircle);
-                updatePolys(altimetricAdded);
+                //List<Polygon> altimetricAdded = altimetric.volcano(insideCircle, outsideCircle, centerCircle);
+                //updatePolys(altimetricAdded);
 
                 //assigning elevation to polygons
                 List<Polygon> elevationAdded = elevation.assignElevation();
@@ -292,7 +307,7 @@ public class islandGen {
             getOceanLists();
 
             Seed seed = new Seed();
-            seed.applySeed();
+            seed.applySeed(Long.parseLong(givenSeed));
 
             List<Polygon> beachAdded = beach.assignBeachforCircle(outsideCircle);
             updatePolys(beachAdded);
@@ -346,12 +361,12 @@ public class islandGen {
 
 
         }
-
-        List<Polygon> cityAdded = new City(Integer.parseInt(numCity), Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build()).createCapital();
-        updatePolys(cityAdded);
-        StarNetwork network = new StarNetwork(Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build());
-        List<Polygon> networkAdded = network.createPath();
-        updatePolys(networkAdded);
+        numCity = "5";
+        List<Vertex> cityAdded = new City(Integer.parseInt(numCity)).assignCities();
+        updateCentroids(cityAdded);
+        //StarNetwork network = new StarNetwork(Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build());
+        //List<Polygon> networkAdded = network.createPath();
+        //updatePolys(networkAdded);
 
         //return Mesh.newBuilder().addAllSegments(inSegments).addAllPolygons(inPolygons).build();
         return Mesh.newBuilder().addAllVertices(inVertices).addAllVertices(inCentroids).addAllSegments(inSegments).addAllPolygons(inPolygons).build();

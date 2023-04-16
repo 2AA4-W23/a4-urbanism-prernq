@@ -7,6 +7,8 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.graph.Graph;
+import islandGenerator.islandGen;
+
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
@@ -21,15 +23,20 @@ public class Translator {
 
     public Graph translate(){
         Graph graph = new Graph();
+        List<Polygon> polys = new ArrayList<>();
 
-        for(Polygon p: aMesh.getPolygonsList()){
+        for (int j = 0; j < islandGen.inPolygons.size(); j++){
+            polys.add(islandGen.inPolygons.get(j));
+        }
+
+        for(Polygon p: polys){
             graph.addNode(p.getCentroidIdx());
         }
 
-        for(Polygon p: aMesh.getPolygonsList()){
-            
-            for(int index: p.getNeighborIdxsList()){
-                Polygon p_neighbor = aMesh.getPolygons(index);
+        for(Polygon p: polys){
+            List<Integer> p_neighbour_idxs = p.getNeighborIdxsList();
+            for(int index: p_neighbour_idxs){
+                Polygon p_neighbor = polys.get(index);
                 graph.addEdge(graph.getNode(p.getCentroidIdx()), graph.getNode(p_neighbor.getCentroidIdx()));
                 
             }

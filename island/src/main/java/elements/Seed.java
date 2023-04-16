@@ -12,10 +12,10 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
 public class Seed {
-    public static Random rand;
-    public static long seed;
+    public Random rand = new Random();
+    public long seed;
     public static Shape.Shapes shape;
-    public static AltimetricProfile.Profiles altProfile;
+    public AltimetricProfile.Profiles altProfile;
     public int[] riverStart;
 
 
@@ -31,6 +31,10 @@ public class Seed {
     }
     public long getSeed(){
         return seed;
+    }
+
+    public Random getRand(){
+        return rand;
     }
 
 
